@@ -1,27 +1,39 @@
+@import "compass";
+
+@mixin user-select($select) {
+    $select: unquote($select);
+    @include experimental(user-select, $select,
+     -moz, -webkit, not -o, not -ms, -khtml, official
+    );
+}
+
 .wp-tile-container {
 	width: auto;
-	height: 1000px;
+	height: auto;;
 	background: none;
-	overflow: hidden;
+	overflow: visible;
 
     .grid {
-        overflow-y: auto;
-        overflow-x: hidden;
         top: 0;
         bottom: 0;
         width: 100%;
         height: 100%;
         position: relative;
-        -webkit-user-select: none;
+        @include user-select ( none );
 
 
         > div {
+            @include box-shadow ( 6px 6px 10px );
             position: absolute;
             font-size: 13px;
             background-color: #EEE;
             padding: 0;
             overflow: hidden;
             cursor: pointer;
+
+            &:hover {
+                outline: 1px solid #ccc;
+            }
         }
 
         .tile-bg {
