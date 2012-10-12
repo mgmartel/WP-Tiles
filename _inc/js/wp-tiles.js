@@ -15,7 +15,7 @@ var debounce = function(func, wait, immediate) {
 
 (function($) {
 
-    var el = document.getElementById('wp-tiles'),
+    var el = document.getElementById(wptilesdata.id),
         grid = new Tiles.Grid(el);
 
     grid.resizeColumns = function() {
@@ -65,11 +65,11 @@ var debounce = function(func, wait, immediate) {
     grid.isDirty = true;
     grid.resize();
 
-    grid.updateTiles(wptilesdata);
+    grid.updateTiles(wptilesdata.posts);
     grid.redraw(true, resizeWpTiles);
 
     function resizeWpTiles() { // @todo is there a way to make this less hacky?
-        $('.wp-tile-container').css('height', $("#wp-tiles").children().last().css("top") ).css("height", "+="+ jQuery("#wp-tiles").children().last().css("height") );
+        $('.wp-tile-container').css('height', $('#' + wptilesdata.id).children().last().css("top") ).css("height", "+="+ jQuery('#' + wptilesdata.id).children().last().css("height") );
     }
 
     // wait until users finishes resizing the browser
