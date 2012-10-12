@@ -61,7 +61,13 @@ var debounce = function(func, wait, immediate) {
         " D D . C C "
     ];
 
-    grid.template = Tiles.Template.fromJSON(rows);
+    if ( $("#" + wptilesdata.id ).width() < 800 ) {
+        grid.template = Tiles.Template.fromJSON(wptilesdata.smallTemplates);
+        grid.isDirty = true;
+    } else {
+        grid.template = Tiles.Template.fromJSON(wptilesdata.rowTemplates[0]);
+    }
+
     grid.isDirty = true;
     grid.resize();
 
@@ -77,6 +83,11 @@ var debounce = function(func, wait, immediate) {
 
     // wait until users finishes resizing the browser
     var debouncedResize = debounce(function() {
+        if ( $("#" + wptilesdata.id ).width() < 800 ) {
+            grid.template = Tiles.Template.fromJSON(wptilesdata.smallTemplates);
+            grid.isDirty = true;
+        }
+
         grid.resize();
         grid.redraw(true, resizeWpTiles);
     }, 200);
