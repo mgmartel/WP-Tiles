@@ -3,7 +3,7 @@
 // single namespace export
 var Tiles = {};
 
-(function() {
+(function($) {
 
     var Tile = Tiles.Tile = function(tileId, element) {
 
@@ -114,7 +114,7 @@ var Tiles = {};
         }
     };
 
-})();
+})(jQuery);
 
 /*
     A grid template specifies the layout of variably sized tiles. A single
@@ -140,7 +140,7 @@ var Tiles = {};
     ];
 */
 
-(function() {
+(function($) {
 
     // remove whitespace and create 2d array
     var parseCells = function(rows) {
@@ -331,7 +331,7 @@ var Tiles = {};
     // period used to designate a single 1x1 cell tile
     Tiles.Template.SINGLE_CELL = '.';
 
-})();
+})(jQuery);
 
 // template provider which returns simple templates with 1x1 tiles
 Tiles.UniformTemplates = {
@@ -351,7 +351,7 @@ Tiles.UniformTemplates = {
     }
 
 
-};(function() {
+};(function($) {
 
     var Grid = Tiles.Grid = function(element) {
 
@@ -721,4 +721,4 @@ Tiles.UniformTemplates = {
         }
     };
 
-})();
+})(jQuery);
