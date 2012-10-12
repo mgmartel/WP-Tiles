@@ -65,11 +65,14 @@ var debounce = function(func, wait, immediate) {
     grid.isDirty = true;
     grid.resize();
 
-    grid.updateTiles(wptilesdata.posts);
+    var posts = wptilesdata.posts;
+    grid.updateTiles(posts);
     grid.redraw(true, resizeWpTiles);
 
     function resizeWpTiles() { // @todo is there a way to make this less hacky?
-        $('.wp-tile-container').css('height', $('#' + wptilesdata.id).children().last().css("top") ).css("height", "+="+ jQuery('#' + wptilesdata.id).children().last().css("height") );
+        var lastEl = $('#' + wptilesdata.id).children().last();
+        var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.css("top"), 10) + 10 + "px";
+        $('.wp-tile-container').css('height', newHeight );
     }
 
     // wait until users finishes resizing the browser
@@ -80,4 +83,25 @@ var debounce = function(func, wait, immediate) {
 
     // when the window resizes, redraw the grid
     $(window).resize(debouncedResize);
+
+    // Make the grid changable
+    var $templateButtons = $('#' + wptilesdata.id + '-templates li.template').on('click', function(e) {
+
+        // unselect all templates
+        $templateButtons.removeClass("selected");
+
+        // select the template we clicked on
+        $(e.target).addClass("selected");
+
+        // get the JSON rows for the selection
+        var index = $(e.target).index(),
+            rows = wptilesdata.rowTemplates[index];
+
+        // set the new template and resize the grid
+        grid.template = Tiles.Template.fromJSON(rows);
+        grid.isDirty = true;
+        grid.resize();
+
+        grid.redraw(true);
+    });
 })(jQuery);
