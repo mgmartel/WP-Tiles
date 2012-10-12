@@ -81,10 +81,17 @@ var debounce = function(func, wait, immediate) {
         $('.wp-tile-container').css('height', newHeight );
     }
 
+    var oldTemplate = false;
     // wait until users finishes resizing the browser
     var debouncedResize = debounce(function() {
         if ( $("#" + wptilesdata.id ).width() < 800 ) {
+            oldTemplate = grid.template;
+            console.log (grid.template);
             grid.template = Tiles.Template.fromJSON(wptilesdata.smallTemplates);
+            grid.isDirty = true;
+        } else if ( oldTemplate ) {
+            grid.template = oldTemplate;
+            oldTemplate = false;
             grid.isDirty = true;
         }
 
@@ -113,6 +120,6 @@ var debounce = function(func, wait, immediate) {
         grid.isDirty = true;
         grid.resize();
 
-        grid.redraw(true);
+        grid.redraw(true, resizeWpTiles);
     });
 })(jQuery);
