@@ -30,11 +30,19 @@ define('WPTILES_TEMPLATES_DIR', WPTILES_DIR . 'templates/');
 define('WPTILES_TEMPLATES_URL', WPTILES_URL . 'templates/');
 define('WPTILES_INC_URL', WPTILES_URL . '_inc/');
 
+/**
+ * Requires and includes
+ *
+ * @since 0.1
+ */
+require_once ( WPTILES_DIR . '/wp-tiles-admin.php' );
+
 if (!class_exists('WP_Tiles')) :
 
     class WP_Tiles    {
 
         protected $tiles_id = 1;
+        protected $options;
 
         /**
          * Creates an instance of the WP_Tiles class
@@ -60,8 +68,12 @@ if (!class_exists('WP_Tiles')) :
          * @since 0.1
          */
         public function __construct() {
+            global $wptiles_defaults;
+            require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
+
+            $this->options = get_option('wp-tiles-options', $wptiles_defaults);
+
             add_shortcode( 'wp-tiles', array ( &$this, 'shortcode' ) );
-            //$this->register_shortcode();
         }
 
             /**
@@ -74,60 +86,22 @@ if (!class_exists('WP_Tiles')) :
             }
 
         public function shortcode( $atts ) {
-            $default_colors = "#009999,#1D7373,#006363,#33CCCC,#5CCCCC";
-
-            $defaults = array(
-                'numberposts' => 15, 'offset' => 0,
-                'category' => 0, 'orderby' => 'rand',
-                'order' => 'DESC', 'include' => array(),
-                'exclude' => array(), 'meta_key' => '',
-                'meta_value' =>'', 'post_type' => 'post',
-                'suppress_filters' => true,
-                'colors' => $default_colors
-            );
+            $defaults = $this->options;
 
             $atts = shortcode_atts( $defaults, $atts );
-            $posts = get_posts( $atts );
+
+            $posts = get_posts( $atts['posts_query'] );
+            if ( empty ( $posts ) ) return;
 
             $data = $this->extract_data( $posts, $atts['colors'] );
-            if ( empty ( $data ) ) return;
 
-            $this->enqueue_scripts ( );
+            $this->enqueue_scripts ();
 
             $wptiles_id = "wp-tiles-" . $this->tiles_id;
             $this->tiles_id++;
 
-            $templates = array (
-                array (
-                    " . A A B B ",
-                    " C C . B B ",
-                    " D D E E . ",
-                    " D D . C C "
-                ), array (
-                    " . A A D B ",
-                    " C A A D B ",
-                    " G F E E . ",
-                    " G F . C C "
-                ), array (
-                    " A B C C D ",
-                    " A B C C D ",
-                    " G F E E . ",
-                    " G F . H H "
-                ), array (
-                    " . . . . . ",
-                ), array (
-                    " . . . . . . . . ",
-                )
-            );
-            $small_screen_template = array (
-                " A A ",
-                " . . ",
-                " A A ",
-                " . . ",
-                " A A ",
-                " . . ",
-                " A A ",
-            );
+            $templates = $atts['templates'];
+            $small_screen_template = $atts['small_screen_template'];
 
             $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
 
@@ -176,7 +150,7 @@ if (!class_exists('WP_Tiles')) :
 
         protected function extract_data( $posts, $colors ) {
             $data = array();
-            $colors = apply_filters ( "wp-tiles-colors", explode( ",", $colors ) );
+            $colors = apply_filters ( "wp-tiles-colors", explode( ",", $colors['colors'] ) );
 
             foreach ( $posts as $post ) {
                 $data[] = array (
