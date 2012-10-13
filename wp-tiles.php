@@ -43,6 +43,7 @@ if (!class_exists('WP_Tiles')) :
 
         protected $tiles_id = 1;
         protected $options;
+        protected $data = array();
 
         /**
          * Creates an instance of the WP_Tiles class
@@ -71,7 +72,6 @@ if (!class_exists('WP_Tiles')) :
             global $wptiles_defaults;
             require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
-            //$this->options = get_option('wp-tiles-options', $wptiles_defaults);
             $wptiles_options = get_option( 'wp-tiles-options' );
             $this->options = shortcode_atts( $wptiles_defaults, $wptiles_options);
 
@@ -102,21 +102,25 @@ if (!class_exists('WP_Tiles')) :
             $wptiles_id = "wp-tiles-" . $this->tiles_id;
             $this->tiles_id++;
 
-            $templates = $atts['templates']['templates'];
+            $templates = ( ! empty ( $atts['template'] ) ) ? array ( $atts['template'] ) : $atts['templates']['templates'];
             foreach ( $templates as &$template ) {
                 $template = explode ( "\n", $template );
             }
 
             $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
 
+            add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
             $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
 
             $this->enqueue_styles();
 
             ?>
 
+            <?php if ( count ( $templates ) > 1 ) : ?>
+
             <div id="<?php echo $wptiles_id; ?>-templates">
-                <ul>
+
+                <ul class="template-selector">
 
                     <?php foreach ( $templates as $k => $v ) : ?>
 
@@ -127,6 +131,8 @@ if (!class_exists('WP_Tiles')) :
                 </ul>
 
             </div>
+
+            <?php endif; ?>
 
             <div class="wp-tile-container">
 
@@ -147,7 +153,16 @@ if (!class_exists('WP_Tiles')) :
         }
 
         protected function set_data ( $wptiles_id, $templates, $small_screen_template, $data ) {
-            wp_localize_script('wp-tiles', 'wptilesdata', array ( "id" => $wptiles_id, "rowTemplates" => $templates, "smallTemplates" => $small_screen_template, "posts" => $data ) );
+            $this->data[$wptiles_id] = array (
+                "id" => $wptiles_id,
+                "rowTemplates" => array_values ( $templates ),
+                "smallTemplates" => $small_screen_template,
+                "posts" => $data
+            );
+        }
+
+        public function add_data () {
+            wp_localize_script('wp-tiles', 'wptilesdata', $this->data );
         }
 
         protected function enqueue_styles() {
@@ -156,7 +171,11 @@ if (!class_exists('WP_Tiles')) :
 
         protected function extract_data( $posts, $colors ) {
             $data = array();
-            $colors = apply_filters ( "wp-tiles-colors", explode ( "\n", $colors['colors'] ) );
+
+            if ( is_array ( $colors ) ) $colors = $colors['colors'];
+
+            $delimiter = ( strpos ( $colors, "," ) ) ? ',' : "\n";
+            $colors = apply_filters ( "wp-tiles-colors", explode ( $delimiter, str_replace(" ", "", $colors ) ) );
 
             foreach ( $posts as $post ) {
                 $data[] = array (
