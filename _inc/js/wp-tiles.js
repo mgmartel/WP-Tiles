@@ -52,15 +52,6 @@ var debounce = function(func, wait, immediate) {
         return tile;
     };
 
-
-    var rows =
-    [
-        " . A A B B ",
-        " C C . B B ",
-        " D D E E . ",
-        " D D . C C "
-    ];
-
     if ( $("#" + wptilesdata.id ).width() < 800 ) {
         grid.template = Tiles.Template.fromJSON(wptilesdata.smallTemplates);
         grid.isDirty = true;
@@ -85,7 +76,8 @@ var debounce = function(func, wait, immediate) {
     // wait until users finishes resizing the browser
     var debouncedResize = debounce(function() {
         if ( $("#" + wptilesdata.id ).width() < 800 ) {
-            oldTemplate = grid.template;
+            if ( ! oldTemplate )
+                oldTemplate = grid.template;
             console.log (grid.template);
             grid.template = Tiles.Template.fromJSON(wptilesdata.smallTemplates);
             grid.isDirty = true;
