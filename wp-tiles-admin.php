@@ -33,12 +33,7 @@ class WP_Tiles_Settings_Config
 
             // And some functions
             "sanitize" => array ( 'WP_Tiles_Settings_Config', 'sanitize' ),
-            "scripts" => array ( 'WP_Tiles_Settings_Config', 'load_scripts' ),
         );
-    }
-
-    public function load_scripts() {
-        wp_enqueue_script( 'wp-tiles-admin', WPTILES_INC_URL . '/js/admin.js' );
     }
 
     protected function dropdowns() {
@@ -78,7 +73,9 @@ class WP_Tiles_Settings_Config
                                 Change this in the shortcode like this: <code>[wp-tiles colors='#FF0000,#00FF00, #0000FF']</code>", "wp-tiles" ),
                 'fields'    => array (
                     'colors'  => array (
-                        'label'     => __ ( 'Enter the RGB code of each color on a seperate line.', "wp-tiles" ),
+                        'label'     => __( 'Colors', 'wp-tiles'),
+                        'description'
+                                    => __ ( 'Enter the RGB code of each color on a seperate line.', "wp-tiles" ),
                         'length'    => '200',
                         'type'      => 'textarea'
                     ),
@@ -93,6 +90,8 @@ class WP_Tiles_Settings_Config
                     'templates'  => array (
                         'label'     => __ ( 'Templates', "wp-tiles" ),
                         'length'    => '200',
+                        'description'
+                                    => "Leave a template empty to remove it.",
                         'type'      => 'textareas_name'
                     ),
                     'small_screen_template'  => array (
@@ -184,6 +183,7 @@ class WP_Tiles_Settings {
         add_action('admin_init', array( &$this, 'plugin_admin_init'));
         add_action('admin_menu', array( &$this, 'plugin_admin_add_page'));
 
+        add_action('admin_enqueue_scripts', array ( &$this, 'load_scripts') );
         if ( ! empty ( $wp_tiles_settings['scripts'] ) )
             add_action('admin_enqueue_scripts', $wp_tiles_settings['scripts'] );
     }
@@ -195,6 +195,10 @@ class WP_Tiles_Settings {
         function wp_tiles_settings( $settings_class ) {
             $this->__construct( $settings_class );
         }
+
+    public function load_scripts() {
+        wp_enqueue_script( 'wp-tiles-admin', WPTILES_INC_URL . '/js/admin.js' );
+    }
 
     /**
      * Add the options page
@@ -254,9 +258,12 @@ class WP_Tiles_Settings {
                     $function = array( &$this, "plugin_setting_{$field_value['type']}" );
                 }
 
+                $desc = (!empty ($field_value['description'])) ? sprintf("<br><em>%s</em>",$field_value['description']) : '';
+                $param = sprintf( " <code>%s</code>",$field_key );
+
                 add_settings_field(
                     $wp_tiles_settings['group'].'_'.$field_key,
-                    $field_value['label'] . sprintf( " <code>%s</code>",$field_key ),
+                    $field_value['label'] . $param . $desc,
                     $function,
                     $wp_tiles_settings['page_name'],
                     $section_key,
@@ -346,6 +353,7 @@ class WP_Tiles_Settings {
                 $current
             );
         }
+        echo "<div style='float:left;cursor:pointer' class='add-textarea'><h3>" . __("[+] Add") . "</h3></div>";
 
         do_action('after_plugin_setting_textareas_name', $value, $default_value);
     }
