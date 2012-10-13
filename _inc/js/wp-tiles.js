@@ -36,7 +36,7 @@ var debounce = function(func, wait, immediate) {
                 tile.$el.append(
                          "<div class='tile-bg' style='background: " + color + " url(" + img + ");' onclick='window.location=\"" + url + "\"'>"
                             + "<div class='tile-byline'>"
-                                + "<div class='title'><a href='" +url + "?KeepThis=true&TB_iframe=true&height=400&width=600' class='thickbox'> " + title + "</a></div>"
+                                + "<div class='title'>" + title + "</div>"
                                 + "<div class='category'>" + category + "</div>"
                             + "</div>"
                         + "</div><!-- end .tile-bg -->"
@@ -80,7 +80,6 @@ var debounce = function(func, wait, immediate) {
             if ( $("#" + tiledata.id ).width() < 800 ) {
                 if ( ! oldTemplate )
                     oldTemplate = grid.template;
-                console.log (grid.template);
                 grid.template = Tiles.Template.fromJSON(tiledata.smallTemplates);
                 grid.isDirty = true;
             } else if ( oldTemplate ) {
