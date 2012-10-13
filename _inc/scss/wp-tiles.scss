@@ -12,6 +12,7 @@ ul.template-selector {
 
     li {
         @include background-image(linear-gradient(#252525,#0A0A0A));
+        border: 1px solid #ffffff;
 
         display: inline;
         border-radius: 10px;
@@ -19,6 +20,10 @@ ul.template-selector {
         cursor: pointer;
         text-align: center;
         padding: 6px 9px;
+
+        &:hover {
+            border: 1px solid #999999;
+        }
     }
 }
 
