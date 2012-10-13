@@ -71,7 +71,9 @@ if (!class_exists('WP_Tiles')) :
             global $wptiles_defaults;
             require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
-            $this->options = get_option('wp-tiles-options', $wptiles_defaults);
+            //$this->options = get_option('wp-tiles-options', $wptiles_defaults);
+            $wptiles_options = get_option( 'wp-tiles-options' );
+            $this->options = shortcode_atts( $wptiles_defaults, $wptiles_options);
 
             add_shortcode( 'wp-tiles', array ( &$this, 'shortcode' ) );
         }
@@ -100,8 +102,12 @@ if (!class_exists('WP_Tiles')) :
             $wptiles_id = "wp-tiles-" . $this->tiles_id;
             $this->tiles_id++;
 
-            $templates = $atts['templates'];
-            $small_screen_template = $atts['small_screen_template'];
+            $templates = $atts['templates']['templates'];
+            foreach ( $templates as &$template ) {
+                $template = explode ( "\n", $template );
+            }
+
+            $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
 
             $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
 
@@ -150,7 +156,7 @@ if (!class_exists('WP_Tiles')) :
 
         protected function extract_data( $posts, $colors ) {
             $data = array();
-            $colors = apply_filters ( "wp-tiles-colors", explode( ",", $colors['colors'] ) );
+            $colors = apply_filters ( "wp-tiles-colors", explode ( "\n", $colors['colors'] ) );
 
             foreach ( $posts as $post ) {
                 $data[] = array (
@@ -194,9 +200,13 @@ if (!class_exists('WP_Tiles')) :
                 return $src[0];
             }
 
-            $xpath = new DOMXPath( @DOMDocument::loadHTML( $post->post_content ) );
-            $src = $xpath->evaluate( "string(//img/@src)" );
-            return $src;
+            if ( ! empty ( $post->post_content ) ) {
+                $xpath = new DOMXPath( @DOMDocument::loadHTML( $post->post_content ) );
+                $src = $xpath->evaluate( "string(//img/@src)" );
+                return $src;
+            }
+
+            return '';
         }
 
     }
