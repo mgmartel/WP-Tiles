@@ -15,8 +15,10 @@ class WP_Tiles_Settings_Config
         return array (
             "group" => "wp-tiles",
             "page_name" => "wp-tiles",
-
             "option_name" => self::$option_name,
+            "nav_title" => "WP Tiles",
+
+            // Page blabla
             "title" => "WP Tiles",
             "intro_text" => __( "Use this page to set the default settings used with the <code>[wp-tiles]</code> shortcode.
                 <h3>Usage</h3>
@@ -24,11 +26,19 @@ class WP_Tiles_Settings_Config
                 <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
                 <h3>Advanced</h3>
                 <p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'inc' to your theme.</p><hr>", 'wp-tiles' ),
-            "nav_title" => "WP Tiles",
+
+            // The actual options
             "sections" => self::sections(),
             "dropdown_options" => self::dropdowns(),
-            "sanitize" => array ( 'WP_Tiles_Settings_Config', 'sanitize' )
+
+            // And some functions
+            "sanitize" => array ( 'WP_Tiles_Settings_Config', 'sanitize' ),
+            "scripts" => array ( 'WP_Tiles_Settings_Config', 'load_scripts' ),
         );
+    }
+
+    public function load_scripts() {
+        wp_enqueue_script( 'wp-tiles-admin', WPTILES_INC_URL . '/js/admin.js' );
     }
 
     protected function dropdowns() {
@@ -154,7 +164,8 @@ class WP_Tiles_Settings_Config
 
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
-            $new_a[$v] = $input['templates']['templates']['field'][$i];
+            if ( ! empty ( $v ) )
+                $new_a[$v] = $input['templates']['templates']['field'][$i];
             $i++;
         }
         $input['templates']['templates'] = $new_a;
@@ -172,6 +183,9 @@ class WP_Tiles_Settings {
 
         add_action('admin_init', array( &$this, 'plugin_admin_init'));
         add_action('admin_menu', array( &$this, 'plugin_admin_add_page'));
+
+        if ( ! empty ( $wp_tiles_settings['scripts'] ) )
+            add_action('admin_enqueue_scripts', $wp_tiles_settings['scripts'] );
     }
 
         /**
@@ -260,23 +274,29 @@ class WP_Tiles_Settings {
 
     function plugin_setting_string($value = NULL) {
         global $wp_tiles_settings;
-
         $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
+
+        do_action('before_plugin_setting_string', $value, $default_value );
+
         printf('<input id="%s" type="text" name="%s" value="%s" size="40" /> %s%s',
             $value['name'],
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
             $default_value,
             (!empty ($value['suffix'])) ? $value['suffix'] : NULL,
             (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL );
+
+        do_action('after_plugin_setting_string', $value, $default_value );
     }
 
     function plugin_setting_dropdown($value = NULL) {
         global $wp_tiles_settings;
-
         $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
+
         $current_value = $default_value;
         $chooseFrom = "";
         $choices = $wp_tiles_settings['dropdown_options'][$value['dropdown']];
+
+        do_action('before_plugin_setting_dropdown', $value, $default_value, $choices);
 
         foreach($choices AS $key=>$option) {
             $chooseFrom .= sprintf('<option value="%s" %s>%s</option>',
@@ -290,11 +310,15 @@ class WP_Tiles_Settings {
             $chooseFrom,
             (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL
         );
+
+        do_action('after_plugin_setting_dropdown', $value, $default_value, $choices);
     }
 
     public function plugin_setting_textareas ( $value = NULL ) {
         global $wp_tiles_settings;
         $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+
+        do_action('before_plugin_setting_textareas', $value, $default_value);
 
         foreach ( $default_value as $k => $current ) {
             printf ( "<textarea style='height:100px' id='%s' name='%s'>%s</textarea>",
@@ -303,11 +327,14 @@ class WP_Tiles_Settings {
                 $current
             );
         }
+        do_action('after_plugin_setting_textareas', $value, $default_value);
     }
 
     public function plugin_setting_textareas_name ( $value = NULL ) {
         global $wp_tiles_settings;
         $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+
+        do_action('before_plugin_setting_textareas_name', $value, $default_value);
 
         foreach ( $default_value as $k => $current ) {
             printf ( "<div style='float:left'><input type='text' value='%s' name='%s' width=140px><br>
@@ -319,16 +346,23 @@ class WP_Tiles_Settings {
                 $current
             );
         }
+
+        do_action('after_plugin_setting_textareas_name', $value, $default_value);
     }
 
     public function plugin_setting_textarea ( $value = NULL ) {
         global $wp_tiles_settings;
         $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+
+        do_action('before_plugin_setting_textarea', $value, $default_value);
+
         printf ( "<textarea style='height:100px' id=%s name=%s>%s</textarea>",
-                $value['name'],
-                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
-                $default_value
-            );
+            $value['name'],
+            "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
+            $default_value
+        );
+
+        do_action('after_plugin_setting_textarea', $value, $default_value);
     }
 
 }
