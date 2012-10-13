@@ -25,20 +25,25 @@ $wptiles_defaults = array(
                     ),
                 'templates'     => array (
                     "templates"     => array (
-                                     "1" => " . A A B B \n"
+                                  "News" => " . A A B B \n"
                                           . " C C . B B \n"
                                           . " D D E E . \n"
                                           . " D D . C C ",
 
-                                     "2" => " . A A D B \n"
-                                          . " C A A D B \n"
-                                          . " G F E E . \n"
-                                          . " G F . C C ",
+                           "Alternative" => " . A A B B \n"
+                                          . " . A A C C \n"
+                                          . " D D F F . \n"
+                                          . " E E F F . ",
 
-                                     "3" => " A B C C D \n"
-                                          . " A B C C D \n"
-                                          . " G F E E . \n"
-                                          . " G F . H H ",
+                                "Banner" => " A . B . C \n"
+                                          . " A . B . C \n"
+                                          . " . D . E . \n"
+                                          . " . D . E . ",
+
+                              "Featured" => " . A A A . \n"
+                                          . " . A A A . \n"
+                                          . " . A A A . ",
+                                          //. " . G H I J ",
 
                                  "Plain" => " . . . . . ",
 
