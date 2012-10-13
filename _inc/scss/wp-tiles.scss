@@ -7,6 +7,21 @@
     );
 }
 
+ul.template-selector {
+    list-style: none;
+
+    li {
+        @include background-image(linear-gradient(#252525,#0A0A0A));
+
+        display: inline;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        padding: 6px 9px;
+    }
+}
+
 .wp-tile-container {
 	width: auto;
 	height: auto;;
