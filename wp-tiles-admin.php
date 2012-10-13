@@ -18,16 +18,22 @@ class WP_Tiles_Settings_Config
 
             "option_name" => self::$option_name,
             "title" => "WP Tiles",
-            "intro_text" => __( "Default settings for WP Tiles", 'wp-tiles' ),
+            "intro_text" => __( "Use this page to set the default settings used with the <code>[wp-tiles]</code> shortcode.
+                <h3>Usage</h3>
+                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode <code>[wp-tiles]</code></p>
+                <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
+                <h3>Advanced</h3>
+                <p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'inc' to your theme.</p><hr>", 'wp-tiles' ),
             "nav_title" => "WP Tiles",
             "sections" => self::sections(),
             "dropdown_options" => self::dropdowns(),
+            "sanitize" => array ( 'WP_Tiles_Settings_Config', 'sanitize' )
         );
     }
 
     protected function dropdowns() {
         $cats = get_categories();
-        $cats_a = array();
+        $cats_a = array( "" => "All");
         foreach ( $cats as $cat ) {
             $cats_a[$cat->term_id] = $cat->name;
         }
@@ -51,24 +57,54 @@ class WP_Tiles_Settings_Config
         global $wptiles_defaults;
         require ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
-        //$wptiles_defaults = get_option( self::$option_name );
-        $wptiles_defaults = get_option( self::$option_name, $wptiles_defaults );
+        $wptiles_options = get_option( self::$option_name );
+        $wptiles_defaults = shortcode_atts( $wptiles_defaults, $wptiles_options);
 
         $sections = array(
+            'colors' => array (
+                'title'     => __ ( "Colors", "wp-tiles" ),
+                'description'
+                            => __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.<br><br>
+                                Change this in the shortcode like this: <code>[wp-tiles colors='#FF0000,#00FF00, #0000FF']</code>", "wp-tiles" ),
+                'fields'    => array (
+                    'colors'  => array (
+                        'label'     => __ ( 'Enter the RGB code of each color on a seperate line.', "wp-tiles" ),
+                        'length'    => '200',
+                        'type'      => 'textarea'
+                    ),
+                ),
+            ),
+            'templates' => array (
+                'title'     => __ ("Templates", 'wp-tiles'),
+                'description' => __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.<br><br>
+                    Templates are formulated as per tiles.js. Check the <a href='http://www.pulse.me/app/dev/#dev-section-tilejs'>Pulse.me website</a> for a demonstration in making templates.<br><br>
+                    Change this in the shortcode like this: <code>[wp-tiles template=\"A . B . C C\\nA . B . C C \\nA . . . .\"]</code>", 'wp-tiles'),
+                'fields'    => array (
+                    'templates'  => array (
+                        'label'     => __ ( 'Templates', "wp-tiles" ),
+                        'length'    => '200',
+                        'type'      => 'textareas_name'
+                    ),
+                    'small_screen_template'  => array (
+                        'label'     => __ ( 'Small screen template', "wp-tiles" ),
+                        'length'    => '200',
+                        'type'      => 'textarea'
+                    ),
+                ),
+            ),
             'posts_query' => array (
                 'title'     => __ ( "Posts", "wp-tiles" ),
                 'description'
-                            => __( "Which posts to display.", "wp-tiles" ),
+                            => __( "Default arguments to be passed when querying tiles using just [wp-tiles]. These can be modified by passing 'posts_query=' as an argument to the shortcode.<br><br>
+                                For example: <code>[wp-tiles posts_query='numberposts=5&post_type=page']</code>.", "wp-tiles" ),
                 'fields'    => array (
                     'numberposts'  => array (
                         'label'     => __ ( 'Number of posts', "wp-tiles" ),
                         'length'    => '3',
-                        'suffix'    => '',
                     ),
                     'offset'  => array (
                         'label'     => __ ( 'Offset', "wp-tiles" ),
                         'length'    => '3',
-                        'suffix'    => '',
                     ),
                     'category'  => array (
                         'label'     => __ ( 'Category', "wp-tiles" ),
@@ -85,22 +121,18 @@ class WP_Tiles_Settings_Config
                     'include'  => array (
                         'label'     => __ ( 'Include', "wp-tiles" ),
                         'length'    => '100',
-                        'suffix'    => '',
                     ),
                     'exclude'  => array (
                         'label'     => __ ( 'Exclude', "wp-tiles" ),
                         'length'    => '100',
-                        'suffix'    => '',
                     ),
                     'meta_key'  => array (
                         'label'     => __ ( 'Meta key', "wp-tiles" ),
                         'length'    => '100',
-                        'suffix'    => '',
                     ),
                     'meta_value'  => array (
                         'label'     => __ ( 'Meta value', "wp-tiles" ),
                         'length'    => '100',
-                        'suffix'    => '',
                     ),
                     'post_type'  => array (
                         'label'     => __ ( 'Post Type', "wp-tiles" ),
@@ -108,34 +140,6 @@ class WP_Tiles_Settings_Config
                     ),
                 )
             ),
-            'colors' => array (
-                'title'     => __ ( "Colors", "wp-tiles" ),
-                'description'
-                            => __( "Which colors to give tiles that have no image.", "wp-tiles" ),
-                'fields'    => array (
-                    'colors'  => array (
-                        'label'     => __ ( 'Comma separated list of colors', "wp-tiles" ),
-                        'length'    => '200',
-                        'suffix'    => '',
-                    ),
-                ),
-            ),
-            'templates' => array (
-                'title'     => __ ("Templates", 'wp-tiles'),
-                'description' => __("The templates.", 'wp-tiles'),
-                'fields'    => array (
-                    'templates'  => array (
-                        'label'     => __ ( 'Templates', "wp-tiles" ),
-                        'length'    => '200',
-                        'suffix'    => '',
-                    ),
-                    'smallscreen_template'  => array (
-                        'label'     => __ ( 'Small screen template', "wp-tiles" ),
-                        'length'    => '200',
-                        'suffix'    => '',
-                    ),
-                ),
-            )
         );
         foreach ( $sections as $section => &$contents ) {
             foreach ( $contents['fields'] as $name => &$values ) {
@@ -143,6 +147,19 @@ class WP_Tiles_Settings_Config
             }
         }
         return $sections;
+    }
+
+    public static function sanitize ( $input ) {
+        global $wp_tiles_settings;
+
+        $i = 0; $new_a = array();
+        foreach ( $input['templates']['templates']['name'] as $v ) {
+            $new_a[$v] = $input['templates']['templates']['field'][$i];
+            $i++;
+        }
+        $input['templates']['templates'] = $new_a;
+
+        return $input;
     }
 }
 
@@ -201,20 +218,31 @@ class WP_Tiles_Settings {
 
     function plugin_admin_init(){
         global $wp_tiles_settings;
-        register_setting($wp_tiles_settings['page_name'], $wp_tiles_settings['option_name'] );
+
+        register_setting(
+            $wp_tiles_settings['page_name'],
+            $wp_tiles_settings['option_name'],
+            $wp_tiles_settings['sanitize']
+        );
 
         foreach ($wp_tiles_settings["sections"] AS $section_key=>$section_value) {
 
             add_settings_section($section_key, $section_value['title'], array( &$this, 'plugin_section_text'), $wp_tiles_settings['page_name'], $section_value);
 
-            foreach ($section_value['fields'] AS $field_key=>$field_value) {
+            foreach ($section_value['fields'] AS $field_key => $field_value ) {
 
-                $function = (!empty($field_value['dropdown'])) ? array( &$this, 'plugin_setting_dropdown' ) : array( &$this, 'plugin_setting_string' );
-                $function = (!empty($field_value['function'])) ? $field_value['function'] : $function;
-                $callback = (!empty($field_value['callback'])) ? $field_value['callback'] : NULL;
+                $function = array( &$this, 'plugin_setting_string' );
+                if (!empty($field_value['dropdown']))
+                    $function = array( &$this, 'plugin_setting_dropdown' );
+                elseif ( ! empty ( $field_value['function'] ) )
+                    $function = $field_value['function'];
+                elseif ( ! empty ( $field_value['type'] ) ) {
+                    $function = array( &$this, "plugin_setting_{$field_value['type']}" );
+                }
+
                 add_settings_field(
                     $wp_tiles_settings['group'].'_'.$field_key,
-                    $field_value['label'],
+                    $field_value['label'] . sprintf( " <code>%s</code>",$field_key ),
                     $function,
                     $wp_tiles_settings['page_name'],
                     $section_key,
@@ -239,7 +267,7 @@ class WP_Tiles_Settings {
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
             $default_value,
             (!empty ($value['suffix'])) ? $value['suffix'] : NULL,
-            (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL);
+            (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL );
     }
 
     function plugin_setting_dropdown($value = NULL) {
@@ -262,6 +290,45 @@ class WP_Tiles_Settings {
             $chooseFrom,
             (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL
         );
+    }
+
+    public function plugin_setting_textareas ( $value = NULL ) {
+        global $wp_tiles_settings;
+        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+
+        foreach ( $default_value as $k => $current ) {
+            printf ( "<textarea style='height:100px' id='%s' name='%s'>%s</textarea>",
+                $current['name'],
+                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][{$k}]",
+                $current
+            );
+        }
+    }
+
+    public function plugin_setting_textareas_name ( $value = NULL ) {
+        global $wp_tiles_settings;
+        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+
+        foreach ( $default_value as $k => $current ) {
+            printf ( "<div style='float:left'><input type='text' value='%s' name='%s' width=140px><br>
+                <textarea style='height:100px;width:140px' id='%s' name='%s'>%s</textarea></div>",
+                $k,
+                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][name][]",
+                $current['name'],
+                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][field][]",
+                $current
+            );
+        }
+    }
+
+    public function plugin_setting_textarea ( $value = NULL ) {
+        global $wp_tiles_settings;
+        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+        printf ( "<textarea style='height:100px' id=%s name=%s>%s</textarea>",
+                $value['name'],
+                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
+                $default_value
+            );
     }
 
 }
