@@ -88,6 +88,14 @@ if (!class_exists('WP_Tiles')) :
             }
 
         public function shortcode( $atts ) {
+            $this->show_tiles ( $atts );
+        }
+
+        public function show_tiles ( $atts ) {
+            
+            /**
+             * Options
+             */
             $defaults = $this->options;
 
             $atts = shortcode_atts( $defaults, $atts );
@@ -97,11 +105,6 @@ if (!class_exists('WP_Tiles')) :
 
             $data = $this->extract_data( $posts, $atts['colors'] );
 
-            $this->enqueue_scripts ();
-
-            $wptiles_id = "wp-tiles-" . $this->tiles_id;
-            $this->tiles_id++;
-
             $templates = ( ! empty ( $atts['template'] ) ) ? array ( $atts['template'] ) : $atts['templates']['templates'];
             foreach ( $templates as &$template ) {
                 $template = explode ( "\n", $template );
@@ -109,11 +112,26 @@ if (!class_exists('WP_Tiles')) :
 
             $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
 
-            add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
+            /**
+             * Now set the variables in the instance
+             */
+            $wptiles_id = "wp-tiles-" . $this->tiles_id;
+            $this->tiles_id++;
 
+            // Keep array of data in class instance, so we can have multiple instances of WP Tiles
+            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
+            // ... and then process that array in the footer
+            add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
+
+            /**
+             * We are a go, so enqueue styles and scripts
+             */
+            $this->enqueue_scripts ();
             $this->enqueue_styles();
 
+            /**
+             * Time to start rendering our template
+             */
             ?>
 
             <?php if ( count ( $templates ) > 1 ) : ?>
