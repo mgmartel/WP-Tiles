@@ -20,12 +20,12 @@ class WP_Tiles_Settings_Config
 
             // Page blabla
             "title"         => "WP Tiles",
-            "intro_text"    => sprintf ( __( 'Use this page to set the default settings used with the %s shortcode.
-                                <h3>Usage</h3>
-                                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1$s</p>
-                                <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
-                                <h3>Advanced</h3>
-                                <p>You can also style WP Tiles in your (child) theme. Simply add "wp-tile.css" in a folder called "inc" to your theme.</p><hr>', 'wp-tiles' ),
+            "intro_text"    => sprintf ( __( "Use this page to set the default settings used with the %s shortcode.\n"
+                                . "<h3>Usage</h3>\n"
+                                . "<p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1\$s</p>\n"
+                                . "<p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>\n"
+                                . "<h3>Advanced</h3>\n"
+                                . "<p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'css', 'inc' or 'inc/css' to your theme.</p><hr>", 'wp-tiles' ),
                                 "<code>[wp-tiles]</code>"
                             ),
 
@@ -73,8 +73,8 @@ class WP_Tiles_Settings_Config
             'colors' => array (
                 'title'     => __ ( "Colors", "wp-tiles" ),
                 'description'
-                            => sprintf ( __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s
-                                Change this in the shortcode like this: %s", "wp-tiles" ),
+                            => sprintf ( __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s\n"
+                                . "Change this in the shortcode like this: %s", "wp-tiles" ),
                                 "<br><br>",
                                 "<code>[wp-tiles colors='#FF0000,#00FF00, #0000FF']</code>"
                                     ),
@@ -90,9 +90,9 @@ class WP_Tiles_Settings_Config
             ),
             'templates' => array (
                 'title'     => __ ("Templates", 'wp-tiles'),
-                'description' => sprintf ( __('You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s
-                    Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1$s
-                    Change this in the shortcode like this: %s', 'wp-tiles'),
+                'description' => sprintf ( __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
+                    ."Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1\$s\n"
+                    ."Change this in the shortcode like this: %s", 'wp-tiles'),
                         "<br><br>",
                         "<a href='http://www.pulse.me/app/dev/#dev-section-tilejs' target='_blank'>Pulse.me website</a>",
                         '<code>[wp-tiles template="A . B . C C\nA . B . C C \nA . . . ."]</code>'
@@ -124,8 +124,8 @@ class WP_Tiles_Settings_Config
             'posts_query' => array (
                 'title'     => __ ( "Posts", "wp-tiles" ),
                 'description'
-                            => sprintf ( __( "Default arguments to be passed when querying tiles using just %s. These can be modified by passing 'posts_query=' as an argument to the shortcode.%s
-                                For example: %s.", "wp-tiles" ),
+                            => sprintf ( __( "Default arguments to be passed when querying tiles using just %s. These can be modified by passing 'posts_query=' as an argument to the shortcode.%s\n"
+                                . "For example: %s.", "wp-tiles" ),
                                     "[wp-tiles]",
                                     "<br><br>",
                                     "<code>[wp-tiles posts_query='numberposts=5&post_type=page']</code>"
