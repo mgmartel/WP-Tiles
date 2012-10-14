@@ -41,8 +41,23 @@ if (!class_exists('WP_Tiles')) :
 
     class WP_Tiles    {
 
+        /**
+         * Store the current tiles id, in case we add more to one page
+         *
+         * @var int
+         */
         protected $tiles_id = 1;
+
+        /**
+         * Options and default values
+         * @var array
+         */
         protected $options;
+
+        /**
+         * Data to put to the page at the end of the day
+         * @var array
+         */
         protected $data = array();
 
         /**
@@ -56,7 +71,7 @@ if (!class_exists('WP_Tiles')) :
             static $instance = false;
 
             if (!$instance) {
-                //load_pugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
+                load_pugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
                 $instance = new WP_Tiles;
             }
 
