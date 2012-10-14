@@ -1,0 +1,148 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Tiles\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-14 13:05+0200\n"
+"PO-Revision-Date: 2012-10-14 13:05+0200\n"
+"Last-Translator: Mike <mike@trenvo.nl>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
+"X-Poedit-Basepath: /opt/lampp/htdocs/bp-vanilla/wp-content/plugins/wp-tiles\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: wp-tiles-admin.php:23
+#, php-format
+msgid ""
+"Use this page to set the default settings used with the %s shortcode.\n"
+"<h3>Usage</h3>\n"
+"<p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1$s</p>\n"
+"<p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>\n"
+"<h3>Advanced</h3>\n"
+"<p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'css', 'inc' or 'inc/css' to your theme.</p><hr>"
+msgstr ""
+
+#: wp-tiles-admin.php:53
+msgid "Random"
+msgstr ""
+
+#: wp-tiles-admin.php:55
+msgid "Date"
+msgstr ""
+
+#: wp-tiles-admin.php:58
+msgid "Descending"
+msgstr ""
+
+#: wp-tiles-admin.php:59
+msgid "Ascending"
+msgstr ""
+
+#: wp-tiles-admin.php:74
+#: wp-tiles-admin.php:83
+msgid "Colors"
+msgstr ""
+
+#: wp-tiles-admin.php:76
+#, php-format
+msgid ""
+"Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s\n"
+"Change this in the shortcode like this: %s"
+msgstr ""
+
+#: wp-tiles-admin.php:85
+msgid "Leave the textfield empty to remove a color."
+msgstr ""
+
+#: wp-tiles-admin.php:92
+#: wp-tiles-admin.php:102
+msgid "Templates"
+msgstr ""
+
+#: wp-tiles-admin.php:93
+#, php-format
+msgid ""
+"You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
+"Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1$s\n"
+"Change this in the shortcode like this: %s"
+msgstr ""
+
+#: wp-tiles-admin.php:109
+msgid "Small screen template"
+msgstr ""
+
+#: wp-tiles-admin.php:114
+msgid "Show template selector"
+msgstr ""
+
+#: wp-tiles-admin.php:118
+#, php-format
+msgid "To show or hide the selector on a per-post basis, add %s to the shortcode."
+msgstr ""
+
+#: wp-tiles-admin.php:125
+msgid "Posts"
+msgstr ""
+
+#: wp-tiles-admin.php:127
+#, php-format
+msgid ""
+"Default arguments to be passed when querying tiles using just %s. These can be modified by passing 'posts_query=' as an argument to the shortcode.%s\n"
+"For example: %s."
+msgstr ""
+
+#: wp-tiles-admin.php:135
+msgid "Number of posts"
+msgstr ""
+
+#: wp-tiles-admin.php:139
+msgid "Offset"
+msgstr ""
+
+#: wp-tiles-admin.php:143
+msgid "Category"
+msgstr ""
+
+#: wp-tiles-admin.php:147
+msgid "Order by"
+msgstr ""
+
+#: wp-tiles-admin.php:151
+msgid "Order"
+msgstr ""
+
+#: wp-tiles-admin.php:155
+msgid "Include"
+msgstr ""
+
+#: wp-tiles-admin.php:159
+msgid "Exclude"
+msgstr ""
+
+#: wp-tiles-admin.php:163
+msgid "Meta key"
+msgstr ""
+
+#: wp-tiles-admin.php:167
+msgid "Meta value"
+msgstr ""
+
+#: wp-tiles-admin.php:171
+msgid "Post Type"
+msgstr ""
+
+#: wp-tiles-admin.php:296
+msgid "Save Changes"
+msgstr ""
+
+#: wp-tiles-admin.php:301
+msgid "Reset"
+msgstr ""
+
+#: wp-tiles-admin.php:446
+msgid "[+] Add"
+msgstr ""
+
