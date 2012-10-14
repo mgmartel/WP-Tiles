@@ -14,7 +14,7 @@ WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts
 
 **This plugin is in its very early stages. Use with caution.**
 
-*If you want to help develop this plugin, visit the [GitHub repo](http://github.org).*
+*If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).*
 
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
@@ -46,7 +46,7 @@ You can style WP Tiles by adding a file called 'wp-tiles.css' in your (child) th
 
 == Screenshots ==
 
-1. Example of tile templates
+1. Example of tile templates (posts and photos courtesy of [Motomonkey Adventures](http://motomonkeyadventures.com)
 2. Example of tile templates
 3. Example of tile templates (featured)
 4. Example of tile templates (plain)
