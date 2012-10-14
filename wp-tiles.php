@@ -92,7 +92,7 @@ if (!class_exists('WP_Tiles')) :
         }
 
         public function show_tiles ( $atts ) {
-            
+
             /**
              * Options
              */
@@ -129,12 +129,14 @@ if (!class_exists('WP_Tiles')) :
             $this->enqueue_scripts ();
             $this->enqueue_styles();
 
+            $show_selector = ( ! empty ( $atts['show_selector'] ) ) ? $atts['show_selector'] : $atts['templates']['show_selector'];
+
             /**
              * Time to start rendering our template
              */
             ?>
 
-            <?php if ( count ( $templates ) > 1 ) : ?>
+            <?php if ( $show_selector == 'true' && count ( $templates ) > 1 ) : ?>
 
             <div id="<?php echo $wptiles_id; ?>-templates">
 
@@ -191,9 +193,11 @@ if (!class_exists('WP_Tiles')) :
             $data = array();
 
             if ( is_array ( $colors ) ) $colors = $colors['colors'];
-
-            $delimiter = ( strpos ( $colors, "," ) ) ? ',' : "\n";
-            $colors = apply_filters ( "wp-tiles-colors", explode ( $delimiter, str_replace(" ", "", $colors ) ) );
+            else {
+                $delimiter = ( strpos ( $colors, "," ) ) ? ',' : "\n";
+                $colors = explode ( $delimiter, str_replace(" ", "", $colors ) );
+            }
+            $colors = apply_filters ( "wp-tiles-colors", array_filter ( $colors ) );
 
             foreach ( $posts as $post ) {
                 $data[] = array (
@@ -206,7 +210,7 @@ if (!class_exists('WP_Tiles')) :
                 );
             }
 
-            return $data;
+            return apply_filters ( 'wp-tiles-data', $data );
         }
 
         protected function get_the_excerpt ( $post ) {
