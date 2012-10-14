@@ -28,10 +28,10 @@ $wptiles_defaults = array(
                 'templates'     => array (
                     'show_selector' => 'true',
                     "templates"     => array (
-                                  "News" => " . A A B B \n"
-                                          . " C C . B B \n"
-                                          . " D D E E . \n"
-                                          . " D D . C C ",
+                                  "News" => " A A B B . \n"
+                                          . " A A . C C \n"
+                                          . " . D D E E \n"
+                                          . " F F . E E ",
 
                            "Alternative" => " . A A B B \n"
                                           . " . A A C C \n"
