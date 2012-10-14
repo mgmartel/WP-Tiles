@@ -20,12 +20,14 @@ class WP_Tiles_Settings_Config
 
             // Page blabla
             "title"         => "WP Tiles",
-            "intro_text"    => __( "Use this page to set the default settings used with the <code>[wp-tiles]</code> shortcode.
+            "intro_text"    => sprintf ( __( 'Use this page to set the default settings used with the %s shortcode.
                                 <h3>Usage</h3>
-                                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode <code>[wp-tiles]</code></p>
+                                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1$s</p>
                                 <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
                                 <h3>Advanced</h3>
-                                <p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'inc' to your theme.</p><hr>", 'wp-tiles' ),
+                                <p>You can also style WP Tiles in your (child) theme. Simply add "wp-tile.css" in a folder called "inc" to your theme.</p><hr>', 'wp-tiles' ),
+                                "<code>[wp-tiles]</code>"
+                            ),
 
             // The actual options
             "sections"          => self::sections(),
@@ -71,24 +73,30 @@ class WP_Tiles_Settings_Config
             'colors' => array (
                 'title'     => __ ( "Colors", "wp-tiles" ),
                 'description'
-                            => __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.<br><br>
-                                Change this in the shortcode like this: <code>[wp-tiles colors='#FF0000,#00FF00, #0000FF']</code>", "wp-tiles" ),
+                            => sprintf ( __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s
+                                Change this in the shortcode like this: %s", "wp-tiles" ),
+                                "<br><br>",
+                                "<code>[wp-tiles colors='#FF0000,#00FF00, #0000FF']</code>"
+                                    ),
                 'fields'    => array (
                     'colors'  => array (
                         'label'     => __( 'Colors', 'wp-tiles'),
                         'description'
-                                    => __ ( 'Enter the RGB code of each color on a seperate line.', "wp-tiles" ),
+                                    => __ ( 'Leave the textfield empty to remove a color.', "wp-tiles" ),
                         'length'    => '200',
-                        //'type'      => 'textarea'
                         'function'  => array ( 'WP_Tiles_Settings_Config', 'plugin_setting_colorpickers' ),
                     ),
                 ),
             ),
             'templates' => array (
                 'title'     => __ ("Templates", 'wp-tiles'),
-                'description' => __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.<br><br>
-                    Templates are formulated as per tiles.js. Check the <a href='http://www.pulse.me/app/dev/#dev-section-tilejs'>Pulse.me website</a> for a demonstration in making templates.<br><br>
-                    Change this in the shortcode like this: <code>[wp-tiles template=\"A . B . C C\\nA . B . C C \\nA . . . .\"]</code>", 'wp-tiles'),
+                'description' => sprintf ( __('You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s
+                    Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1$s
+                    Change this in the shortcode like this: %s', 'wp-tiles'),
+                        "<br><br>",
+                        "<a href='http://www.pulse.me/app/dev/#dev-section-tilejs' target='_blank'>Pulse.me website</a>",
+                        '<code>[wp-tiles template="A . B . C C\nA . B . C C \nA . . . ."]</code>'
+                        ),
                 'fields'    => array (
                     'templates'  => array (
                         'label'     => __ ( 'Templates', "wp-tiles" ),
@@ -106,14 +114,22 @@ class WP_Tiles_Settings_Config
                         'label'     => __ ( 'Show template selector', "wp-tiles" ),
                         'type'      => 'checkbox',
                         'value'     => 'true',
+                        'description'
+                                    => sprintf ( __('To show or hide the selector on a per-post basis, add %s to the shortcode.', 'wp-tiles'),
+                                        "<code>show_selector=true/false</code>"
+                                        ),
                     ),
                 ),
             ),
             'posts_query' => array (
                 'title'     => __ ( "Posts", "wp-tiles" ),
                 'description'
-                            => __( "Default arguments to be passed when querying tiles using just [wp-tiles]. These can be modified by passing 'posts_query=' as an argument to the shortcode.<br><br>
-                                For example: <code>[wp-tiles posts_query='numberposts=5&post_type=page']</code>.", "wp-tiles" ),
+                            => sprintf ( __( "Default arguments to be passed when querying tiles using just %s. These can be modified by passing 'posts_query=' as an argument to the shortcode.%s
+                                For example: %s.", "wp-tiles" ),
+                                    "[wp-tiles]",
+                                    "<br><br>",
+                                    "<code>[wp-tiles posts_query='numberposts=5&post_type=page']</code>"
+                                ),
                 'fields'    => array (
                     'numberposts'  => array (
                         'label'     => __ ( 'Number of posts', "wp-tiles" ),
@@ -171,7 +187,7 @@ class WP_Tiles_Settings_Config
         if ( isset ( $_POST['Reset'] ) ) {
             return '';
         }
-        
+
         // Templates ( name => field )
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
@@ -193,7 +209,6 @@ class WP_Tiles_Settings_Config
     public static function plugin_setting_colorpickers($value = NULL) {
         global $wp_tiles_settings;
         $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
-        //if ( is_string ( $default_value )) $default_value = explode ( "\n", $default_value );
 
         do_action('before_plugin_setting_colorpickers', $value, $default_value );
 
@@ -298,35 +313,39 @@ class WP_Tiles_Settings {
             $wp_tiles_settings['sanitize']
         );
 
-        foreach ($wp_tiles_settings["sections"] AS $section_key=>$section_value) {
+        foreach ($wp_tiles_settings["sections"] as $section_key=>$section_value) {
 
             add_settings_section($section_key, $section_value['title'], array( &$this, 'plugin_section_text'), $wp_tiles_settings['page_name'], $section_value);
 
-            foreach ($section_value['fields'] AS $field_key => $field_value ) {
-
-                $function = array( &$this, 'plugin_setting_string' );
-                if (!empty($field_value['dropdown']))
-                    $function = array( &$this, 'plugin_setting_dropdown' );
-                elseif ( ! empty ( $field_value['function'] ) )
-                    $function = $field_value['function'];
-                elseif ( ! empty ( $field_value['type'] ) ) {
-                    $function = array( &$this, "plugin_setting_{$field_value['type']}" );
-                }
-
-                $desc = (!empty ($field_value['description'])) ? sprintf("<br><em>%s</em>",$field_value['description']) : '';
-                $param = sprintf( " <code>%s</code>",$field_key );
-
-                add_settings_field(
-                    $wp_tiles_settings['group'].'_'.$field_key,
-                    $field_value['label'] . $param . $desc,
-                    $function,
-                    $wp_tiles_settings['page_name'],
-                    $section_key,
-                    array_merge($field_value,array('name' => $field_key, 'group' => $section_key))
-                );
-
+            foreach ($section_value['fields'] as $field_key => $field_value ) {
+                $this->add_option( $field_key, $field_value, $section_key );
             }
         }
+    }
+
+    protected function add_option ( $field, $value, $section_key = NULL ) {
+        global $wp_tiles_settings;
+
+         $function = array( &$this, 'plugin_setting_string' );
+        if (!empty($value['dropdown']))
+            $function = array( &$this, 'plugin_setting_dropdown' );
+        elseif ( ! empty ( $value['function'] ) )
+            $function = $value['function'];
+        elseif ( ! empty ( $value['type'] ) ) {
+            $function = array( &$this, "plugin_setting_{$value['type']}" );
+        }
+
+        $desc = (!empty ($value['description'])) ? sprintf("<br><em>%s</em>",$value['description']) : '';
+        $param = sprintf( " <code>%s</code>",$field );
+
+        add_settings_field(
+            $wp_tiles_settings['group'].'_'.$field,
+            $value['label'] . $param . $desc,
+            $function,
+            $wp_tiles_settings['page_name'],
+            $section_key,
+            array_merge($value,array('name' => $field, 'group' => $section_key))
+        );
     }
 
     function plugin_section_text($value = NULL) {
@@ -361,7 +380,6 @@ class WP_Tiles_Settings {
             $value['name'],
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
             $value['value'],
-            $default_value,
             $checked
         );
         do_action('after_plugin_setting_string', $value, $default_value );
