@@ -69,7 +69,7 @@ if (!class_exists('WP_Tiles')) :
         */
         public static function &init() {
             static $instance = false;
-            
+
             if (!$instance) {
                 load_plugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
                 $instance = new WP_Tiles;
@@ -106,6 +106,20 @@ if (!class_exists('WP_Tiles')) :
             $this->show_tiles ( $atts );
         }
 
+        protected function shotcode_atts_rec ( $defaults, $atts ) {
+            foreach ( $atts as $k => &$att ) {
+                if ( is_array ( $att ) ) {
+                    $att = $this->extr_atts ( $att, $defaults[$k] );
+                } else {
+                    parse_str( html_entity_decode( $atts['posts_query'] ), $posts_query);
+                    $att = shortcode_atts( $defaults[$k], $posts_query );
+                }
+            }
+            $atts = shortcode_atts( $defaults, $atts );
+            return $atts;
+
+        }
+
         public function show_tiles ( $atts ) {
 
             /**
@@ -113,7 +127,7 @@ if (!class_exists('WP_Tiles')) :
              */
             $defaults = $this->options;
 
-            $atts = shortcode_atts( $defaults, $atts );
+            $atts = $this->shotcode_atts_rec ( $defaults, $atts );
 
             $posts = get_posts( $atts['posts_query'] );
             if ( empty ( $posts ) ) return;
