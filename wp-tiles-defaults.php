@@ -26,7 +26,7 @@ $wptiles_defaults = array(
                         ),
                     ),
                 'templates'     => array (
-                    "show_selector" => "true",
+                    'show_selector' => 'true',
                     "templates"     => array (
                                   "News" => " . A A B B \n"
                                           . " C C . B B \n"
@@ -63,5 +63,8 @@ $wptiles_defaults = array(
                                         . " A A "
                     ,
                 ),
+
+                // These are only for in the shortcodes
                 "template"  => '',
+                'show_selector' => '',
             );
