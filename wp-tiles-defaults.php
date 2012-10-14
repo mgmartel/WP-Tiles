@@ -46,7 +46,6 @@ $wptiles_defaults = array(
                               "Featured" => " . A A A . \n"
                                           . " . A A A . \n"
                                           . " . A A A . ",
-                                          //. " . G H I J ",
 
                                  "Plain" => " . . . . . ",
 
