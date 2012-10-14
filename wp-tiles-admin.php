@@ -13,26 +13,28 @@ class WP_Tiles_Settings_Config
 
     public static function settings() {
         return array (
-            "group" => "wp-tiles",
-            "page_name" => "wp-tiles",
-            "option_name" => self::$option_name,
-            "nav_title" => "WP Tiles",
+            "group"         => "wp-tiles",
+            "page_name"     => "wp-tiles",
+            "option_name"   => self::$option_name,
+            "nav_title"     => "WP Tiles",
 
             // Page blabla
-            "title" => "WP Tiles",
-            "intro_text" => __( "Use this page to set the default settings used with the <code>[wp-tiles]</code> shortcode.
-                <h3>Usage</h3>
-                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode <code>[wp-tiles]</code></p>
-                <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
-                <h3>Advanced</h3>
-                <p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'inc' to your theme.</p><hr>", 'wp-tiles' ),
+            "title"         => "WP Tiles",
+            "intro_text"    => __( "Use this page to set the default settings used with the <code>[wp-tiles]</code> shortcode.
+                                <h3>Usage</h3>
+                                <p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode <code>[wp-tiles]</code></p>
+                                <p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>
+                                <h3>Advanced</h3>
+                                <p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'inc' to your theme.</p><hr>", 'wp-tiles' ),
 
             // The actual options
-            "sections" => self::sections(),
-            "dropdown_options" => self::dropdowns(),
+            "sections"          => self::sections(),
+            "dropdown_options"  => self::dropdowns(),
+            "reset"             => true,
 
             // And some functions
-            "sanitize" => array ( 'WP_Tiles_Settings_Config', 'sanitize' ),
+            "sanitize"          => array ( 'WP_Tiles_Settings_Config', 'sanitize' ),
+            "scripts"           => array ( 'WP_Tiles_Settings_Config', 'load_scripts' ),
         );
     }
 
@@ -77,7 +79,8 @@ class WP_Tiles_Settings_Config
                         'description'
                                     => __ ( 'Enter the RGB code of each color on a seperate line.', "wp-tiles" ),
                         'length'    => '200',
-                        'type'      => 'textarea'
+                        //'type'      => 'textarea'
+                        'function'  => array ( 'WP_Tiles_Settings_Config', 'plugin_setting_colorpickers' ),
                     ),
                 ),
             ),
@@ -98,6 +101,11 @@ class WP_Tiles_Settings_Config
                         'label'     => __ ( 'Small screen template', "wp-tiles" ),
                         'length'    => '200',
                         'type'      => 'textarea'
+                    ),
+                    'show_selector'  => array (
+                        'label'     => __ ( 'Show template selector', "wp-tiles" ),
+                        'type'      => 'checkbox',
+                        'value'     => 'true',
                     ),
                 ),
             ),
@@ -159,8 +167,12 @@ class WP_Tiles_Settings_Config
     }
 
     public static function sanitize ( $input ) {
-        global $wp_tiles_settings;
 
+        if ( isset ( $_POST['Reset'] ) ) {
+            return '';
+        }
+        
+        // Templates ( name => field )
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
             if ( ! empty ( $v ) )
@@ -170,6 +182,40 @@ class WP_Tiles_Settings_Config
         $input['templates']['templates'] = $new_a;
 
         return $input;
+    }
+
+    /**
+     * Colorpicker method, specific for this plugin
+     *
+     * @global type $wp_tiles_settings
+     * @param type $value
+     */
+    public static function plugin_setting_colorpickers($value = NULL) {
+        global $wp_tiles_settings;
+        $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
+        //if ( is_string ( $default_value )) $default_value = explode ( "\n", $default_value );
+
+        do_action('before_plugin_setting_colorpickers', $value, $default_value );
+
+        $i = 0;
+        foreach ( $default_value as $color ) {
+            printf('<input id="wptiles-color-%s" type="text" name="%s" value="%s" size="40" />
+                <div id="color-picker-%1$s" class="wp-tiles-colorpickers"></div>',
+                $i,
+                "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][{$i}]",
+                $color
+            );
+            $i++;
+        }
+
+        do_action('after_plugin_setting_colorpickers', $value, $default_value );
+    }
+
+    public static function load_scripts() {
+        wp_enqueue_style( 'farbtastic' );
+        wp_enqueue_script( 'farbtastic' );
+
+        wp_enqueue_script( 'wp-tiles-admin-custom', WPTILES_INC_URL . '/js/admin-custom.js', array ('jquery', 'farbtastic') );
     }
 }
 
@@ -224,14 +270,23 @@ class WP_Tiles_Settings {
             <h2>%s</h2>
             %s
             <form action="options.php" method="post">',
+            $wp_tiles_settings['title'],$wp_tiles_settings['intro_text']
+        );
 
-            $wp_tiles_settings['title'],$wp_tiles_settings['intro_text']);
-             settings_fields($wp_tiles_settings['group']);
-             do_settings_sections($wp_tiles_settings['page_name']);
-             printf('<input type="submit" name="Submit" value="%s" /></form></div>
+        settings_fields($wp_tiles_settings['group']);
+        do_settings_sections($wp_tiles_settings['page_name']);
+
+        printf('<input type="submit" name="Submit" value="%s" />
             <pre>',
             __('Save Changes')
         );
+        if ( $wp_tiles_settings['reset'] ) {
+            printf('<input type="submit" name="Reset" value="%s" />
+                <pre>',
+                __('Reset')
+            );
+        }
+        echo "</form></div>";
     }
 
     function plugin_admin_init(){
@@ -292,6 +347,23 @@ class WP_Tiles_Settings {
             (!empty ($value['suffix'])) ? $value['suffix'] : NULL,
             (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL );
 
+        do_action('after_plugin_setting_string', $value, $default_value );
+    }
+
+    function plugin_setting_checkbox($value = NULL) {
+        global $wp_tiles_settings;
+        $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
+
+        do_action('before_plugin_setting_string', $value, $default_value );
+
+        $checked = ( $default_value == $value['value'] ) ? 'checked' : '';
+        printf('<input id="%s" type="checkbox" name="%s" value="%s" size="40" %s/>',
+            $value['name'],
+            "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
+            $value['value'],
+            $default_value,
+            $checked
+        );
         do_action('after_plugin_setting_string', $value, $default_value );
     }
 
