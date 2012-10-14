@@ -69,9 +69,9 @@ if (!class_exists('WP_Tiles')) :
         */
         public static function &init() {
             static $instance = false;
-
+            
             if (!$instance) {
-                load_pugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
+                load_plugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
                 $instance = new WP_Tiles;
             }
 
@@ -200,8 +200,33 @@ if (!class_exists('WP_Tiles')) :
             wp_localize_script('wp-tiles', 'wptilesdata', $this->data );
         }
 
+        /**
+         * Look for the stylesheet in a million places
+         */
         protected function enqueue_styles() {
-            wp_enqueue_style( 'wp-tiles', WPTILES_INC_URL . '/css/wp-tiles.css' );
+            $stylesheet_name = "wp-tiles.css";
+
+            if ( file_exists(STYLESHEETPATH . '/' . $stylesheet_name) ) {
+                $located = STYLESHEETPATH . '/' . $stylesheet_name;
+            } else if ( file_exists(STYLESHEETPATH . '/inc/css/' . $stylesheet_name) ) {
+                $located = STYLESHEETPATH . '/inc/css/' . $stylesheet_name;
+            } else if ( file_exists(STYLESHEETPATH . '/inc/' . $stylesheet_name) ) {
+                $located = STYLESHEETPATH . '/inc/' . $stylesheet_name;
+            } else if ( file_exists(STYLESHEETPATH . '/css/' . $stylesheet_name) ) {
+                $located = STYLESHEETPATH . '/css/' . $stylesheet_name;
+            } else if ( file_exists(TEMPLATEPATH . '/' . $stylesheet_name) ) {
+                $located = TEMPLATEPATH . '/' . $stylesheet_name;
+            } else if ( file_exists(TEMPLATEPATH . '/inc/css/' . $stylesheet_name) ) {
+                $located = TEMPLATEPATH . '/inc/css/' . $stylesheet_name;
+            } else if ( file_exists(TEMPLATEPATH . '/inc/' . $stylesheet_name) ) {
+                $located = TEMPLATEPATH . '/inc/' . $stylesheet_name;
+            } else if ( file_exists(TEMPLATEPATH . '/css/' . $stylesheet_name) ) {
+                $located = TEMPLATEPATH . '/css/' . $stylesheet_name;
+            } else {
+                $located = WPTILES_INC_URL . '/css/wp-tiles.css';
+            }
+
+            wp_enqueue_style( 'wp-tiles', $located );
         }
 
         protected function extract_data( $posts, $colors ) {
