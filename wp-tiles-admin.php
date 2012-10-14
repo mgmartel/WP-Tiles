@@ -192,7 +192,7 @@ class WP_Tiles_Settings_Config
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
             if ( ! empty ( $v ) )
-                $new_a[$v] = $input['templates']['templates']['field'][$i];
+                $new_a[$v] = str_replace ( "\r", "", $input['templates']['templates']['field'][$i] );
             $i++;
         }
         $input['templates']['templates'] = $new_a;
