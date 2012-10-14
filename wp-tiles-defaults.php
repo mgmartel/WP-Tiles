@@ -16,14 +16,17 @@ $wptiles_defaults = array(
                                     'suppress_filters'
                                                     => true,
                 ),
-                'colors'        => array ( "colors" =>
-                                  "#009999\n"
-                                . "#1D7373\n"
-                                . "#006363\n"
-                                . "#33CCCC\n"
-                                . "#5CCCCC"
+                'colors'        => array (
+                    "colors"        => array (
+                                    "#009999",
+                                    "#1D7373",
+                                    "#006363",
+                                    "#33CCCC",
+                                    "#5CCCCC",
+                        ),
                     ),
                 'templates'     => array (
+                    "show_selector" => "true",
                     "templates"     => array (
                                   "News" => " . A A B B \n"
                                           . " C C . B B \n"
