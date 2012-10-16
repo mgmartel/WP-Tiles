@@ -237,9 +237,9 @@ class WP_Tiles_Settings_Config
 
 class WP_Tiles_Settings {
 
-    public function __construct( $settings_class ) {
+    public function __construct() {
         global $wp_tiles_settings;
-        $wp_tiles_settings = $settings_class::settings();
+        $wp_tiles_settings = WP_Tiles_Settings_Config::settings();
 
         add_action('admin_init', array( &$this, 'plugin_admin_init'));
         add_action('admin_menu', array( &$this, 'plugin_admin_add_page'));
@@ -465,5 +465,5 @@ class WP_Tiles_Settings {
 
 }
 
-new wp_tiles_settings('wp_tiles_settings_config');
+new wp_tiles_settings();
 ?>
