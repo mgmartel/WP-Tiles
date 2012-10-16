@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.4.2
-Stable tag: 0.1
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ You can style WP Tiles by adding a file called 'wp-tiles.css' in your (child) th
 5. Excerpt of the options section
 
 == Changelog ==
+
+= 0.1.1 =
+* Fixed "T_PAAMAYIM_NEKUDOTAYIM" error with PHP < 5.3.
 
 = 0.1 =
 * First upload.
