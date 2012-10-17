@@ -106,13 +106,15 @@ if (!class_exists('WP_Tiles')) :
             $this->show_tiles ( $atts );
         }
 
-        protected function shotcode_atts_rec ( $defaults, $atts ) {
-            foreach ( $atts as $k => &$att ) {
-                if ( is_array ( $att ) ) {
-                    $att = $this->extr_atts ( $att, $defaults[$k] );
-                } else {
-                    parse_str( html_entity_decode( $atts['posts_query'] ), $posts_query);
-                    $att = shortcode_atts( $defaults[$k], $posts_query );
+        protected function shortcode_atts_rec ( $defaults, $atts ) {
+            if ( is_array ( $atts ) ) {
+                foreach ( $atts as $k => &$att ) {
+                    if ( is_array ( $att ) ) {
+                        $att = $this->shortcode_atts_rec ( $att, $defaults[$k] );
+                    } else {
+                        parse_str( html_entity_decode( $atts['posts_query'] ), $posts_query);
+                        $att = shortcode_atts( $defaults[$k], $posts_query );
+                    }
                 }
             }
             $atts = shortcode_atts( $defaults, $atts );
@@ -127,7 +129,7 @@ if (!class_exists('WP_Tiles')) :
              */
             $defaults = $this->options;
 
-            $atts = $this->shotcode_atts_rec ( $defaults, $atts );
+            $atts = $this->shortcode_atts_rec ( $defaults, $atts );
 
             $posts = get_posts( $atts['posts_query'] );
             if ( empty ( $posts ) ) return;
