@@ -54,6 +54,9 @@ You can style WP Tiles by adding a file called 'wp-tiles.css' in your (child) th
 
 == Changelog ==
 
+= 0.1.2 =
+* Fixed shortcode attribute handling
+
 = 0.1.1 =
 * Fixed "T_PAAMAYIM_NEKUDOTAYIM" error with PHP < 5.3.
 
