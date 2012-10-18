@@ -3,7 +3,7 @@
 Plugin Name: WP Tiles
 Plugin URI: http://trenvo.com
 Description: WP Tiles
-Version: 0.1.1
+Version: 0.1.2
 Author: Mike Martel
 Author URI: http://trenvo.com
  */
