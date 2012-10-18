@@ -3,7 +3,7 @@
 Plugin Name: WP Tiles
 Plugin URI: http://trenvo.com
 Description: WP Tiles
-Version: 0.1.2
+Version: 0.1.3
 Author: Mike Martel
 Author URI: http://trenvo.com
  */
@@ -17,7 +17,7 @@ if (!defined('ABSPATH'))
  *
  * @since 0.1
  */
-define('WPTILES_VERSIE', '0.1');
+define('WPTILES_VERSION', '0.1');
 
 /**
  * PATHs and URLs
@@ -135,7 +135,11 @@ if (!class_exists('WP_Tiles')) :
 
             $data = $this->extract_data( $posts, $atts['colors'] );
 
-            $templates = ( ! empty ( $atts['template'] ) ) ? array ( $atts['template'] ) : $atts['templates']['templates'];
+            if ( ! empty ( $atts['template'] ) && ! empty ( $atts['templates']['templates'][ $atts['template'] ] ) ) {
+                $templates = array ( $atts['templates']['templates'][ $atts['template'] ] );
+            } else {
+                $templates = $atts['templates']['templates'];
+            }
             foreach ( $templates as &$template ) {
                 $template = explode ( "\n", $template );
             }

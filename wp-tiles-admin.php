@@ -92,10 +92,10 @@ class WP_Tiles_Settings_Config
                 'title'     => __ ("Templates", 'wp-tiles'),
                 'description' => sprintf ( __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
                     ."Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1\$s\n"
-                    ."Change this in the shortcode like this: %s", 'wp-tiles'),
+                    ."In the shortcode, you can set which template to use, like this: %s", 'wp-tiles'),
                         "<br><br>",
                         "<a href='http://www.pulse.me/app/dev/#dev-section-tilejs' target='_blank'>Pulse.me website</a>",
-                        '<code>[wp-tiles template="A . B . C C\nA . B . C C \nA . . . ."]</code>'
+                        '<code>[wp-tiles template="Template_Name"]</code>'
                         ),
                 'fields'    => array (
                     'templates'  => array (
