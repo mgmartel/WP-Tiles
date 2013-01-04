@@ -25,38 +25,55 @@ var debounce = function(func, wait, immediate) {
             };
 
         grid.createTile = function(data) {
-            var img = data.img;
-            var url = data.url;
-            var category = data.category;
-            var color = data.color;
-            var title = data.title;
-            var tile = new Tiles.Tile(data.id);
+            var img     = data.img,
+                url     = data.url,
+                category
+                        = data.category,
+                color   = data.color,
+                title   = data.title,
+                tile    = new Tiles.Tile(data.id),
+                hideByline
+                        = data.hideByline;
+
+            var byline = '';
+            if ( ! hideByline ) {
+                if ( img )
+                    byline = "<div class='tile-byline'>\n";
+                else
+                    byline = "<div class='tile-byline tile-text-only'>\n";
+
+                byline += "<div class='title'>" + title + "</div>"
+                        + "<div class='category'>" + category + "</div>"
+                    + "</div>";
+            }
+
+            var tileClass;
+            if ( img )
+                tileClass = 'tile-bg';
+            else tileClass = 'tile-color';
+
+            if ( hideByline ) tileClass += ' hide-byline';
 
             if ( img ) {
                 tile.$el.append(
-                         "<div class='tile-bg' style='background: " + color + " url(" + img + ");' onclick='window.location=\"" + url + "\"'>"
-                            + "<div class='tile-byline'>"
-                                + "<div class='title'>" + title + "</div>"
-                                + "<div class='category'>" + category + "</div>"
-                            + "</div>"
+                         "<div class='" + tileClass + "' style='background-color: " + color + ";background-image: url(" + img + ");' onclick='window.location=\"" + url + "\"'>"
+                            + byline
                         + "</div><!-- end .tile-bg -->"
                 );
             } else {
                 tile.$el.append(
-                         "<div class='tile-color' style='background:" + color + "' onclick='window.location=\"" + url + "\"'>"
-                            + "<div class='tile-byline tile-text-only'>"
-                                + "<div class='title'>" + title + "</div>"
-                                + "<div class='category'>" + category + "</div>"
-                            + "</div>"
+                         "<div class='" + tileClass + "' style='background-color:" + color + "' onclick='window.location=\"" + url + "\"'>"
+                            + byline
                         + "</div><!-- end .tile-bg -->"
                 );
             }
             return tile;
         };
 
+        var oldTemplate = false;
         if ( $("#" + tiledata.id ).width() < 800 ) {
-            grid.template = Tiles.Template.fromJSON(tiledata.smallTemplates);
-            grid.isDirty = true;
+            grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
+            oldTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
         } else {
             grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
         }
@@ -70,17 +87,17 @@ var debounce = function(func, wait, immediate) {
 
         function resizeWpTiles() { // @todo is there a way to make this less hacky?
             var lastEl = $('#' + tiledata.id).children().last();
-            var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.css("top"), 10) + 10 + "px";
+            //var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.css("top"), 10) + 10 + "px";
+            var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) + 10 + "px";
             $('.wp-tile-container:has("#'+ tiledata.id +'")').css('height', newHeight );
         }
 
-        var oldTemplate = false;
         // wait until users finishes resizing the browser
         var debouncedResize = debounce(function() {
             if ( $("#" + tiledata.id ).width() < 800 ) {
                 if ( ! oldTemplate )
                     oldTemplate = grid.template;
-                grid.template = Tiles.Template.fromJSON(tiledata.smallTemplates);
+                grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
                 grid.isDirty = true;
             } else if ( oldTemplate ) {
                 grid.template = oldTemplate;

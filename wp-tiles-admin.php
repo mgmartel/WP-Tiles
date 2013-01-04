@@ -183,6 +183,10 @@ class WP_Tiles_Settings_Config
     }
 
     public static function sanitize ( $input ) {
+        if ( defined ( "WPT_SANITIZED" ) && WPT_SANITIZED )
+            return $input;
+
+        define ( "WPT_SANITIZED", true );
 
         if ( isset ( $_POST['Reset'] ) ) {
             return '';
@@ -192,10 +196,12 @@ class WP_Tiles_Settings_Config
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
             if ( ! empty ( $v ) )
-                $new_a[$v] = str_replace ( "\r", "", $input['templates']['templates']['field'][$i] )    ;
+                $new_a[$v] = str_replace ( "\r", "", $input['templates']['templates']['field'][$i] );
             $i++;
         }
         $input['templates']['templates'] = $new_a;
+
+        $input['templates']['small_screen_template'] = str_replace ( "\r", "", $input['templates']['small_screen_template'] );
 
         return $input;
     }
@@ -427,9 +433,9 @@ class WP_Tiles_Settings {
         do_action('after_plugin_setting_textareas', $value, $default_value);
     }
 
-    public function plugin_setting_textareas_name ( $value = NULL ) {
+    public function plugin_setting_textareas_name ( $value = array() ) {
         global $wp_tiles_settings;
-        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : array();
 
         do_action('before_plugin_setting_textareas_name', $value, $default_value);
 
