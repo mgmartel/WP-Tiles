@@ -1,11 +1,11 @@
 <?php
 /*
-  Plugin Name: WP Tiles
-  Plugin URI: http://trenvo.com
-  Description: WP Tiles
-  Version: 0.1
-  Author: Mike Martel
-  Author URI: http://trenvo.com
+Plugin Name: WP Tiles
+Plugin URI: http://trenvo.com/wp-tiles/
+Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
+Version: 0.2
+Author: Mike Martel
+Author URI: http://trenvo.com
  */
 
 // Exit if accessed directly
@@ -17,7 +17,7 @@ if (!defined('ABSPATH'))
  *
  * @since 0.1
  */
-define('WPTILES_VERSIE', '0.1');
+define('WPTILES_VERSION', '0.2');
 
 /**
  * PATHs and URLs
@@ -106,35 +106,40 @@ if (!class_exists('WP_Tiles')) :
             $this->show_tiles ( $atts );
         }
 
-        protected function shotcode_atts_rec ( $defaults, $atts ) {
-            foreach ( $atts as $k => &$att ) {
-                if ( is_array ( $att ) ) {
-                    $att = $this->extr_atts ( $att, $defaults[$k] );
-                } else {
-                    parse_str( html_entity_decode( $atts['posts_query'] ), $posts_query);
-                    $att = shortcode_atts( $defaults[$k], $posts_query );
+        protected function shortcode_atts_rec ( $options, $atts ) {
+            if ( is_array ( $atts ) ) {
+                foreach ( $atts as $k => &$att ) {
+                    if ( is_array ( $att ) ) {
+                        $att = $this->shortcode_atts_rec ( $att, $options[$k] );
+                    } elseif ( strpos ( $att, '=' ) ) {
+                        parse_str( html_entity_decode( $att ), $atts_parsed );
+                        if ( ! empty ( $atts_parsed ) ) $att = $atts_parsed;
+                        if ( is_array ( $options[$k] ) )
+                            $att = shortcode_atts ($options[$k] , $att);
+                    }
                 }
             }
-            $atts = shortcode_atts( $defaults, $atts );
-            return $atts;
+            return shortcode_atts ( $options, $atts );
 
         }
 
         public function show_tiles ( $atts ) {
 
             /**
-             * Options
+             * Options and attributes
              */
-            $defaults = $this->options;
-
-            $atts = $this->shotcode_atts_rec ( $defaults, $atts );
+            $atts = $this->shortcode_atts_rec ( $this->options, $atts );
 
             $posts = get_posts( $atts['posts_query'] );
             if ( empty ( $posts ) ) return;
 
             $data = $this->extract_data( $posts, $atts['colors'] );
 
-            $templates = ( ! empty ( $atts['template'] ) ) ? array ( $atts['template'] ) : $atts['templates']['templates'];
+            if ( ! empty ( $atts['template'] ) && ! empty ( $atts['templates']['templates'][ $atts['template'] ] ) ) {
+                $templates = array ( $atts['templates']['templates'][ $atts['template'] ] );
+            } else {
+                $templates = $atts['templates']['templates'];
+            }
             foreach ( $templates as &$template ) {
                 $template = explode ( "\n", $template );
             }
@@ -167,7 +172,7 @@ if (!class_exists('WP_Tiles')) :
 
             <?php if ( $show_selector == 'true' && count ( $templates ) > 1 ) : ?>
 
-            <div id="<?php echo $wptiles_id; ?>-templates">
+            <div id="<?php echo $wptiles_id; ?>-templates" class="tile-templates">
 
                 <ul class="template-selector">
 
@@ -202,10 +207,12 @@ if (!class_exists('WP_Tiles')) :
         }
 
         protected function set_data ( $wptiles_id, $templates, $small_screen_template, $data ) {
+            $rowTemplates = array_values ( $templates );
+            $rowTemplates['small'] = $small_screen_template;
+
             $this->data[$wptiles_id] = array (
                 "id" => $wptiles_id,
-                "rowTemplates" => array_values ( $templates ),
-                "smallTemplates" => $small_screen_template,
+                "rowTemplates" => $rowTemplates,
                 "posts" => $data
             );
         }
@@ -221,25 +228,24 @@ if (!class_exists('WP_Tiles')) :
             $stylesheet_name = "wp-tiles.css";
 
             if ( file_exists(STYLESHEETPATH . '/' . $stylesheet_name) ) {
-                $located = STYLESHEETPATH . '/' . $stylesheet_name;
+                $located = get_stylesheet_directory_uri() . '/' . $stylesheet_name;
             } else if ( file_exists(STYLESHEETPATH . '/inc/css/' . $stylesheet_name) ) {
-                $located = STYLESHEETPATH . '/inc/css/' . $stylesheet_name;
+                $located = get_stylesheet_directory_uri() . '/inc/css/' . $stylesheet_name;
             } else if ( file_exists(STYLESHEETPATH . '/inc/' . $stylesheet_name) ) {
-                $located = STYLESHEETPATH . '/inc/' . $stylesheet_name;
+                $located = get_stylesheet_directory_uri() . '/inc/' . $stylesheet_name;
             } else if ( file_exists(STYLESHEETPATH . '/css/' . $stylesheet_name) ) {
-                $located = STYLESHEETPATH . '/css/' . $stylesheet_name;
+                $located = get_stylesheet_directory_uri() . '/css/' . $stylesheet_name;
             } else if ( file_exists(TEMPLATEPATH . '/' . $stylesheet_name) ) {
-                $located = TEMPLATEPATH . '/' . $stylesheet_name;
+                $located = get_template_directory_uri() . '/' . $stylesheet_name;
             } else if ( file_exists(TEMPLATEPATH . '/inc/css/' . $stylesheet_name) ) {
-                $located = TEMPLATEPATH . '/inc/css/' . $stylesheet_name;
+                $located = get_template_directory_uri() . '/inc/css/' . $stylesheet_name;
             } else if ( file_exists(TEMPLATEPATH . '/inc/' . $stylesheet_name) ) {
-                $located = TEMPLATEPATH . '/inc/' . $stylesheet_name;
+                $located = get_template_directory_uri() . '/inc/' . $stylesheet_name;
             } else if ( file_exists(TEMPLATEPATH . '/css/' . $stylesheet_name) ) {
-                $located = TEMPLATEPATH . '/css/' . $stylesheet_name;
+                $located = get_template_directory_uri() . '/css/' . $stylesheet_name;
             } else {
                 $located = WPTILES_INC_URL . '/css/wp-tiles.css';
             }
-
             wp_enqueue_style( 'wp-tiles', $located );
         }
 
@@ -261,12 +267,16 @@ if (!class_exists('WP_Tiles')) :
                     "category"  => wp_get_post_categories( $post->ID, array ( "fields" => "names" ) ),
                     "img"       => $this->get_first_image ( $post ),
                     "color"     => $colors[ array_rand( $colors ) ],
+                    "hideByline"=> apply_filters ( 'wp-tiles-hide-byline', false, $post->ID, $post )
                 );
             }
 
-            return apply_filters ( 'wp-tiles-data', $data );
+            return apply_filters ( 'wp-tiles-data', $data, $posts, $colors, $this );
         }
 
+        /**
+         * Not used anymore..?
+         */
         protected function get_the_excerpt ( $post ) {
             if ( $this->has_excerpt( $post ) )
                 return $post->excerpt;
@@ -282,7 +292,14 @@ if (!class_exists('WP_Tiles')) :
             return ! empty( $post->post_excerpt );
         }
 
-        protected function get_first_image ( $post ) {
+        public function get_first_image ( $post ) {
+            $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
+
+            if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
+                $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
+                return $image[0];
+            }
+
             $images = get_children ( array (
                 'post_parent'    => $post->ID,
                 'numberposts'    => 1,
@@ -291,7 +308,7 @@ if (!class_exists('WP_Tiles')) :
 
             if( ! empty ( $images ) ) {
                 $images = current ( $images );
-                $src = wp_get_attachment_image_src ( $images->ID, $size = 'thumbnail' );
+                $src = wp_get_attachment_image_src ( $images->ID, $size = $tile_image_size );
                 return $src[0];
             }
 

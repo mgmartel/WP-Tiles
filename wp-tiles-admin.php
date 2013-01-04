@@ -92,10 +92,10 @@ class WP_Tiles_Settings_Config
                 'title'     => __ ("Templates", 'wp-tiles'),
                 'description' => sprintf ( __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
                     ."Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1\$s\n"
-                    ."Change this in the shortcode like this: %s", 'wp-tiles'),
+                    ."In the shortcode, you can set which template to use, like this: %s", 'wp-tiles'),
                         "<br><br>",
                         "<a href='http://www.pulse.me/app/dev/#dev-section-tilejs' target='_blank'>Pulse.me website</a>",
-                        '<code>[wp-tiles template="A . B . C C\nA . B . C C \nA . . . ."]</code>'
+                        '<code>[wp-tiles template="Template_Name"]</code>'
                         ),
                 'fields'    => array (
                     'templates'  => array (
@@ -183,6 +183,10 @@ class WP_Tiles_Settings_Config
     }
 
     public static function sanitize ( $input ) {
+        if ( defined ( "WPT_SANITIZED" ) && WPT_SANITIZED )
+            return $input;
+
+        define ( "WPT_SANITIZED", true );
 
         if ( isset ( $_POST['Reset'] ) ) {
             return '';
@@ -192,10 +196,12 @@ class WP_Tiles_Settings_Config
         $i = 0; $new_a = array();
         foreach ( $input['templates']['templates']['name'] as $v ) {
             if ( ! empty ( $v ) )
-                $new_a[$v] = str_replace ( "\r", "", $input['templates']['templates']['field'][$i] )    ;
+                $new_a[$v] = str_replace ( "\r", "", $input['templates']['templates']['field'][$i] );
             $i++;
         }
         $input['templates']['templates'] = $new_a;
+
+        $input['templates']['small_screen_template'] = str_replace ( "\r", "", $input['templates']['small_screen_template'] );
 
         return $input;
     }
@@ -237,9 +243,9 @@ class WP_Tiles_Settings_Config
 
 class WP_Tiles_Settings {
 
-    public function __construct( $settings_class ) {
+    public function __construct() {
         global $wp_tiles_settings;
-        $wp_tiles_settings = $settings_class::settings();
+        $wp_tiles_settings = WP_Tiles_Settings_Config::settings();
 
         add_action('admin_init', array( &$this, 'plugin_admin_init'));
         add_action('admin_menu', array( &$this, 'plugin_admin_add_page'));
@@ -427,9 +433,9 @@ class WP_Tiles_Settings {
         do_action('after_plugin_setting_textareas', $value, $default_value);
     }
 
-    public function plugin_setting_textareas_name ( $value = NULL ) {
+    public function plugin_setting_textareas_name ( $value = array() ) {
         global $wp_tiles_settings;
-        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : NULL;
+        $default_value = ( ! empty ( $value['default_value'] ) ) ? $value['default_value'] : array();
 
         do_action('before_plugin_setting_textareas_name', $value, $default_value);
 
@@ -465,5 +471,5 @@ class WP_Tiles_Settings {
 
 }
 
-new wp_tiles_settings('wp_tiles_settings_config');
+new wp_tiles_settings();
 ?>
