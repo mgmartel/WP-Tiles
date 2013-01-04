@@ -16,6 +16,8 @@ WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts
 
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
+See the plugin in action on the frontpage of [Trenvo.com](http://trenvo.com/).
+
 = Usage =
 
 WP Tiles are automatically generated based on your 20 last posts, but can be modified to show whichever query you want it to, by adjusting the defaults in the options section, or passing arguments to the shortcode.
