@@ -59,7 +59,8 @@ ul.template-selector {
         .tile-bg {
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: top center;
+            //background-position: top center;
+            background-position: center center; // @since 0.2.1
             width: 100%;
             height: 100%;
             background-color: #282828;
