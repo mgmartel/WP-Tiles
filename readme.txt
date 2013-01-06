@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/wp-tiles/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 0.2
+Stable tag: 0.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,9 @@ function change_tile_image_size( $image_size ) {
 5. Excerpt of the options section
 
 == Changelog ==
+
+= 0.2.1 =
+* Tiles can now be inserted with a greater offset from the top
 
 = 0.2 =
 * Fix resize bug - now rest of content is displaced properly
