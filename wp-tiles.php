@@ -17,7 +17,7 @@ if (!defined('ABSPATH'))
  *
  * @since 0.1
  */
-define('WPTILES_VERSION', '0.2');
+define('WPTILES_VERSION', '0.2.1');
 
 /**
  * PATHs and URLs
