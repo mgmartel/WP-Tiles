@@ -69,6 +69,7 @@ function change_tile_image_size( $image_size ) {
 
 = 0.2.1 =
 * Centered cut off tile images
+* Tiles can now be inserted with a greater offset from the top
 
 = 0.2 =
 * Fix resize bug - now rest of content is displaced properly

@@ -87,8 +87,9 @@ var debounce = function(func, wait, immediate) {
 
         function resizeWpTiles() { // @todo is there a way to make this less hacky?
             var lastEl = $('#' + tiledata.id).children().last();
+            var tileOffsetTop = parseInt ( $('#' + tiledata.id).offset().top );
             //var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.css("top"), 10) + 10 + "px";
-            var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) + 10 + "px";
+            var newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + 10 + "px";
             $('.wp-tile-container:has("#'+ tiledata.id +'")').css('height', newHeight );
         }
 
