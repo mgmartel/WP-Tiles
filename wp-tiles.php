@@ -153,7 +153,7 @@ if (!class_exists('WP_Tiles')) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
+            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $atts['display'], $data );
             // ... and then process that array in the footer
             add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
 
@@ -206,14 +206,15 @@ if (!class_exists('WP_Tiles')) :
             }
         }
 
-        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $data ) {
+        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
             $rowTemplates = array_values ( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
             $this->data[$wptiles_id] = array (
                 "id" => $wptiles_id,
                 "rowTemplates" => $rowTemplates,
-                "posts" => $data
+                "posts" => $data,
+                "display" => $display_options,
             );
         }
 
