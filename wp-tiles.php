@@ -262,6 +262,9 @@ if (!class_exists('WP_Tiles')) :
 
             $display_options = apply_filters ( "wp-tiles-display_options", $display_options );
 
+            $hideByline = ( 'show' == $display_options['text'] ) ? false : true;
+            $hideByline = apply_filters ( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
+
             foreach ( $posts as $post ) {
                 switch ( $display_options['byline'] ) {
                     case 'nothing' :
@@ -280,11 +283,10 @@ if (!class_exists('WP_Tiles')) :
                     "id"        => $post->ID,
                     "title"     => $post->post_title,
                     "url"       => get_permalink( $post->ID ),
-                    //"category"  => wp_get_post_categories( $post->ID, array ( "fields" => "names" ) ),
                     "byline"    => $byline,
                     "img"       => $this->get_first_image ( $post ),
                     "color"     => $colors[ array_rand( $colors ) ],
-                    "hideByline"=> apply_filters ( 'wp-tiles-hide-byline', false, $post->ID, $post )
+                    "hideByline"=> $hideByline
                 );
                 if ( true ) {
 
@@ -316,17 +318,6 @@ if (!class_exists('WP_Tiles')) :
 
             return apply_filters('wp_trim_excerpt', $text, $raw_excerpt);
         }
-
-//        protected function get_the_excerpt ( $post ) {
-//            if ( $this->has_excerpt( $post ) )
-//                return $post->excerpt;
-//
-//            $excerpt_length = apply_filters('excerpt_length', 55);
-//            $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
-//            $excerpt = wp_trim_words( strip_tags ( $post->post_content ), $excerpt_length, $excerpt_more );
-//
-//            return apply_filters('wp_trim_excerpt', $excerpt, '' );
-//        }
 
         protected function has_excerpt ( $post ) {
             return ! empty( $post->post_excerpt );
