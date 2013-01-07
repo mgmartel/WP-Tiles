@@ -3,7 +3,7 @@
 Plugin Name: WP Tiles
 Plugin URI: http://trenvo.com/wp-tiles/
 Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-Version: 0.2.1
+Version: 0.2.2
 Author: Mike Martel
 Author URI: http://trenvo.com
  */
@@ -17,7 +17,7 @@ if (!defined('ABSPATH'))
  *
  * @since 0.1
  */
-define('WPTILES_VERSION', '0.2.1');
+define('WPTILES_VERSION', '0.2.2');
 
 /**
  * PATHs and URLs
@@ -160,7 +160,7 @@ if (!class_exists('WP_Tiles')) :
             /**
              * We are a go, so enqueue styles and scripts
              */
-            $this->enqueue_scripts ();
+            $this->enqueue_scripts();
             $this->enqueue_styles();
 
             $show_selector = ( ! empty ( $atts['show_selector'] ) ) ? $atts['show_selector'] : $atts['templates']['show_selector'];
@@ -201,8 +201,8 @@ if (!class_exists('WP_Tiles')) :
         protected function enqueue_scripts () {
             if (! is_admin()) {
                 wp_enqueue_script("jquery");
-                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array ( "jquery" ), false, true );
-                wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js',  array ( "tilesjs" ), false, true );
+                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array ( "jquery" ),  "2012-08-08", true );
+                wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js',  array ( "tilesjs" ), WPTILES_VERSION, true );
             }
         }
 
@@ -247,7 +247,7 @@ if (!class_exists('WP_Tiles')) :
             } else {
                 $located = WPTILES_INC_URL . '/css/wp-tiles.css';
             }
-            wp_enqueue_style( 'wp-tiles', $located );
+            wp_enqueue_style( 'wp-tiles', $located, false, WPTILES_VERSION );
         }
 
         protected function extract_data( $posts, $display_options, $colors ) {
