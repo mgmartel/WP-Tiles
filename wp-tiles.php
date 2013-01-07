@@ -133,7 +133,7 @@ if (!class_exists('WP_Tiles')) :
             $posts = get_posts( $atts['posts_query'] );
             if ( empty ( $posts ) ) return;
 
-            $data = $this->extract_data( $posts, $atts['colors'] );
+            $data = $this->extract_data( $posts, $atts['display'], $atts['colors'] );
 
             if ( ! empty ( $atts['template'] ) && ! empty ( $atts['templates']['templates'][ $atts['template'] ] ) ) {
                 $templates = array ( $atts['templates']['templates'][ $atts['template'] ] );
@@ -153,7 +153,7 @@ if (!class_exists('WP_Tiles')) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $atts['display'], $data );
+            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
             // ... and then process that array in the footer
             add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
 
@@ -206,7 +206,7 @@ if (!class_exists('WP_Tiles')) :
             }
         }
 
-        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
+        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $data ) {
             $rowTemplates = array_values ( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
@@ -250,7 +250,7 @@ if (!class_exists('WP_Tiles')) :
             wp_enqueue_style( 'wp-tiles', $located );
         }
 
-        protected function extract_data( $posts, $colors ) {
+        protected function extract_data( $posts, $display_options, $colors ) {
             $data = array();
 
             if ( is_array ( $colors ) ) $colors = $colors['colors'];
@@ -260,34 +260,73 @@ if (!class_exists('WP_Tiles')) :
             }
             $colors = apply_filters ( "wp-tiles-colors", array_filter ( $colors ) );
 
+            $display_options = apply_filters ( "wp-tiles-display_options", $display_options );
+
             foreach ( $posts as $post ) {
+                switch ( $display_options['byline'] ) {
+                    case 'nothing' :
+                        $byline = '';
+                        break;
+                    case 'excerpt' :
+                        $byline = $this->get_the_excerpt( $post->post_content, $post->post_excerpt );
+                        break;
+                    case 'cats' :
+                    default :
+                        $byline = wp_get_post_categories( $post->ID, array ( "fields" => "names" ) );
+                        break;
+                }
+
                 $data[] = array (
                     "id"        => $post->ID,
                     "title"     => $post->post_title,
                     "url"       => get_permalink( $post->ID ),
-                    "category"  => wp_get_post_categories( $post->ID, array ( "fields" => "names" ) ),
+                    //"category"  => wp_get_post_categories( $post->ID, array ( "fields" => "names" ) ),
+                    "byline"    => $byline,
                     "img"       => $this->get_first_image ( $post ),
                     "color"     => $colors[ array_rand( $colors ) ],
                     "hideByline"=> apply_filters ( 'wp-tiles-hide-byline', false, $post->ID, $post )
                 );
+                if ( true ) {
+
+                }
+
             }
 
             return apply_filters ( 'wp-tiles-data', $data, $posts, $colors, $this );
         }
 
-        /**
-         * Not used anymore..?
-         */
-        protected function get_the_excerpt ( $post ) {
-            if ( $this->has_excerpt( $post ) )
-                return $post->excerpt;
+        function get_the_excerpt($text, $excerpt) {
+            if ($excerpt) return $excerpt;
 
+            $text = strip_shortcodes( $text );
+
+            $text = apply_filters('the_content', $text);
+            $text = str_replace(']]>', ']]&gt;', $text);
+            $text = strip_tags($text);
             $excerpt_length = apply_filters('excerpt_length', 55);
             $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
-            $excerpt = wp_trim_words( strip_tags ( $post->post_content ), $excerpt_length, $excerpt_more );
+            $words = preg_split("/[\n\r\t ]+/", $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
+            if ( count($words) > $excerpt_length ) {
+                    array_pop($words);
+                    $text = implode(' ', $words);
+                    $text = $text . $excerpt_more;
+            } else {
+                    $text = implode(' ', $words);
+            }
 
-            return apply_filters('wp_trim_excerpt', $excerpt, '' );
+            return apply_filters('wp_trim_excerpt', $text, $raw_excerpt);
         }
+
+//        protected function get_the_excerpt ( $post ) {
+//            if ( $this->has_excerpt( $post ) )
+//                return $post->excerpt;
+//
+//            $excerpt_length = apply_filters('excerpt_length', 55);
+//            $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
+//            $excerpt = wp_trim_words( strip_tags ( $post->post_content ), $excerpt_length, $excerpt_more );
+//
+//            return apply_filters('wp_trim_excerpt', $excerpt, '' );
+//        }
 
         protected function has_excerpt ( $post ) {
             return ! empty( $post->post_excerpt );

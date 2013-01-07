@@ -27,8 +27,10 @@ var debounce = function(func, wait, immediate) {
         grid.createTile = function(data) {
             var img     = data.img,
                 url     = data.url,
-                category
-                        = data.category,
+//                category
+//                        = data.category,
+                bylineExtra
+                        = data.byline,
                 color   = data.color,
                 title   = data.title,
                 tile    = new Tiles.Tile(data.id),
@@ -37,14 +39,17 @@ var debounce = function(func, wait, immediate) {
 
             var byline = '';
             if ( ! hideByline ) {
+
                 if ( img )
                     byline = "<div class='tile-byline'>\n";
                 else
                     byline = "<div class='tile-byline tile-text-only'>\n";
 
                 byline += "<div class='title'>" + title + "</div>"
-                        + "<div class='category'>" + category + "</div>"
-                    + "</div>";
+
+                byline += "<div class='category'>" + bylineExtra + "</div>";
+
+                byline += "</div>";
             }
 
             var tileClass;
