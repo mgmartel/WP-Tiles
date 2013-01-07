@@ -93,7 +93,7 @@ ul.template-selector li:hover {
   padding-top: 2px;
 }
 /* line 96, ../scss/wp-tiles.scss */
-.wp-tile-container .grid .category {
+.wp-tile-container .grid .extra {
   padding: 5px;
   font-size: 10px;
   font-weight: 600;
@@ -123,7 +123,7 @@ ul.template-selector li:hover {
   height: 6.4em;
 }
 /* line 126, ../scss/wp-tiles.scss */
-.wp-tile-container .grid .tile-text-only .category {
+.wp-tile-container .grid .tile-text-only .extra {
   color: #303030;
   font-style: normal;
   font-size: 14px;

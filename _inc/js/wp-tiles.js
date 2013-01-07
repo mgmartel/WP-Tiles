@@ -47,7 +47,7 @@ var debounce = function(func, wait, immediate) {
 
                 byline += "<div class='title'>" + title + "</div>"
 
-                byline += "<div class='category'>" + bylineExtra + "</div>";
+                byline += "<div class='extra category'>" + bylineExtra + "</div>"; // Left category in for backward compat for custom styles
 
                 byline += "</div>";
             }
