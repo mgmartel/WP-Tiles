@@ -1,8 +1,11 @@
 <?php
 global $wptiles_defaults;
 $wptiles_defaults = array(
+                "display"       => array (
+                    "byline"        => "cats",
+                ),
                 // Post query
-                "posts_query"         => array (
+                "posts_query"   => array (
                                     'numberposts'   => 20,
                                     'offset'        => 0,
                                     'category'      => 0,

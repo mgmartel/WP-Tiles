@@ -59,6 +59,11 @@ class WP_Tiles_Settings_Config
                 "ASC"  => __( "Ascending" ),
             ),
             "post_types" => get_post_types(),
+            "byline" => array (
+                "nothing"       =>  __( "Nothing", 'wp-tiles' ),
+                "cats"          =>  __( "Categories" ),
+                "excerpt"       =>  __( "Excerpt" ),
+            ),
         );
     }
 
@@ -70,8 +75,19 @@ class WP_Tiles_Settings_Config
         $wptiles_defaults = shortcode_atts( $wptiles_defaults, $wptiles_options);
 
         $sections = array(
+            'display' => array (
+                'title'         => __("Display", 'wp-tiles'),
+                'description'   => __("What information is displayed on the tiles.", 'wp-tiles'),
+                'fields'        => array (
+                    'byline'        => array (
+                        'label'         => __("Byline",'wp-tiles'),
+                        'description'   => __("What to show under the title in the tiles' 'byline'."),
+                        'dropdown'      => 'byline'
+                    ),
+                ),
+            ),
             'colors' => array (
-                'title'     => __ ( "Colors", "wp-tiles" ),
+                'title'     => __( "Colors", "wp-tiles" ),
                 'description'
                             => sprintf ( __( "Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s\n"
                                 . "Change this in the shortcode like this: %s", "wp-tiles" ),
@@ -89,7 +105,7 @@ class WP_Tiles_Settings_Config
                 ),
             ),
             'templates' => array (
-                'title'     => __ ("Templates", 'wp-tiles'),
+                'title'     => __( "Templates", 'wp-tiles' ),
                 'description' => sprintf ( __("You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
                     ."Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1\$s\n"
                     ."In the shortcode, you can set which template to use, like this: %s", 'wp-tiles'),
@@ -407,11 +423,11 @@ class WP_Tiles_Settings {
         }
 
         printf('
-            <select id="%s" name="%s">%s</select>%s',
+            <select id="%s" name="%s">%s</select>',
             $value['name'],
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
-            $chooseFrom,
-            (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL
+            $chooseFrom
+            //(!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL
         );
 
         do_action('after_plugin_setting_dropdown', $value, $default_value, $choices);
