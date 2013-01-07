@@ -64,6 +64,10 @@ class WP_Tiles_Settings_Config
                 "cats"          =>  __( "Categories" ),
                 "excerpt"       =>  __( "Excerpt" ),
             ),
+            "text"  => array (
+                "show"          => __( "Show" ),
+                "hide"          => __( "Hide" )
+            )
         );
     }
 
@@ -79,9 +83,14 @@ class WP_Tiles_Settings_Config
                 'title'         => __("Display", 'wp-tiles'),
                 'description'   => __("What information is displayed on the tiles.", 'wp-tiles'),
                 'fields'        => array (
+                    'text'          => array (
+                        'label'         => __("Text",'wp-tiles'),
+                        'description'   => __("Display text on Tiles with images", 'wp-tiles'),
+                        'dropdown'      => 'text'
+                    ),
                     'byline'        => array (
                         'label'         => __("Byline",'wp-tiles'),
-                        'description'   => __("What to show under the title in the tiles' 'byline'."),
+                        'description'   => __("What to show under the title in the tiles' 'byline'.", 'wp-tiles'),
                         'dropdown'      => 'byline'
                     ),
                 ),

@@ -2,6 +2,7 @@
 global $wptiles_defaults;
 $wptiles_defaults = array(
                 "display"       => array (
+                    "text"          => "show",
                     "byline"        => "cats",
                 ),
                 // Post query
