@@ -261,7 +261,17 @@ class WP_Tiles_Settings_Config
         $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
 
         do_action('before_plugin_setting_colorpickers', $value, $default_value );
+        ?>
 
+        <div class='color-pickers-show show-if-js'>
+            <p><a href='javascript:void(0)' class='button-primary show-colors'><?php _e("Show colors",'wp-tiles'); ?></a></p>
+            <p><em><?php _e ("Color pickers are hidden. Click the button above to show them.",'wp-tiles'); ?></em><p>
+        </div>
+
+        <div class='color-pickers hide-if-js'>
+            <p><a href='javascript:void(0)' class='button-primary hide-colors'><?php _e("Hide colors",'wp-tiles'); ?></a></p>
+
+        <?php
         $i = 0;
         foreach ( $default_value as $color ) {
             printf('<input id="wptiles-color-%s" type="text" name="%s" value="%s" size="40" />
@@ -272,6 +282,10 @@ class WP_Tiles_Settings_Config
             );
             $i++;
         }
+        ?>
+            <p><a href='javascript:void(0)' class='button-primary hide-colors'><?php _e("Hide colors",'wp-tiles'); ?></a></p>
+        </div>
+        <?php
 
         do_action('after_plugin_setting_colorpickers', $value, $default_value );
     }
