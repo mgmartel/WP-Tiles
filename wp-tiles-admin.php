@@ -137,7 +137,10 @@ class WP_Tiles_Settings_Config
                     ),
                     'small_screen_width'    => array (
                         'label'     => __ ( 'Small screen width','wp-tiles'),
-                        'length'      => '3'
+                        'length'    => '3',
+                        'suffix'    => 'px',
+                        'description'
+                                    => "Maximum width of the tiles element before switching to small screen template (if you experience problems with selecting templates - try lowering this value).<br><br>Set to 0 to disable switching to small screen templates."
                     ),
                     'show_selector'  => array (
                         'label'     => __ ( 'Show template selector', "wp-tiles" ),
@@ -394,12 +397,12 @@ class WP_Tiles_Settings {
 
         do_action('before_plugin_setting_string', $value, $default_value );
 
-        printf('<input id="%s" type="text" name="%s" value="%s" size="40" /> %s%s',
+        printf('<input id="%s" type="text" name="%s" value="%s" size="%s" /> %s',
             $value['name'],
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
             $default_value,
-            (!empty ($value['suffix'])) ? $value['suffix'] : NULL,
-            (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL );
+            (!empty ($value['length'])) ? $value['length'] : '40',
+            (!empty ($value['suffix'])) ? $value['suffix'] : NULL );
 
         do_action('after_plugin_setting_string', $value, $default_value );
     }
