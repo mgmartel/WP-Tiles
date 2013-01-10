@@ -50,9 +50,21 @@ class WP_Tiles_Settings_Config
         return array (
             "categories" => $cats_a,
             "orderby" => array (
-                "rand"  => __( "Random" ),
+                "none"      => __( "None" ),
+                "ID"        => __( "Post ID"),
+                "author"    => __( "Author"),
+                "title"     => __( "Title"),
+                "name"      => __( "Post Name"),
+                "modified"  => __( "Last Modified Date"),
+                "parent"    => __( "Parent ID" ),
+                "rand"      => __( "Random" ),
+                "comment_count"
+                            => __( "Comment Count" ),
+                "menu_order"
+                            => __( "Menu Order" ),
+                "rand"      => __( "Random" ),
                 "post_date"
-                        => __( "Date" )
+                        => __( "Date" ),
             ),
             "order" => array (
                 "DESC"  => __( "Descending" ),
