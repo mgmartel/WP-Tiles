@@ -97,7 +97,7 @@ class WP_Tiles_Settings_Config
                 'fields'        => array (
                     'text'          => array (
                         'label'         => __("Text",'wp-tiles'),
-                        'description'   => __("Display text on Tiles with images", 'wp-tiles'),
+                        'description'   => __("Display text on Tiles with images (in the black box - title and whatever you set in the option below)", 'wp-tiles'),
                         'dropdown'      => 'text'
                     ),
                     'byline'        => array (
