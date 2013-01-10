@@ -3,7 +3,7 @@
 Plugin Name: WP Tiles
 Plugin URI: http://trenvo.com/wp-tiles/
 Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-Version: 0.2.2
+Version: 0.3
 Author: Mike Martel
 Author URI: http://trenvo.com
  */
@@ -145,6 +145,7 @@ if (!class_exists('WP_Tiles')) :
             }
 
             $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
+            $small_screen_width = intval( $atts['templates']['small_screen_width'] );
 
             /**
              * Now set the variables in the instance
@@ -153,7 +154,7 @@ if (!class_exists('WP_Tiles')) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $data );
+            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $small_screen_width, $data );
             // ... and then process that array in the footer
             add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
 
@@ -206,15 +207,15 @@ if (!class_exists('WP_Tiles')) :
             }
         }
 
-        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $data ) {
+        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $small_screen_width, $data ) {
             $rowTemplates = array_values ( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
             $this->data[$wptiles_id] = array (
                 "id" => $wptiles_id,
                 "rowTemplates" => $rowTemplates,
+                "small_screen_width" => $small_screen_width,
                 "posts" => $data,
-                "display" => $display_options,
             );
         }
 
@@ -263,9 +264,9 @@ if (!class_exists('WP_Tiles')) :
             $display_options = apply_filters ( "wp-tiles-display_options", $display_options );
 
             $hideByline = ( 'show' == $display_options['text'] ) ? false : true;
-            $hideByline = apply_filters ( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
 
             foreach ( $posts as $post ) {
+                $hideByline = apply_filters ( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
                 switch ( $display_options['byline'] ) {
                     case 'nothing' :
                         $byline = '';
@@ -316,7 +317,7 @@ if (!class_exists('WP_Tiles')) :
                     $text = implode(' ', $words);
             }
 
-            return apply_filters('wp_trim_excerpt', $text, $raw_excerpt);
+            return apply_filters('wp_trim_excerpt', $text, $excerpt);
         }
 
         protected function has_excerpt ( $post ) {

@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/wp-tiles/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 0.2.2
+Stable tag: 0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -67,6 +67,13 @@ function change_tile_image_size( $image_size ) {
 
 == Changelog ==
 
+= 0.3 =
+* Added option for cut-off point small-screen / big-screen templates
+* Hide template selector if small screen template is used
+* Added all possible 'order by' parameters to the settings screen
+* Improved settings screen
+* Various small fixes (thanks raubvogel)
+
 = 0.2.2 =
 * Added extra display options: show text and byline contents (choose whether to show categories, excerpts or nothing at all)
 
@@ -97,3 +104,8 @@ function change_tile_image_size( $image_size ) {
 
 = 0.1 =
 * First upload.
+
+== Upgrade Notice ==
+
+= 0.3 =
+In this version you can set at which point you want to switch to the small screen template, or disable this altogether.

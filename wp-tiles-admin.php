@@ -50,9 +50,21 @@ class WP_Tiles_Settings_Config
         return array (
             "categories" => $cats_a,
             "orderby" => array (
-                "rand"  => __( "Random" ),
+                "none"      => __( "None" ),
+                "ID"        => __( "Post ID"),
+                "author"    => __( "Author"),
+                "title"     => __( "Title"),
+                "name"      => __( "Post Name"),
+                "modified"  => __( "Last Modified Date"),
+                "parent"    => __( "Parent ID" ),
+                "rand"      => __( "Random" ),
+                "comment_count"
+                            => __( "Comment Count" ),
+                "menu_order"
+                            => __( "Menu Order" ),
+                "rand"      => __( "Random" ),
                 "post_date"
-                        => __( "Date" )
+                        => __( "Date" ),
             ),
             "order" => array (
                 "DESC"  => __( "Descending" ),
@@ -85,7 +97,7 @@ class WP_Tiles_Settings_Config
                 'fields'        => array (
                     'text'          => array (
                         'label'         => __("Text",'wp-tiles'),
-                        'description'   => __("Display text on Tiles with images", 'wp-tiles'),
+                        'description'   => __("Display text on Tiles with images (in the black box - title and whatever you set in the option below)", 'wp-tiles'),
                         'dropdown'      => 'text'
                     ),
                     'byline'        => array (
@@ -134,6 +146,13 @@ class WP_Tiles_Settings_Config
                         'label'     => __ ( 'Small screen template', "wp-tiles" ),
                         'length'    => '200',
                         'type'      => 'textarea'
+                    ),
+                    'small_screen_width'    => array (
+                        'label'     => __ ( 'Small screen width','wp-tiles'),
+                        'length'    => '3',
+                        'suffix'    => 'px',
+                        'description'
+                                    => "Maximum width of the tiles element before switching to small screen template (if you experience problems with selecting templates - try lowering this value).<br><br>Set to 0 to disable switching to small screen templates."
                     ),
                     'show_selector'  => array (
                         'label'     => __ ( 'Show template selector', "wp-tiles" ),
@@ -242,7 +261,17 @@ class WP_Tiles_Settings_Config
         $default_value = (!empty ($value['default_value'])) ? $value['default_value'] : NULL;
 
         do_action('before_plugin_setting_colorpickers', $value, $default_value );
+        ?>
 
+        <div class='color-pickers-show show-if-js'>
+            <p><a href='javascript:void(0)' class='button-primary show-colors'><?php _e("Show colors",'wp-tiles'); ?></a></p>
+            <p><em><?php _e ("Color pickers are hidden. Click the button above to show them.",'wp-tiles'); ?></em><p>
+        </div>
+
+        <div class='color-pickers hide-if-js'>
+            <p><a href='javascript:void(0)' class='button-primary hide-colors'><?php _e("Hide colors",'wp-tiles'); ?></a></p>
+
+        <?php
         $i = 0;
         foreach ( $default_value as $color ) {
             printf('<input id="wptiles-color-%s" type="text" name="%s" value="%s" size="40" />
@@ -253,6 +282,10 @@ class WP_Tiles_Settings_Config
             );
             $i++;
         }
+        ?>
+            <p><a href='javascript:void(0)' class='button-primary hide-colors'><?php _e("Hide colors",'wp-tiles'); ?></a></p>
+        </div>
+        <?php
 
         do_action('after_plugin_setting_colorpickers', $value, $default_value );
     }
@@ -357,7 +390,7 @@ class WP_Tiles_Settings {
     protected function add_option ( $field, $value, $section_key = NULL ) {
         global $wp_tiles_settings;
 
-         $function = array( &$this, 'plugin_setting_string' );
+        $function = array( &$this, 'plugin_setting_string' );
         if (!empty($value['dropdown']))
             $function = array( &$this, 'plugin_setting_dropdown' );
         elseif ( ! empty ( $value['function'] ) )
@@ -390,12 +423,12 @@ class WP_Tiles_Settings {
 
         do_action('before_plugin_setting_string', $value, $default_value );
 
-        printf('<input id="%s" type="text" name="%s" value="%s" size="40" /> %s%s',
+        printf('<input id="%s" type="text" name="%s" value="%s" size="%s" /> %s',
             $value['name'],
             "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}]",
             $default_value,
-            (!empty ($value['suffix'])) ? $value['suffix'] : NULL,
-            (!empty ($value['description'])) ? sprintf("<em>%s</em>",$value['description']) : NULL );
+            (!empty ($value['length'])) ? $value['length'] : '40',
+            (!empty ($value['suffix'])) ? $value['suffix'] : NULL );
 
         do_action('after_plugin_setting_string', $value, $default_value );
     }
