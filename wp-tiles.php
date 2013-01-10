@@ -145,7 +145,7 @@ if (!class_exists('WP_Tiles')) :
             }
 
             $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
-            $small_screen_width = $atts['templates']['small_screen_width'];
+            $small_screen_width = intval( $atts['templates']['small_screen_width'] );
 
             /**
              * Now set the variables in the instance
