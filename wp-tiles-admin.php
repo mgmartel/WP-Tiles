@@ -135,6 +135,10 @@ class WP_Tiles_Settings_Config
                         'length'    => '200',
                         'type'      => 'textarea'
                     ),
+                    'small_screen_width'    => array (
+                        'label'     => __ ( 'Small screen width','wp-tiles'),
+                        'length'      => '3'
+                    ),
                     'show_selector'  => array (
                         'label'     => __ ( 'Show template selector', "wp-tiles" ),
                         'type'      => 'checkbox',
@@ -357,7 +361,7 @@ class WP_Tiles_Settings {
     protected function add_option ( $field, $value, $section_key = NULL ) {
         global $wp_tiles_settings;
 
-         $function = array( &$this, 'plugin_setting_string' );
+        $function = array( &$this, 'plugin_setting_string' );
         if (!empty($value['dropdown']))
             $function = array( &$this, 'plugin_setting_dropdown' );
         elseif ( ! empty ( $value['function'] ) )

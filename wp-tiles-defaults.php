@@ -31,6 +31,7 @@ $wptiles_defaults = array(
                     ),
                 'templates'     => array (
                     'show_selector' => 'true',
+                    "small_screen_width" => "800",
                     "templates"     => array (
                                   "News" => " A A B B . \n"
                                           . " A A . C C \n"
