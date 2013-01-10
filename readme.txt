@@ -12,11 +12,11 @@ WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts
 
 == Description ==
 
-*If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).*
-
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
-See the plugin in action on the frontpage of [Trenvo.com](http://trenvo.com/).
+See the plugin in action on the frontpage of [Trenvo.com](http://trenvo.com/) and [CreatedByDanielle.com](http://createdbydanielle.com).
+
+*If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).*
 
 = Usage =
 
@@ -59,11 +59,12 @@ function change_tile_image_size( $image_size ) {
 
 == Screenshots ==
 
+1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
+1. WP Tiles in action ([trenvo.com](http://trenvo.com))
 1. Example of tile templates (posts and photos courtesy of [Motomonkey Adventures](http://motomonkeyadventures.com)
-2. Example of tile templates
-3. Example of tile templates (featured)
-4. Example of tile templates (plain)
-5. Excerpt of the options section
+1. Example of tile templates
+1. Example of tile templates (featured)
+1. Example of tile templates (plain)
 
 == Changelog ==
 
