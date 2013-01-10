@@ -77,9 +77,11 @@ var debounce = function(func, wait, immediate) {
 
         var oldTemplate = false;
         if ( $("#" + tiledata.id ).width() < 800 ) {
+            $("div#" + tiledata.id + "-templates").hide();
             grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
             oldTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
         } else {
+            $("div#" + tiledata.id + "-templates").show();
             grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
         }
 
@@ -101,11 +103,13 @@ var debounce = function(func, wait, immediate) {
         // wait until users finishes resizing the browser
         var debouncedResize = debounce(function() {
             if ( $("#" + tiledata.id ).width() < 800 ) {
+                $("div#" + tiledata.id + "-templates").hide();
                 if ( ! oldTemplate )
                     oldTemplate = grid.template;
                 grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
                 grid.isDirty = true;
             } else if ( oldTemplate ) {
+                $("div#" + tiledata.id + "-templates").show();
                 grid.template = oldTemplate;
                 oldTemplate = false;
                 grid.isDirty = true;
