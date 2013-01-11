@@ -4,6 +4,8 @@ $wptiles_defaults = array(
                 "display"       => array (
                     "text"          => "show",
                     "byline"        => "cats",
+                    "bylineBg"      => "default",
+                    "bylineOpacity" => '0.8',
                 ),
                 // Post query
                 "posts_query"   => array (

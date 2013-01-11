@@ -145,7 +145,9 @@ if (!class_exists('WP_Tiles')) :
             }
 
             $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
-            $small_screen_width = intval( $atts['templates']['small_screen_width'] );
+
+            $display_options = (array) $atts['display'];
+            $display_options['small_screen_width'] = intval( $atts['templates']['small_screen_width'] );
 
             /**
              * Now set the variables in the instance
@@ -154,7 +156,7 @@ if (!class_exists('WP_Tiles')) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $small_screen_width, $data );
+            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data );
             // ... and then process that array in the footer
             add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
 
@@ -207,14 +209,14 @@ if (!class_exists('WP_Tiles')) :
             }
         }
 
-        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $small_screen_width, $data ) {
+        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
             $rowTemplates = array_values ( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
             $this->data[$wptiles_id] = array (
                 "id" => $wptiles_id,
                 "rowTemplates" => $rowTemplates,
-                "small_screen_width" => $small_screen_width,
+                "display_options" => $display_options,
                 "posts" => $data,
             );
         }
@@ -280,22 +282,49 @@ if (!class_exists('WP_Tiles')) :
                         break;
                 }
 
+                $color = $colors[ array_rand( $colors ) ];
                 $data[] = array (
                     "id"        => $post->ID,
                     "title"     => $post->post_title,
                     "url"       => get_permalink( $post->ID ),
                     "byline"    => $byline,
                     "img"       => $this->get_first_image ( $post ),
-                    "color"     => $colors[ array_rand( $colors ) ],
+                    "color"     => $color,
+                    "bylineColor"
+                                => $this->HexToRGBA ( $color, $display_options['bylineOpacity'], true ),
                     "hideByline"=> $hideByline
                 );
-                if ( true ) {
-
-                }
 
             }
 
             return apply_filters ( 'wp-tiles-data', $data, $posts, $colors, $this );
+        }
+
+        private function HexToRGB($hex) {
+            $hex = ereg_replace("#", "", $hex);
+            $color = array();
+
+            if(strlen($hex) == 3) {
+                $color['r'] = hexdec(substr($hex, 0, 1) . $r);
+                $color['g'] = hexdec(substr($hex, 1, 1) . $g);
+                $color['b'] = hexdec(substr($hex, 2, 1) . $b);
+            }
+            else if(strlen($hex) == 6) {
+                $color['r'] = hexdec(substr($hex, 0, 2));
+                $color['g'] = hexdec(substr($hex, 2, 2));
+                $color['b'] = hexdec(substr($hex, 4, 2));
+            }
+
+            return $color;
+        }
+
+        private function HexToRGBA( $hex, $alpha, $css = false ) {
+            $rgba = $this->HexToRGB ( $hex );
+            $rgba['a'] = $alpha;
+            if ( ! $css )
+                return $rgba;
+
+            return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
         }
 
         function get_the_excerpt($text, $excerpt) {

@@ -18,7 +18,8 @@ var debounce = function(func, wait, immediate) {
     $.each ( wptilesdata, function( key, tiledata ) {
 
         var el = document.getElementById(tiledata.id),
-            grid = new Tiles.Grid(el);
+            grid = new Tiles.Grid(el),
+            display_opts = tiledata.display_options;;
 
         grid.resizeColumns = function() {
                 return this.template.numCols;
@@ -27,21 +28,25 @@ var debounce = function(func, wait, immediate) {
         grid.createTile = function(data) {
             var img     = data.img,
                 url     = data.url,
-//                category
-//                        = data.category,
                 bylineExtra
                         = data.byline,
                 color   = data.color,
+                bylineColor
+                        = data.bylineColor,
                 title   = data.title,
                 tile    = new Tiles.Tile(data.id),
                 hideByline
                         = data.hideByline;
 
             var byline = '';
+            var bylineBgColor = '';
             if ( ! hideByline ) {
+                if ( display_opts.bylineBg && display_opts.bylineBg == 'rand' )
+                        bylineBgColor = bylineColor;
+                else bylineBgColor = 'initial';
 
                 if ( img )
-                    byline = "<div class='tile-byline'>\n";
+                    byline = "<div class='tile-byline' style='background-color: " + bylineBgColor + ";'>\n";
                 else
                     byline = "<div class='tile-byline tile-text-only'>\n";
 
@@ -76,7 +81,7 @@ var debounce = function(func, wait, immediate) {
         };
 
         var oldTemplate = false;
-        if ( $("#" + tiledata.id ).width() < tiledata.small_screen_width ) {
+        if ( $("#" + tiledata.id ).width() < tiledata.display_options.small_screen_width ) {
             $("div#" + tiledata.id + "-templates").hide();
             grid.template = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
             oldTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
@@ -102,7 +107,7 @@ var debounce = function(func, wait, immediate) {
 
         // wait until users finishes resizing the browser
         var debouncedResize = debounce(function() {
-            if ( $("#" + tiledata.id ).width() < tiledata.small_screen_width ) {
+            if ( $("#" + tiledata.id ).width() < tiledata.display_options.small_screen_width ) {
                 $("div#" + tiledata.id + "-templates").hide();
                 if ( ! oldTemplate )
                     oldTemplate = grid.template;
