@@ -42,11 +42,11 @@ var debounce = function(func, wait, immediate) {
             var bylineBgColor = '';
             if ( ! hideByline ) {
                 if ( display_opts.bylineBg && display_opts.bylineBg == 'rand' )
-                        bylineBgColor = bylineColor;
-                else bylineBgColor = 'initial';
+                        bylineBgColor = "background-color: " + bylineColor;
+                else bylineBgColor = '';
 
                 if ( img )
-                    byline = "<div class='tile-byline' style='background-color: " + bylineBgColor + ";'>\n";
+                    byline = "<div class='tile-byline' style='" + bylineBgColor + ";'>\n";
                 else
                     byline = "<div class='tile-byline tile-text-only'>\n";
 
