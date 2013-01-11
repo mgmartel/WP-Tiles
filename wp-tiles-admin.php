@@ -79,6 +79,10 @@ class WP_Tiles_Settings_Config
             "text"  => array (
                 "show"          => __( "Show" ),
                 "hide"          => __( "Hide" )
+            ),
+            "bylineBg" => array (
+                "default"       => __( "Default (black)", 'wp-tiles'),
+                "rand"          => __( "Random" )
             )
         );
     }
@@ -105,6 +109,16 @@ class WP_Tiles_Settings_Config
                         'description'   => __("What to show under the title in the tiles' 'byline'.", 'wp-tiles'),
                         'dropdown'      => 'byline'
                     ),
+                    'bylineBg'      => array (
+                        'label'         => __("Text Background",'wp-tiles'),
+                        'dropdown'      => 'bylineBg',
+                        'description'   => __( "The background for the text pane on tiles with a background image. Defaults to black. Random will use the colors you set below.", 'wp-tiles' )
+                    ),
+                    'bylineOpacity' =>  array (
+                        'label'         => __("Text Background Opacity", 'wp-tiles'),
+                        'length'        => 3,
+                        'description'   => __ ("Opacity for the backgroundcolor set above. Value between 0 and 1. 1 being opaque, 0 transparent.", 'wp-tiles')
+                    )
                 ),
             ),
             'colors' => array (
