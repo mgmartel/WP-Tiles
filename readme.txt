@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/wp-tiles/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 0.3.2
+Stable tag: 0.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,24 @@ function change_tile_image_size( $image_size ) {
     return 'large';
 }`
 
+= Can I show tiles in my templates, for example on in the category archives? =
+
+To show WP Tiles in your templates, simply use the provided the_wp_tiles() function. If you do this on a single page or a category archive, it will render all the tiles from the current category/categories. You can also pass all the attributes you can pass to the shortcode.
+
+Example template:
+`<?php get_header(); ?>
+
+	<section id="primary" class="site-content">
+		<div id="content" role="main">
+
+            <?php if ( function_exists ( 'the_wp_tiles' ) ) the_wp_tiles(); ?>
+
+		</div><!-- #content -->
+	</section><!-- #primary -->
+
+<?php get_sidebar(); ?>
+<?php get_footer(); ?>`
+
 == Screenshots ==
 
 1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
@@ -67,6 +85,9 @@ function change_tile_image_size( $image_size ) {
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.3.3 =
+* Added template function the_wp_tiles(), which renders the tiles (if on posts or archive page for current category)
 
 = 0.3.2 =
 * Make sure that tile text background does show up when default is selected
