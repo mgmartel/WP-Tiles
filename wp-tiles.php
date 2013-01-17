@@ -385,4 +385,22 @@ if (!class_exists('WP_Tiles')) :
     }
 
     add_action('init', array('WP_Tiles', 'init'));
+
+    function the_wp_tiles ( $atts = array() ) {
+        $tiles = WP_Tiles::init();
+
+        // If category archive, show
+        if ( empty ( $atts ) && ( is_category() || is_single() ) ) {
+            $categories = get_the_category();
+            $cats = array();
+            foreach ( $categories as $category ) {
+                $cats[] = $category->term_id;
+            }
+            $atts['posts_query']['cat'] = implode ( ', ', $cats );
+
+        }
+
+        $tiles->show_tiles ( $atts );
+    }
+
 endif;
