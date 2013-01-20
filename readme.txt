@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/wp-tiles/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 0.3.3
+Stable tag: 0.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,9 @@ Example template:
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.3.4 =
+* Fix: tiles weren't outputted on the place of the shortcode
 
 = 0.3.3 =
 * Added template function the_wp_tiles(), which renders the tiles (if on posts or archive page for current category)
