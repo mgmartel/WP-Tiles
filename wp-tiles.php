@@ -103,7 +103,13 @@ if (!class_exists('WP_Tiles')) :
             }
 
         public function shortcode( $atts ) {
+            ob_start();
+            
             $this->show_tiles ( $atts );
+            $out = ob_get_contents();
+            ob_end_clean();
+
+            return $out;
         }
 
         protected function shortcode_atts_rec ( $options, $atts ) {
