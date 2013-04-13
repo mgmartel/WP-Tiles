@@ -282,6 +282,15 @@ if (!class_exists('WP_Tiles')) :
                     case 'excerpt' :
                         $byline = $this->get_the_excerpt( $post->post_content, $post->post_excerpt );
                         break;
+                    case 'date1' :
+                        $byline = get_the_date();
+                        break;
+                    case 'date2' :
+                        $byline = get_the_date('d-m-Y');
+                        break;
+                    case 'date3' :
+                        $byline = get_the_date('m-d-Y');
+                        break;
                     case 'cats' :
                     default :
                         $byline = wp_get_post_categories( $post->ID, array ( "fields" => "names" ) );

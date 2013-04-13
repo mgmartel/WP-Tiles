@@ -75,6 +75,9 @@ class WP_Tiles_Settings_Config
                 "nothing"       =>  __( "Nothing", 'wp-tiles' ),
                 "cats"          =>  __( "Categories" ),
                 "excerpt"       =>  __( "Excerpt" ),
+                "date1"          =>  __( "Date" ) . ' (' . mysql2date( get_option('date_format'), time() ) . ')',
+                "date2"          =>  __( "Date" ) . ' (' . mysql2date( 'd-m-Y', time() ) . ')',
+                "date3"          =>  __( "Date" ) . ' (' . mysql2date( 'm-d-Y', time() ) . ')',
             ),
             "text"  => array (
                 "show"          => __( "Show" ),
