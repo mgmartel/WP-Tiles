@@ -4,7 +4,7 @@ Donate link: http://trenvo.com/wp-tiles/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5
-Stable tag: 0.3.4
+Stable tag: 0.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,8 @@ function change_tile_image_size( $image_size ) {
 
 To show WP Tiles in your templates, simply use the provided the_wp_tiles() function. If you do this on a single page or a category archive, it will render all the tiles from the current category/categories. You can also pass all the attributes you can pass to the shortcode.
 
+Category pages show 5 posts by default. To show more, pass in "numberposts", like this: `the_wp_tiles('numberposts=20');`
+
 Example template:
 `<?php get_header(); ?>
 
@@ -85,6 +87,10 @@ Example template:
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.3.5 =
+* Added options to show dates in byline
+* Some updates to the FAQ section
 
 = 0.3.4 =
 * Fix: tiles weren't outputted on the place of the shortcode
