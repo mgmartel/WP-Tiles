@@ -132,12 +132,6 @@ if (!class_exists('WP_Tiles')) :
         public function show_tiles ( $atts ) {
 
             /**
-             * Allow $atts to be just the post_query as a string or object
-             */
-            if ( ! is_array ( $atts ) )
-                $atts['posts_query'] = $atts;
-
-            /**
              * Options and attributes
              */
             $atts = $this->shortcode_atts_rec ( $this->options, $atts );
@@ -417,6 +411,15 @@ if (!class_exists('WP_Tiles')) :
             foreach ( $categories as $category ) {
                 $cats[] = $category->term_id;
             }
+            /**
+             * Allow $atts to be just the post_query as a string or object
+             */
+            if ( ! is_array ( $atts ) ) {
+                $posts_query = array();
+                wp_parse_str ( $atts, $posts_query );
+                $atts = array ( 'posts_query' => $posts_query );
+            }
+
             $atts['posts_query']['category'] = implode ( ', ', $cats );
 
         }
