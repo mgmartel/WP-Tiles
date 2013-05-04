@@ -3,7 +3,7 @@
 Plugin Name: WP Tiles
 Plugin URI: http://trenvo.com/wp-tiles/
 Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-Version: 0.3.5
+Version: 0.3.6
 Author: Mike Martel
 Author URI: http://trenvo.com
  */
@@ -17,7 +17,7 @@ if (!defined('ABSPATH'))
  *
  * @since 0.1
  */
-define('WPTILES_VERSION', '0.3.5');
+define('WPTILES_VERSION', '0.3.6');
 
 /**
  * PATHs and URLs
@@ -116,7 +116,7 @@ if (!class_exists('WP_Tiles')) :
             if ( is_array ( $atts ) ) {
                 foreach ( $atts as $k => &$att ) {
                     if ( is_array ( $att ) ) {
-                        $att = $this->shortcode_atts_rec ( $att, $options[$k] );
+                        $att = $this->shortcode_atts_rec ( $options[$k], $att );
                     } elseif ( strpos ( $att, '=' ) ) {
                         parse_str( html_entity_decode( $att ), $atts_parsed );
                         if ( ! empty ( $atts_parsed ) ) $att = $atts_parsed;
@@ -130,6 +130,12 @@ if (!class_exists('WP_Tiles')) :
         }
 
         public function show_tiles ( $atts ) {
+
+            /**
+             * Allow $atts to be just the post_query as a string or object
+             */
+            if ( ! is_array ( $atts ) )
+                $atts['posts_query'] = $atts;
 
             /**
              * Options and attributes
@@ -405,13 +411,13 @@ if (!class_exists('WP_Tiles')) :
         $tiles = WP_Tiles::init();
 
         // If category archive, show
-        if ( empty ( $atts ) && ( is_category() || is_single() ) ) {
+        if ( is_category() || is_single() ) {
             $categories = get_the_category();
             $cats = array();
             foreach ( $categories as $category ) {
                 $cats[] = $category->term_id;
             }
-            $atts['posts_query']['cat'] = implode ( ', ', $cats );
+            $atts['posts_query']['category'] = implode ( ', ', $cats );
 
         }
 
