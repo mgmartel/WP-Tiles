@@ -1,5 +1,5 @@
 <?php
-global $wptiles_defaults;
+//global $wptiles_defaults;
 $wptiles_defaults = array(
                 "display"       => array (
                     "text"          => "show",
@@ -21,6 +21,9 @@ $wptiles_defaults = array(
                                     'post_type'     => 'post',
                                     'suppress_filters'
                                                     => true,
+                                    'posts_per_page'
+                                                    => -1,
+                                    'page'          => 1
                 ),
                 'colors'        => array (
                     "colors"        => array (

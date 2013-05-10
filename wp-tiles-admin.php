@@ -92,10 +92,10 @@ class WP_Tiles_Settings_Config
 
     protected static function sections() {
         global $wptiles_defaults;
-        require ( WPTILES_DIR . '/wp-tiles-defaults.php');
+        require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
         $wptiles_options = get_option( self::$option_name );
-        $wptiles_defaults = shortcode_atts( $wptiles_defaults, $wptiles_options);
+        $wptiles_set = shortcode_atts( $wptiles_defaults, $wptiles_options);
 
         $sections = array(
             'display' => array (
@@ -237,7 +237,7 @@ class WP_Tiles_Settings_Config
         );
         foreach ( $sections as $section => &$contents ) {
             foreach ( $contents['fields'] as $name => &$values ) {
-                $values['default_value'] = $wptiles_defaults[$section][$name];
+                $values['default_value'] = $wptiles_set[$section][$name];
             }
         }
         return $sections;
