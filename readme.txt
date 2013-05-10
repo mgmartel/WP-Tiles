@@ -1,10 +1,11 @@
 === WP Tiles ===
 Contributors: Mike_Cowobo
-Donate link: http://trenvo.com/wp-tiles/
+Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
+Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.3.6
+Stable tag: 0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,17 +60,76 @@ function change_tile_image_size( $image_size ) {
 
 = Can I show tiles in my templates, for example on in the category archives? =
 
-To show WP Tiles in your templates, simply use the provided the_wp_tiles() function. If you do this on a single page or a category archive, it will render all the tiles from the current category/categories. You can also pass all the attributes you can pass to the shortcode.
+To show WP Tiles in your templates, simply use the provided the_wp_tiles() function. If you do this on a single page or a category archive, it will render all the tiles from the current category/categories.
 
-Category pages show 5 posts by default. To show more, pass in "numberposts", like this: `the_wp_tiles('numberposts=20');`, or if you have more arguments you want to pass along: `the_wp_tiles(array('template'=>'Plain', 'posts_query'=>array('numberposts'=>20));`
+N.B.: this uses the category query setup by WordPress, so you can't pass any post_query attributes to the plugin. Set up the number of posts in your WP settings ( WP-admin -> Settings -> Reading -> "Blog pages show at most" ).
 
-Example template:
+Pagination works the same as it would in your other theme files. For help see [Pagination in the WordPress Codex](https://codex.wordpress.org/Pagination). (Tip: use your current category.php and just replace `while ( have_posts() ) : the_post(); [...] endwhile;` by `the_wp_tiles()`)
+
+Example basic template:
+
 `<?php get_header(); ?>
 
 	<section id="primary" class="site-content">
 		<div id="content" role="main">
 
             <?php if ( function_exists ( 'the_wp_tiles' ) ) the_wp_tiles(); ?>
+
+		</div><!-- #content -->
+	</section><!-- #primary -->
+
+<?php get_sidebar(); ?>
+<?php get_footer(); ?>`
+
+Example category.php for Twenty Twelve:
+`<?php
+/**
+ * The template for displaying Category pages.
+ *
+ * Used to display archive-type pages for posts in a category.
+ *
+ * Learn more: http://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twelve
+ * @since Twenty Twelve 1.0
+ */
+
+get_header(); ?>
+
+	<section id="primary" class="site-content">
+		<div id="content" role="main">
+
+		<?php if ( have_posts() ) : ?>
+			<header class="archive-header">
+				<h1 class="archive-title"><?php printf( __( 'Category Archives: %s', 'twentytwelve' ), '<span>' . single_cat_title( '', false ) . '</span>' ); ?></h1>
+
+			<?php if ( category_description() ) : // Show an optional category description ?>
+				<div class="archive-meta"><?php echo category_description(); ?></div>
+			<?php endif; ?>
+			</header><!-- .archive-header -->
+
+			<?php
+            if ( function_exists ( 'the_wp_tiles' ) ) :
+                the_wp_tiles();
+            else :
+                while ( have_posts() ) : the_post();
+
+                    /* Include the post format-specific template for the content. If you want to
+                     * this in a child theme then include a file called called content-___.php
+                     * (where ___ is the post format) and that will be used instead.
+                     */
+                    get_template_part( 'content', get_post_format() );
+
+                endwhile;
+            endif;
+
+			twentytwelve_content_nav( 'nav-below' );
+			?>
+
+		<?php else : ?>
+			<?php get_template_part( 'content', 'none' ); ?>
+		<?php endif; ?>
 
 		</div><!-- #content -->
 	</section><!-- #primary -->
@@ -88,26 +148,37 @@ Example template:
 
 == Changelog ==
 
+= 0.4 =
+
+* Use existing query when used on category page (allows for pagination!)
+
 = 0.3.6 =
+
 * Fixed various code bugs (many thanks to [maciejkurowski](http://wordpress.org/support/profile/maciejkurowski)!)
 
 = 0.3.5 =
+
 * Added options to show dates in byline
 * Some updates to the FAQ section
 
 = 0.3.4 =
+
 * Fix: tiles weren't outputted on the place of the shortcode
 
 = 0.3.3 =
+
 * Added template function the_wp_tiles(), which renders the tiles (if on posts or archive page for current category)
 
 = 0.3.2 =
+
 * Make sure that tile text background does show up when default is selected
 
 = 0.3.1 =
+
 * Added option to use random colors for tile texts (colors and opacity configurable)
 
 = 0.3 =
+
 * Added option for cut-off point small-screen / big-screen templates
 * Hide template selector if small screen template is used
 * Added all possible 'order by' parameters to the settings screen
@@ -115,13 +186,16 @@ Example template:
 * Various small fixes (thanks raubvogel)
 
 = 0.2.2 =
+
 * Added extra display options: show text and byline contents (choose whether to show categories, excerpts or nothing at all)
 
 = 0.2.1 =
+
 * Centered cut off tile images
 * Tiles can now be inserted with a greater offset from the top
 
 = 0.2 =
+
 * Fix resize bug - now rest of content is displaced properly
 * Background now always stretches to cover
 * Also checks for featured image (oops)
@@ -134,18 +208,27 @@ Example template:
 * Added wp-tiles-image-size filter to set the image size used for the tiles
 
 = 0.1.3 =
+
 * Change the way templates are handled in the shortcode - now you can choose a predefined template by its name in the shortcode (eg. `[wp-tiles template="Banner"]`).
 
 = 0.1.2 =
+
 * Fixed shortcode attribute handling
 
 = 0.1.1 =
+
 * Fixed "T_PAAMAYIM_NEKUDOTAYIM" error with PHP < 5.3.
 
 = 0.1 =
+
 * First upload.
 
 == Upgrade Notice ==
 
+= 0.4 =
+
+WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
+
 = 0.3 =
+
 In this version you can set at which point you want to switch to the small screen template, or disable this altogether.
