@@ -5,7 +5,7 @@ Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.4
+Stable tag: 0.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -147,6 +147,9 @@ get_header(); ?>
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.4.1 =
+* Updated to new version of Tiles.js
 
 = 0.4 =
 
