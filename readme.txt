@@ -161,6 +161,7 @@ get_header(); ?>
 
 * Restored the_wp_tiles() template tag behaviour to pre-0.4 for backwards compatibility
 * Added the_category_wp_tiles() and the_loop_wp_tiles() for more fine-grained control over WP Tiles in themes
+* Fixed: since 0.4 show_selector wasn't properly saved in the settings page
 
 = 0.4.1 =
 
