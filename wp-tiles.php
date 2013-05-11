@@ -131,16 +131,14 @@ if (!class_exists('WP_Tiles')) :
         }
 
         public function show_tiles ( $atts_arg ) {
-
             /**
              * Options and attributes
              */
-            $atts = $this->shortcode_atts_rec ( $this->options, $atts_arg );
-
-            if ( empty ( $atts_arg['posts_query'] ) && ! is_singular() ) {
-                global $wp_query;
-                $posts = $wp_query->get_posts();
+            if ( is_array ( $atts_arg ) && isset ( $atts_arg[0] ) && is_a ( $atts_arg[0], 'WP_Post' ) ) {
+                $posts = $atts_arg;
+                $atts = $this->options;
             } else {
+                $atts = $this->shortcode_atts_rec ( $this->options, $atts_arg );
                 $posts = get_posts( $atts['posts_query'] );
             }
 
@@ -412,34 +410,113 @@ if (!class_exists('WP_Tiles')) :
             return '';
         }
 
+        /**
+         * Allow $atts to be just the post_query as a string or object
+         *
+         * @param string|array $atts
+         * @return array Properly formatted $atts
+         * @since 0.4.2
+         */
+        public function parse_post_query_string( $atts ) {
+            if ( is_array ( $atts ) ) {
+                if ( ! isset ( $atts['posts_query'] ) ) $atts['posts_query'] = array();
+            } else {
+
+                $posts_query = array();
+                wp_parse_str ( $atts, $posts_query );
+                $atts = array ( 'posts_query' => $posts_query );
+            }
+
+            /**
+             * Backward compatibility
+             */
+            if ( isset ( $atts['posts_query']['numberposts'] ) ) {
+                $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
+                _doing_it_wrong( 'the_wp_tiles', "WP Tiles doesn't use numberposts anymore. Use posts_per_page instead.", '0.4.2' );
+            }
+
+            return $atts;
+        }
+
     }
 
     add_action('init', array('WP_Tiles', 'init'));
 
-    function the_wp_tiles ( $atts = array() ) {
-        $tiles = WP_Tiles::init();
+    /**
+     * Get the one and only true instance of WP Tiles
+     *
+     * @return WP_Tiles
+     * @since 0.4.2
+     */
+    function wp_tiles() {
+        return WP_Tiles::init();
+    }
 
-        // If category archive, show
-        if ( is_single() ) {
+    /**
+     * Show the WP Tiles. Use as template tag.
+     *      *
+     * @param string|array $atts
+     */
+    function the_wp_tiles ( $atts = array() ) {
+
+        // Allow $atts to be just the post_query as a string or object
+        $atts = wp_tiles()->parse_post_query_string( $atts );
+
+        // Backward compatibility - this is going out! Use the_category_wp_tiles instead
+        if ( ( is_category() || is_single() ) && ! isset ( $atts['posts_query']['category'] ) ) {
             $categories = get_the_category();
             $cats = array();
             foreach ( $categories as $category ) {
                 $cats[] = $category->term_id;
-            }
-            /**
-             * Allow $atts to be just the post_query as a string or object
-             */
-            if ( ! is_array ( $atts ) ) {
-                $posts_query = array();
-                wp_parse_str ( $atts, $posts_query );
-                $atts = array ( 'posts_query' => $posts_query );
             }
 
             $atts['posts_query']['category'] = implode ( ', ', $cats );
 
         }
 
-        $tiles->show_tiles ( $atts );
+        wp_tiles()->show_tiles ( $atts );
+    }
+
+    /**
+     * Show the WP Tiles for the current category
+     *
+     * @since 0.4.2
+     */
+    function the_category_wp_tiles( $atts ) {
+        $atts = wp_tiles()->parse_post_query_string( $atts );
+
+        // If is single and no cat is given, use posts from current categories
+        if ( ! is_category() && ! is_single() )
+            _doing_it_wrong( 'the_wp_tiles', "Only use the_category_wp_tiles on category pages or single posts/pages", '0.4.2' );
+        else if ( isset ( $atts['posts_query']['category'] ) && ! empty ( $atts['posts_query']['category'] ) ) {
+            _doing_it_wrong( 'the_wp_tiles', "Don't pass a category into the_category_wp_tiles(), use the_wp_tiles() instead.", '0.4.2' );
+        } else {
+            $categories = get_the_category();
+            $cats = array();
+            foreach ( $categories as $category ) {
+                $cats[] = $category->term_id;
+            }
+
+            $atts['posts_query']['category'] = implode ( ', ', $cats );
+        }
+
+        wp_tiles()->show_tiles ( $atts );
+
+    }
+
+    /**
+     * Show the posts in the current query.
+     *
+     * Can be used to replace the loop.
+     *
+     * @since 0.4.2
+     */
+    function the_loop_wp_tiles() {
+
+        global $wp_query;
+        $posts = $wp_query->get_posts();
+
+        wp_tiles()->show_tiles ( $posts );
     }
 
 endif;
