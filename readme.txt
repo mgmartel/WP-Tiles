@@ -5,7 +5,7 @@ Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -60,11 +60,20 @@ function change_tile_image_size( $image_size ) {
 
 = Can I show tiles in my templates, for example on in the category archives? =
 
-To show WP Tiles in your templates, simply use the provided the_wp_tiles() function. If you do this on a single page or a category archive, it will render all the tiles from the current category/categories.
+To show WP Tiles in your templates, three template tags are available:
 
-N.B.: this uses the category query setup by WordPress, so you can't pass any post_query attributes to the plugin. Set up the number of posts in your WP settings ( WP-admin -> Settings -> Reading -> "Blog pages show at most" ).
+`the_wp_tiles( $atts )`
+This works the same as the shortcode. Pass the same arguments to the function as you would to the shortcode as an array. (The settings page shows you hints on how to do this)
 
-Pagination works the same as it would in your other theme files. For help see [Pagination in the WordPress Codex](https://codex.wordpress.org/Pagination). (Tip: use your current category.php and just replace `while ( have_posts() ) : the_post(); [...] endwhile;` by `the_wp_tiles()`)
+`the_category_wp_tiles( $atts )`
+Works the same as the_wp_tiles(), but shows posts from the current categories (for use on single posts and category pages).
+
+`the_loop_wp_tiles()`
+Can be used instead of the loop. Shows all posts that would be shown when normally using the loop.
+
+N.B.: you can't pass any post_query attributes to `the_loop_wp_tiles()`. Set up the number of posts in your WP settings ( WP-admin -> Settings -> Reading -> "Blog pages show at most" ).
+
+With `the_loop_wp_tiles()`, pagination works the same as it would in your other theme files. For help see [Pagination in the WordPress Codex](https://codex.wordpress.org/Pagination). (Tip: use your current category.php and just replace `while ( have_posts() ) : the_post(); [...] endwhile;` by `the_loop_wp_tiles()`)
 
 Example basic template:
 
@@ -73,7 +82,7 @@ Example basic template:
 	<section id="primary" class="site-content">
 		<div id="content" role="main">
 
-            <?php if ( function_exists ( 'the_wp_tiles' ) ) the_wp_tiles(); ?>
+            <?php if ( function_exists ( 'the_loop_wp_tiles' ) ) the_loop_wp_tiles(); ?>
 
 		</div><!-- #content -->
 	</section><!-- #primary -->
@@ -110,8 +119,8 @@ get_header(); ?>
 			</header><!-- .archive-header -->
 
 			<?php
-            if ( function_exists ( 'the_wp_tiles' ) ) :
-                the_wp_tiles();
+            if ( function_exists ( 'the_loop_wp_tiles' ) ) :
+                the_loop_wp_tiles();
             else :
                 while ( have_posts() ) : the_post();
 
@@ -148,7 +157,13 @@ get_header(); ?>
 
 == Changelog ==
 
+= 0.4.2 =
+
+* Restored the_wp_tiles() template tag behaviour to pre-0.4 for backwards compatibility
+* Added the_category_wp_tiles() and the_loop_wp_tiles() for more fine-grained control over WP Tiles in themes
+
 = 0.4.1 =
+
 * Updated to new version of Tiles.js
 
 = 0.4 =
@@ -227,6 +242,10 @@ get_header(); ?>
 * First upload.
 
 == Upgrade Notice ==
+
+= 0.4.2 =
+
+The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
 
 = 0.4 =
 
