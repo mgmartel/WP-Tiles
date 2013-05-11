@@ -264,6 +264,8 @@ class WP_Tiles_Settings_Config
 
         $input['templates']['small_screen_template'] = str_replace ( "\r", "", $input['templates']['small_screen_template'] );
 
+        if ( 'true' != $input['templates']['show_selector'] )
+            $input['templates']['show_selector'] = "";
         return $input;
     }
 
