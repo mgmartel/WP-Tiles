@@ -5,7 +5,7 @@ Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.4.2
+Stable tag: 0.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -156,6 +156,10 @@ get_header(); ?>
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.4.3 =
+
+* Fix bug where numberposts argument doesn't work from the settings and the shortcode
 
 = 0.4.2 =
 
