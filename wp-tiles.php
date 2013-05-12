@@ -139,6 +139,9 @@ if (!class_exists('WP_Tiles')) :
                 $atts = $this->options;
             } else {
                 $atts = $this->shortcode_atts_rec ( $this->options, $atts_arg );
+                if ( isset ( $atts['posts_query']['numberposts'] ) && ! empty ( $atts['posts_query']['numberposts'] ) )
+                    $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
+
                 $posts = get_posts( $atts['posts_query'] );
             }
 
