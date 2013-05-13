@@ -60,6 +60,9 @@ $wptiles_defaults = array(
                                  "Plain" => " . . . . . ",
 
                              "Condensed" => " . . . . . . . . ",
+                             // Meta:
+                             "option_is_array"
+                                         => 'exclusive'
 
                                     ),
                     "small_screen_template" =>
