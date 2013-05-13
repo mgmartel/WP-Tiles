@@ -90,7 +90,7 @@ if (!class_exists('WP_Tiles')) :
 
             $wptiles_options = get_option( 'wp-tiles-options' );
             $this->options = $this->shortcode_atts_rec( $wptiles_defaults, $wptiles_options);
-if ( ! is_admin() )  {var_dump ($wptiles_defaults); var_dump ($wptiles_options); var_dump ($this->options); die; }
+
             add_shortcode( 'wp-tiles', array ( &$this, 'shortcode' ) );
         }
 
