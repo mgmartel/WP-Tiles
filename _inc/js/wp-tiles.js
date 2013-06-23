@@ -92,6 +92,7 @@ var debounce = function(func, wait, immediate) {
 
         grid.isDirty = true;
         grid.resize();
+        grid.cellPadding = parseInt(display_opts.cellPadding);
 
         var posts = tiledata.posts;
         grid.updateTiles(posts);
