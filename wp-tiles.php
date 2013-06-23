@@ -242,7 +242,7 @@ if (!class_exists('WP_Tiles')) :
         protected function enqueue_scripts () {
             if (! is_admin()) {
                 wp_enqueue_script("jquery");
-                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array ( "jquery" ),  "2012-08-08", true );
+                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array ( "jquery" ),  "2013-05-18", true );
                 wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js',  array ( "tilesjs" ), WPTILES_VERSION, true );
             }
         }
