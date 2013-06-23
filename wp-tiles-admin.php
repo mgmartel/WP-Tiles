@@ -95,12 +95,12 @@ class WP_Tiles_Settings_Config
         require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
         $wptiles_options = get_option( self::$option_name );
-        $wptiles_set = shortcode_atts( $wptiles_defaults, $wptiles_options);
+        $wptiles_set = wp_tiles()->options;
 
         $sections = array(
             'display' => array (
                 'title'         => __("Display", 'wp-tiles'),
-                'description'   => __("What information is displayed on the tiles.", 'wp-tiles'),
+                'description'   => __("What information is displayed on the tiles. Change these options in the shortcode, by passing them as into the <code>display</code> attribute. For example <code>[wp-tiles display='cellPadding=0&bylineOpacity=0.3']</code>", 'wp-tiles'),
                 'fields'        => array (
                     'text'          => array (
                         'label'         => __("Text",'wp-tiles'),
@@ -121,6 +121,11 @@ class WP_Tiles_Settings_Config
                         'label'         => __("Text Background Opacity", 'wp-tiles'),
                         'length'        => 3,
                         'description'   => __ ("Opacity for the backgroundcolor set above. Value between 0 and 1. 1 being opaque, 0 transparent.", 'wp-tiles')
+                    ),
+                    'cellPadding' =>  array (
+                        'label'         => __("Padding between tiles", 'wp-tiles'),
+                        'length'        => 3,
+                        'description'   => __ ("Change this value to set the padding between the tiles.", 'wp-tiles')
                     )
                 ),
             ),
