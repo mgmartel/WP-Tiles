@@ -1,11 +1,11 @@
 === WP Tiles ===
 Contributors: Mike_Cowobo
 Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
-Author URI: http://trenvo.com/
+Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.4.4
+Stable tag: 0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,7 +15,7 @@ WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts
 
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
-See the plugin in action on the frontpage of [Trenvo.com](http://trenvo.com/) and [CreatedByDanielle.com](http://createdbydanielle.com).
+See the plugin in action on the frontpage of [CreatedByDanielle.com](http://createdbydanielle.com).
 
 *If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).*
 
@@ -157,6 +157,11 @@ get_header(); ?>
 
 == Changelog ==
 
+= 0.5 =
+* Updated to new version of Tiles.js
+* Added customizable cellpadding option
+* Improved admin documentation
+
 = 0.4.4 =
 
 * Fix loading of templates from settings instead of from defaults
@@ -252,14 +257,18 @@ get_header(); ?>
 
 == Upgrade Notice ==
 
+= 0.5 =
+
+* You can now customize the padding between cells.
+
 = 0.4.2 =
 
-The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
+* The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
 
 = 0.4 =
 
-WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
+* WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
 
 = 0.3 =
 
-In this version you can set at which point you want to switch to the small screen template, or disable this altogether.
+* In this version you can set at which point you want to switch to the small screen template, or disable this altogether.

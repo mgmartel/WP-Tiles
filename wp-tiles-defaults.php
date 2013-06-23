@@ -6,6 +6,7 @@ $wptiles_defaults = array(
                     "byline"        => "cats",
                     "bylineBg"      => "default",
                     "bylineOpacity" => '0.8',
+                    "cellPadding"   => 10
                 ),
                 // Post query
                 "posts_query"   => array (
