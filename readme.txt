@@ -5,7 +5,7 @@ Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.5
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -157,7 +157,13 @@ get_header(); ?>
 
 == Changelog ==
 
+= 0.5.1 =
+
+* Made all template functions pluggable
+* Fixed dates showing date of parent post
+
 = 0.5 =
+
 * Updated to new version of Tiles.js
 * Added customizable cellpadding option
 * Improved admin documentation
