@@ -276,13 +276,13 @@ if (!class_exists('WP_Tiles')) :
                         $byline = $this->get_the_excerpt( $post->post_content, $post->post_excerpt );
                         break;
                     case 'date1' :
-                        $byline = get_the_date();
+                        $byline = $this->get_the_date( $post );
                         break;
                     case 'date2' :
-                        $byline = get_the_date('d-m-Y');
+                        $byline = $this->get_the_date( $post, 'd-m-Y' );
                         break;
                     case 'date3' :
-                        $byline = get_the_date('m-d-Y');
+                        $byline = $this->get_the_date( $post, 'm-d-Y' );
                         break;
                     case 'cats' :
                     default :
@@ -306,6 +306,17 @@ if (!class_exists('WP_Tiles')) :
             }
 
             return apply_filters ( 'wp-tiles-data', $data, $posts, $colors, $this );
+        }
+
+        private function get_the_date( $post, $d = '' ) {
+            $the_date = '';
+
+            if ( '' == $d )
+                $the_date .= mysql2date(get_option('date_format'), $post->post_date);
+            else
+                $the_date .= mysql2date($d, $post->post_date);
+
+            return apply_filters('get_the_date', $the_date, $d);
         }
 
         private function HexToRGB($hex) {
@@ -380,7 +391,7 @@ if (!class_exists('WP_Tiles')) :
                 $src = wp_get_attachment_image_src ( $images->ID, $size = $tile_image_size );
                 return $src[0];
             }
-            
+
             if ( ! empty ( $post->post_content ) ) {
                 $xpath = new DOMXPath( @DOMDocument::loadHTML( $post->post_content ) );
                 $src = $xpath->evaluate( "string(//img/@src)" );
