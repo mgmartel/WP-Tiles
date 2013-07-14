@@ -1,7 +1,8 @@
 <?php
-if (!class_exists('WP_Tiles')) :
+if ( !class_exists( 'WP_Tiles' ) ) :
 
-    class WP_Tiles    {
+    class WP_Tiles
+    {
 
         /**
          * Store the current tiles id, in case we add more to one page
@@ -20,7 +21,7 @@ if (!class_exists('WP_Tiles')) :
          * Data to put to the page at the end of the day
          * @var array
          */
-        protected $data = array();
+        protected $data = array( );
 
         /**
          * Creates an instance of the WP_Tiles class
@@ -28,12 +29,12 @@ if (!class_exists('WP_Tiles')) :
          * @return WP_Tiles object
          * @since 0.1
          * @static
-        */
+         */
         public static function &init() {
             static $instance = false;
 
-            if (!$instance) {
-                load_plugin_textdomain('wp-tiles', false, WPTILES_DIR . '/languages/');
+            if ( !$instance ) {
+                load_plugin_textdomain( 'wp-tiles', false, WPTILES_DIR . '/languages/' );
                 $instance = new WP_Tiles;
             }
 
@@ -50,94 +51,94 @@ if (!class_exists('WP_Tiles')) :
             require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
             $wptiles_options = get_option( 'wp-tiles-options' );
-            $this->options = $this->shortcode_atts_rec( $wptiles_defaults, $wptiles_options);
+            $this->options   = $this->shortcode_atts_rec( $wptiles_defaults, $wptiles_options );
 
-            add_shortcode( 'wp-tiles', array ( &$this, 'shortcode' ) );
+            add_shortcode( 'wp-tiles', array( &$this, 'shortcode' ) );
         }
 
-            /**
-             * PHP4
-             *
-             * @since 0.1
-             */
-            public function WP_Tiles() {
-                $this->__construct();
-            }
+        /**
+         * PHP4
+         *
+         * @since 0.1
+         */
+        public function WP_Tiles() {
+            $this->__construct();
+        }
 
         public function shortcode( $atts ) {
             ob_start();
 
-            $this->show_tiles ( $atts );
+            $this->show_tiles( $atts );
             $out = ob_get_contents();
             ob_end_clean();
 
             return $out;
         }
 
-        protected function shortcode_atts_rec ( $options, $atts ) {
-            if ( is_array ( $atts ) ) {
+        protected function shortcode_atts_rec( $options, $atts ) {
+            if ( is_array( $atts ) ) {
                 // Don't continue if the option itself is an array
-                if ( isset ( $options['option_is_array'] ) ) {
+                if ( isset( $options['option_is_array'] ) ) {
                     $option_is_array = $options['option_is_array'];
-                    unset ( $options['option_is_array'] );
+                    unset( $options['option_is_array'] );
 
                     if ( $option_is_array ) {
                         if ( 'inclusive' == $option_is_array )
-                            $atts = array_merge ( $atts, $options );
+                            $atts = array_merge( $atts, $options );
 
                         return $atts;
                     }
                 }
 
                 foreach ( $atts as $k => &$att ) {
-                    if ( is_array ( $att )
-                            && array_keys( $atts ) !== range( 0, count( $atts ) - 1 ) // Make sure array is associative
-                        ) {
-                        $att = $this->shortcode_atts_rec ( $options[$k], $att );
-                    } elseif ( strpos ( $att, '=' ) ) {
-                        $atts_parsed = array();
+                    if ( is_array( $att ) && array_keys( $atts ) !== range( 0, count( $atts ) - 1 ) // Make sure array is associative
+                    ) {
+                        $att = $this->shortcode_atts_rec( $options[$k], $att );
+                    } elseif ( strpos( $att, '=' ) ) {
+                        $atts_parsed = array( );
                         wp_parse_str( html_entity_decode( $att ), $atts_parsed );
-                        if ( ! empty ( $atts_parsed ) ) $att = $atts_parsed;
-                        if ( is_array ( $options[$k] ) )
-                            $att = shortcode_atts ($options[$k] , $att);
+                        if ( !empty( $atts_parsed ) )
+                            $att         = $atts_parsed;
+                        if ( is_array( $options[$k] ) )
+                            $att         = shortcode_atts( $options[$k], $att );
                     }
                 }
             }
-            return shortcode_atts ( $options, $atts );
-
+            return shortcode_atts( $options, $atts );
         }
 
-        public function show_tiles ( $atts_arg ) {
+        public function show_tiles( $atts_arg ) {
             /**
              * Options and attributes
              */
-            if ( is_array ( $atts_arg ) && isset ( $atts_arg[0] ) && is_a ( $atts_arg[0], 'WP_Post' ) ) {
+            if ( is_array( $atts_arg ) && isset( $atts_arg[0] ) && is_a( $atts_arg[0], 'WP_Post' ) ) {
                 $posts = $atts_arg;
-                $atts = $this->options;
+                $atts  = $this->options;
             } else {
-                $atts = $this->shortcode_atts_rec ( $this->options, $atts_arg );
-                if ( isset ( $atts['posts_query']['numberposts'] ) && ! empty ( $atts['posts_query']['numberposts'] ) )
+                $atts                                  = $this->shortcode_atts_rec( $this->options, $atts_arg );
+                if ( isset( $atts['posts_query']['numberposts'] ) && !empty( $atts['posts_query']['numberposts'] ) )
                     $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
 
                 $posts = get_posts( $atts['posts_query'] );
             }
 
-            if ( empty ( $posts ) ) return;
+            if ( empty( $posts ) )
+                return;
 
             $data = $this->extract_data( $posts, $atts['display'], $atts['colors'] );
 
-            if ( ! empty ( $atts['template'] ) && ! empty ( $atts['templates']['templates'][ $atts['template'] ] ) ) {
-                $templates = array ( $atts['templates']['templates'][ $atts['template'] ] );
+            if ( !empty( $atts['template'] ) && !empty( $atts['templates']['templates'][$atts['template']] ) ) {
+                $templates = array( $atts['templates']['templates'][$atts['template']] );
             } else {
                 $templates = $atts['templates']['templates'];
             }
             foreach ( $templates as &$template ) {
-                $template = explode ( "\n", $template );
+                $template = explode( "\n", $template );
             }
 
-            $small_screen_template = explode ( "\n", $atts['templates']['small_screen_template'] );
+            $small_screen_template = explode( "\n", $atts['templates']['small_screen_template'] );
 
-            $display_options = (array) $atts['display'];
+            $display_options                       = (array) $atts['display'];
             $display_options['small_screen_width'] = intval( $atts['templates']['small_screen_width'] );
 
             /**
@@ -147,9 +148,9 @@ if (!class_exists('WP_Tiles')) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data );
+            $this->set_data( $wptiles_id, $templates, $small_screen_template, $display_options, $data );
             // ... and then process that array in the footer
-            add_action ( 'wp_footer', array ( &$this, "add_data" ), 1 );
+            add_action( 'wp_footer', array( &$this, "add_data" ), 1 );
 
             /**
              * We are a go, so enqueue styles and scripts
@@ -157,36 +158,36 @@ if (!class_exists('WP_Tiles')) :
             $this->enqueue_scripts();
             $this->enqueue_styles();
 
-            $show_selector = ( ! empty ( $atts['show_selector'] ) ) ? $atts['show_selector'] : $atts['templates']['show_selector'];
+            $show_selector = (!empty( $atts['show_selector'] ) ) ? $atts['show_selector'] : $atts['templates']['show_selector'];
 
             /**
              * Time to start rendering our template
              */
             ?>
 
-            <?php if ( $show_selector == 'true' && count ( $templates ) > 1 ) : ?>
+            <?php if ( $show_selector == 'true' && count( $templates ) > 1 ) : ?>
 
-            <div id="<?php echo $wptiles_id; ?>-templates" class="tile-templates">
+                <div id="<?php echo $wptiles_id; ?>-templates" class="tile-templates">
 
-                <ul class="template-selector">
+                    <ul class="template-selector">
 
-                    <?php foreach ( $templates as $k => $v ) : ?>
+                <?php foreach ( $templates as $k => $v ) : ?>
 
-                        <li class="template"><?php echo $k; ?></li>
+                            <li class="template"><?php echo $k; ?></li>
 
-                    <?php endforeach; ?>
+                <?php endforeach; ?>
 
-                </ul>
+                    </ul>
 
                 <?php if ( $wp_query->max_num_pages > 1 ) : ?>
-                    <nav id="<?php echo $wptiles_id; ?>-pagination" class="navigation" role="navigation">
-                        <h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-                        <div class="nav-previous alignleft"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentytwelve' ) ); ?></div>
-                        <div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'twentytwelve' ) ); ?></div>
-                    </nav><!-- #<?php echo $html_id; ?> .navigation -->
+                        <nav id="<?php echo $wptiles_id; ?>-pagination" class="navigation" role="navigation">
+                            <h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
+                            <div class="nav-previous alignleft"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentytwelve' ) ); ?></div>
+                            <div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'twentytwelve' ) ); ?></div>
+                        </nav><!-- #<?php echo $html_id; ?> .navigation -->
                 <?php endif; ?>
 
-            </div>
+                </div>
 
             <?php endif; ?>
 
@@ -197,31 +198,30 @@ if (!class_exists('WP_Tiles')) :
             </div>
 
             <?php
-
         }
 
-        protected function enqueue_scripts () {
-            if (! is_admin()) {
-                wp_enqueue_script("jquery");
-                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array ( "jquery" ),  "2013-05-18", true );
-                wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js',  array ( "tilesjs" ), WPTILES_VERSION, true );
+        protected function enqueue_scripts() {
+            if ( !is_admin() ) {
+                wp_enqueue_script( "jquery" );
+                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array( "jquery" ), "2013-05-18", true );
+                wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js', array( "tilesjs" ), WPTILES_VERSION, true );
             }
         }
 
-        protected function set_data ( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
-            $rowTemplates = array_values ( $templates );
+        protected function set_data( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
+            $rowTemplates          = array_values( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
-            $this->data[$wptiles_id] = array (
-                "id" => $wptiles_id,
-                "rowTemplates" => $rowTemplates,
+            $this->data[$wptiles_id] = array(
+                "id"              => $wptiles_id,
+                "rowTemplates"    => $rowTemplates,
                 "display_options" => $display_options,
-                "posts" => $data,
+                "posts"           => $data,
             );
         }
 
-        public function add_data () {
-            wp_localize_script('wp-tiles', 'wptilesdata', $this->data );
+        public function add_data() {
+            wp_localize_script( 'wp-tiles', 'wptilesdata', $this->data );
         }
 
         /**
@@ -230,21 +230,21 @@ if (!class_exists('WP_Tiles')) :
         protected function enqueue_styles() {
             $stylesheet_name = "wp-tiles.css";
 
-            if ( file_exists(STYLESHEETPATH . '/' . $stylesheet_name) ) {
+            if ( file_exists( STYLESHEETPATH . '/' . $stylesheet_name ) ) {
                 $located = get_stylesheet_directory_uri() . '/' . $stylesheet_name;
-            } else if ( file_exists(STYLESHEETPATH . '/inc/css/' . $stylesheet_name) ) {
+            } else if ( file_exists( STYLESHEETPATH . '/inc/css/' . $stylesheet_name ) ) {
                 $located = get_stylesheet_directory_uri() . '/inc/css/' . $stylesheet_name;
-            } else if ( file_exists(STYLESHEETPATH . '/inc/' . $stylesheet_name) ) {
+            } else if ( file_exists( STYLESHEETPATH . '/inc/' . $stylesheet_name ) ) {
                 $located = get_stylesheet_directory_uri() . '/inc/' . $stylesheet_name;
-            } else if ( file_exists(STYLESHEETPATH . '/css/' . $stylesheet_name) ) {
+            } else if ( file_exists( STYLESHEETPATH . '/css/' . $stylesheet_name ) ) {
                 $located = get_stylesheet_directory_uri() . '/css/' . $stylesheet_name;
-            } else if ( file_exists(TEMPLATEPATH . '/' . $stylesheet_name) ) {
+            } else if ( file_exists( TEMPLATEPATH . '/' . $stylesheet_name ) ) {
                 $located = get_template_directory_uri() . '/' . $stylesheet_name;
-            } else if ( file_exists(TEMPLATEPATH . '/inc/css/' . $stylesheet_name) ) {
+            } else if ( file_exists( TEMPLATEPATH . '/inc/css/' . $stylesheet_name ) ) {
                 $located = get_template_directory_uri() . '/inc/css/' . $stylesheet_name;
-            } else if ( file_exists(TEMPLATEPATH . '/inc/' . $stylesheet_name) ) {
+            } else if ( file_exists( TEMPLATEPATH . '/inc/' . $stylesheet_name ) ) {
                 $located = get_template_directory_uri() . '/inc/' . $stylesheet_name;
-            } else if ( file_exists(TEMPLATEPATH . '/css/' . $stylesheet_name) ) {
+            } else if ( file_exists( TEMPLATEPATH . '/css/' . $stylesheet_name ) ) {
                 $located = get_template_directory_uri() . '/css/' . $stylesheet_name;
             } else {
                 $located = WPTILES_INC_URL . '/css/wp-tiles.css';
@@ -253,21 +253,22 @@ if (!class_exists('WP_Tiles')) :
         }
 
         protected function extract_data( $posts, $display_options, $colors ) {
-            $data = array();
+            $data = array( );
 
-            if ( is_array ( $colors ) ) $colors = $colors['colors'];
+            if ( is_array( $colors ) )
+                $colors = $colors['colors'];
             else {
-                $delimiter = ( strpos ( $colors, "," ) ) ? ',' : "\n";
-                $colors = explode ( $delimiter, str_replace(" ", "", $colors ) );
+                $delimiter = ( strpos( $colors, "," ) ) ? ',' : "\n";
+                $colors    = explode( $delimiter, str_replace( " ", "", $colors ) );
             }
-            $colors = apply_filters ( "wp-tiles-colors", array_filter ( $colors ) );
+            $colors = apply_filters( "wp-tiles-colors", array_filter( $colors ) );
 
-            $display_options = apply_filters ( "wp-tiles-display_options", $display_options );
+            $display_options = apply_filters( "wp-tiles-display_options", $display_options );
 
             $hideByline = ( 'show' == $display_options['text'] ) ? false : true;
 
             foreach ( $posts as $post ) {
-                $hideByline = apply_filters ( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
+                $hideByline = apply_filters( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
                 switch ( $display_options['byline'] ) {
                     case 'nothing' :
                         $byline = '';
@@ -286,120 +287,139 @@ if (!class_exists('WP_Tiles')) :
                         break;
                     case 'cats' :
                     default :
-                        $byline = wp_get_post_categories( $post->ID, array ( "fields" => "names" ) );
+                        $byline = wp_get_post_categories( $post->ID, array( "fields" => "names" ) );
                         break;
                 }
 
-                $color = $colors[ array_rand( $colors ) ];
-                $data[] = array (
-                    "id"        => $post->ID,
-                    "title"     => $post->post_title,
-                    "url"       => get_permalink( $post->ID ),
-                    "byline"    => $byline,
-                    "img"       => $this->get_first_image ( $post ),
-                    "color"     => $color,
+                $color  = $colors[array_rand( $colors )];
+                $data[] = array(
+                    "id"          => $post->ID,
+                    "title"       => $post->post_title,
+                    "url"         => get_permalink( $post->ID ),
+                    "byline"      => $byline,
+                    "img"         => $this->get_first_image( $post ),
+                    "color"       => $color,
                     "bylineColor"
-                                => $this->HexToRGBA ( $color, $display_options['bylineOpacity'], true ),
-                    "hideByline"=> $hideByline
+                    => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
+                    "hideByline"  => $hideByline
                 );
-
             }
 
-            return apply_filters ( 'wp-tiles-data', $data, $posts, $colors, $this );
+            return apply_filters( 'wp-tiles-data', $data, $posts, $colors, $this );
         }
 
         private function get_the_date( $post, $d = '' ) {
             $the_date = '';
 
             if ( '' == $d )
-                $the_date .= mysql2date(get_option('date_format'), $post->post_date);
+                $the_date .= mysql2date( get_option( 'date_format' ), $post->post_date );
             else
-                $the_date .= mysql2date($d, $post->post_date);
+                $the_date .= mysql2date( $d, $post->post_date );
 
-            return apply_filters('get_the_date', $the_date, $d);
+            return apply_filters( 'get_the_date', $the_date, $d );
         }
 
-        private function HexToRGB($hex) {
-            $hex = ereg_replace("#", "", $hex);
-            $color = array();
+        private function HexToRGB( $hex ) {
+            $hex   = ereg_replace( "#", "", $hex );
+            $color = array( );
 
-            if(strlen($hex) == 3) {
-                $color['r'] = hexdec(substr($hex, 0, 1) . $r);
-                $color['g'] = hexdec(substr($hex, 1, 1) . $g);
-                $color['b'] = hexdec(substr($hex, 2, 1) . $b);
-            }
-            else if(strlen($hex) == 6) {
-                $color['r'] = hexdec(substr($hex, 0, 2));
-                $color['g'] = hexdec(substr($hex, 2, 2));
-                $color['b'] = hexdec(substr($hex, 4, 2));
+            if ( strlen( $hex ) == 3 ) {
+                $color['r'] = hexdec( substr( $hex, 0, 1 ) . $r );
+                $color['g'] = hexdec( substr( $hex, 1, 1 ) . $g );
+                $color['b'] = hexdec( substr( $hex, 2, 1 ) . $b );
+            } else if ( strlen( $hex ) == 6 ) {
+                $color['r'] = hexdec( substr( $hex, 0, 2 ) );
+                $color['g'] = hexdec( substr( $hex, 2, 2 ) );
+                $color['b'] = hexdec( substr( $hex, 4, 2 ) );
             }
 
             return $color;
         }
 
         private function HexToRGBA( $hex, $alpha, $css = false ) {
-            $rgba = $this->HexToRGB ( $hex );
+            $rgba      = $this->HexToRGB( $hex );
             $rgba['a'] = $alpha;
-            if ( ! $css )
+            if ( !$css )
                 return $rgba;
 
             return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
         }
 
-        function get_the_excerpt($text, $excerpt) {
-            if ($excerpt) return $excerpt;
+        function get_the_excerpt( $text, $excerpt ) {
+            if ( $excerpt )
+                return $excerpt;
 
             $text = strip_shortcodes( $text );
 
-            $text = apply_filters('the_content', $text);
-            $text = str_replace(']]>', ']]&gt;', $text);
-            $text = strip_tags($text);
-            $excerpt_length = apply_filters('excerpt_length', 55);
-            $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
-            $words = preg_split("/[\n\r\t ]+/", $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
-            if ( count($words) > $excerpt_length ) {
-                    array_pop($words);
-                    $text = implode(' ', $words);
-                    $text = $text . $excerpt_more;
+            $text           = apply_filters( 'the_content', $text );
+            $text           = str_replace( ']]>', ']]&gt;', $text );
+            $text           = strip_tags( $text );
+            $excerpt_length = apply_filters( 'excerpt_length', 55 );
+            $excerpt_more   = apply_filters( 'excerpt_more', ' ' . '[...]' );
+            $words          = preg_split( "/[\n\r\t ]+/", $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY );
+            if ( count( $words ) > $excerpt_length ) {
+                array_pop( $words );
+                $text = implode( ' ', $words );
+                $text = $text . $excerpt_more;
             } else {
-                    $text = implode(' ', $words);
+                $text = implode( ' ', $words );
             }
 
-            return apply_filters('wp_trim_excerpt', $text, $excerpt);
+            return apply_filters( 'wp_trim_excerpt', $text, $excerpt );
         }
 
-        protected function has_excerpt ( $post ) {
-            return ! empty( $post->post_excerpt );
+        protected function has_excerpt( $post ) {
+            return !empty( $post->post_excerpt );
         }
 
-        public function get_first_image ( $post ) {
-            $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
-
-            if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-                $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
-                return $image[0];
-            }
-
-            $images = get_children ( array (
-                'post_parent'    => $post->ID,
-                'numberposts'    => 1,
-                'post_mime_type' =>'image'
-            ) );
-
-            if( ! empty ( $images ) ) {
-                $images = current ( $images );
-                $src = wp_get_attachment_image_src ( $images->ID, $size = $tile_image_size );
-                return $src[0];
-            }
-
-            if ( ! empty ( $post->post_content ) ) {
-                $xpath = new DOMXPath( @DOMDocument::loadHTML( $post->post_content ) );
-                $src = $xpath->evaluate( "string(//img/@src)" );
+        /**
+         * Returns the first image
+         *
+         * Uses cache. Plugins can hijack this method by hooking into 'pre_wp_tiles_image'.
+         * @param WP_Post $post
+         * @return string Image url
+         */
+        public function get_first_image( $post ) {
+            // Allow plugins to hijack image loading
+            $src = apply_filters( 'pre_wp_tiles_image', false, $post );
+            if ( false !== $src )
                 return $src;
+
+            if ( !$src = wp_cache_get( 'wp_tiles_image_' . $post->ID, 'wp-tiles' ) ) {
+                $src = $this->_find_the_image( $post );
+                wp_cache_set( 'wp_tiles_image_' . $post->ID, $src, 'wp-tiles' );
             }
 
-            return '';
+            return $src;
         }
+
+            private function _find_the_image( $post ) {
+                $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
+
+                if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
+                    $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
+                    return $image[0];
+                }
+
+                $images = get_children( array(
+                    'post_parent'    => $post->ID,
+                    'numberposts'    => 1,
+                    'post_mime_type' => 'image'
+                        ) );
+
+                if ( !empty( $images ) ) {
+                    $images = current( $images );
+                    $src    = wp_get_attachment_image_src( $images->ID, $size   = $tile_image_size );
+                    return $src[0];
+                }
+
+                if ( !empty( $post->post_content ) ) {
+                    $xpath = new DOMXPath( @DOMDocument::loadHTML( $post->post_content ) );
+                    $src   = $xpath->evaluate( "string(//img/@src)" );
+                    return $src;
+                }
+                return '';
+            }
 
         /**
          * Allow $atts to be just the post_query as a string or object
@@ -409,19 +429,20 @@ if (!class_exists('WP_Tiles')) :
          * @since 0.4.2
          */
         public function parse_post_query_string( $atts ) {
-            if ( is_array ( $atts ) ) {
-                if ( ! isset ( $atts['posts_query'] ) ) $atts['posts_query'] = array();
+            if ( is_array( $atts ) ) {
+                if ( !isset( $atts['posts_query'] ) )
+                    $atts['posts_query'] = array( );
             } else {
 
-                $posts_query = array();
-                wp_parse_str ( $atts, $posts_query );
-                $atts = array ( 'posts_query' => $posts_query );
+                $posts_query = array( );
+                wp_parse_str( $atts, $posts_query );
+                $atts        = array( 'posts_query' => $posts_query );
             }
 
             /**
              * Backward compatibility
              */
-            if ( isset ( $atts['posts_query']['numberposts'] ) ) {
+            if ( isset( $atts['posts_query']['numberposts'] ) ) {
                 $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
                 _doing_it_wrong( 'the_wp_tiles', "WP Tiles doesn't use numberposts anymore. Use posts_per_page instead.", '0.4.2' );
             }
@@ -431,7 +452,7 @@ if (!class_exists('WP_Tiles')) :
 
     }
 
-    add_action('init', array('WP_Tiles', 'init'));
+    add_action( 'init', array( 'WP_Tiles', 'init' ) );
 
     /**
      * Get the one and only true instance of WP Tiles
@@ -442,5 +463,7 @@ if (!class_exists('WP_Tiles')) :
     function wp_tiles() {
         return WP_Tiles::init();
     }
+
+
 
 endif;
