@@ -5,7 +5,7 @@ Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.1
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -146,6 +146,37 @@ get_header(); ?>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>`
 
+= How can I change what image is used for the tiles? =
+
+There's a filter for that! Changing how the first image is loaded works like this:
+
+`add_filter( 'pre_wp_tiles_image', 'my_tiles_first_image_function', 10, 2 );
+function my_tiles_first_image_function( $src, $post ) {
+    // Your own code that handles which image is returned
+    return $src;
+}`
+
+For example, to enforce that only the featured image is loaded (and never an image from inside a post):
+
+`add_filter( 'pre_wp_tiles_image', 'my_tiles_first_image_function', 10, 2 );
+function my_tiles_first_image_function( $src, $post ) {
+    $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
+
+    $images = get_children( array(
+        'post_parent'    => $post->ID,
+        'numberposts'    => 1,
+        'post_mime_type' =>'image'
+    ) );
+
+    if( !empty( $images ) ) {
+        $images = current( $images );
+        $src = wp_get_attachment_image_src( $images->ID, $size = $tile_image_size );
+        return $src[0];
+    }
+
+    return '';
+}`
+
 == Screenshots ==
 
 1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
@@ -156,6 +187,12 @@ get_header(); ?>
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.5.2 =
+
+* Use cache when finding first image
+* Made first image pluggable
+* Allow multiple post types to be queried by using post_type{}=xxx&post_type{}=xxx in the shortcode
 
 = 0.5.1 =
 
