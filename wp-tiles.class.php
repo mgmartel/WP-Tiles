@@ -394,6 +394,15 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             return $src;
         }
 
+            /**
+             * Finds the first relevant image to a post
+             *
+             * Searches for a featured image, then the first attached image, then the first image in the source.
+             * 
+             * @param WP_Post $post
+             * @return string Source
+             * @sice 0.5.2
+             */
             private function _find_the_image( $post ) {
                 $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
 

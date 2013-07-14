@@ -1,6 +1,7 @@
 Currently, all future features have no target version attached to them. Whoever wants to can add them or if there are enough requests, some features will get priority:
-* Filter by Post Category
+* Filter by Post Category (on the front end)
 * Custom predefined styles and animations
-* Better admin screns
+* Better admin screens
 * Shortcode builder
-* 
+* Loading indicator when tiles are loading
+* Custom content on the tiles
