@@ -94,8 +94,9 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                     if ( is_array( $att ) && array_keys( $atts ) !== range( 0, count( $atts ) - 1 ) // Make sure array is associative
                     ) {
                         $att = $this->shortcode_atts_rec( $options[$k], $att );
-                    } elseif ( strpos( $att, '=' ) ) {
+                    } elseif ( ! is_array( $att ) && strpos( $att, '=' ) ) {
                         $atts_parsed = array( );
+                        $att = str_replace( '{}', '[]', $att );
                         wp_parse_str( html_entity_decode( $att ), $atts_parsed );
                         if ( !empty( $atts_parsed ) )
                             $att         = $atts_parsed;
@@ -115,7 +116,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                 $posts = $atts_arg;
                 $atts  = $this->options;
             } else {
-                $atts                                  = $this->shortcode_atts_rec( $this->options, $atts_arg );
+                $atts = $this->shortcode_atts_rec( $this->options, $atts_arg );
                 if ( isset( $atts['posts_query']['numberposts'] ) && !empty( $atts['posts_query']['numberposts'] ) )
                     $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
 
