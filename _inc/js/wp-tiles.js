@@ -149,4 +149,5 @@ var debounce = function(func, wait, immediate) {
             grid.redraw(true, resizeWpTiles);
         });
     });
+    $(window).trigger('resize');
 })(jQuery);
