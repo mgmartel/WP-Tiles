@@ -5,3 +5,4 @@ Currently, all future features have no target version attached to them. Whoever 
 * Shortcode builder
 * Loading indicator when tiles are loading
 * Custom content on the tiles
+* Hide current post in tiles using shortcode
