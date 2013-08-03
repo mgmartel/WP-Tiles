@@ -4,8 +4,8 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
 Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
-Tested up to: 3.5.1
-Stable tag: 0.5.2
+Tested up to: 3.5.2
+Stable tag: 0.5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -187,6 +187,15 @@ function my_tiles_first_image_function( $src, $post ) {
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.5.4 =
+
+* Load admin class at a later stage, so Custom Post Types have the time to register
+
+= 0.5.3 =
+
+* Trigger window resize event for browser compatibility
+* Use minified scripts unless SCRIPT_DEBUG is true
 
 = 0.5.2 =
 

@@ -204,8 +204,12 @@ if ( !class_exists( 'WP_Tiles' ) ) :
         protected function enqueue_scripts() {
             if ( !is_admin() ) {
                 wp_enqueue_script( "jquery" );
-                wp_enqueue_script( 'tilesjs', WPTILES_INC_URL . '/js/tiles.js', array( "jquery" ), "2013-05-18", true );
-                wp_enqueue_script( 'wp-tiles', WPTILES_INC_URL . '/js/wp-tiles.js', array( "tilesjs" ), WPTILES_VERSION, true );
+
+                $script_path = WPTILES_INC_URL . '/js/';
+                $ext = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
+
+                wp_enqueue_script( 'tilesjs',  $script_path . 'tiles'    . $ext, array( "jquery" ),  "2013-05-18",    true );
+                wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs" ), WPTILES_VERSION, true );
             }
         }
 
@@ -398,7 +402,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
              * Finds the first relevant image to a post
              *
              * Searches for a featured image, then the first attached image, then the first image in the source.
-             * 
+             *
              * @param WP_Post $post
              * @return string Source
              * @sice 0.5.2

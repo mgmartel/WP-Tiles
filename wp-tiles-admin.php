@@ -94,7 +94,7 @@ class WP_Tiles_Settings_Config
         global $wptiles_defaults;
         require_once ( WPTILES_DIR . '/wp-tiles-defaults.php');
 
-        $wptiles_options = get_option( self::$option_name );
+        //$wptiles_options = get_option( self::$option_name );
         $wptiles_set = wp_tiles()->options;
 
         $sections = array(
@@ -345,6 +345,14 @@ class WP_Tiles_Settings {
             $this->__construct( $settings_class );
         }
 
+    public static function &init() {
+        static $instance = false;
+        if ( !$instance ) {
+            $instance = new WP_Tiles_Settings;
+        }
+        return $instance;
+    }
+
     public function load_scripts() {
         wp_enqueue_script( 'wp-tiles-admin', WPTILES_INC_URL . '/js/admin.js' );
     }
@@ -552,6 +560,4 @@ class WP_Tiles_Settings {
     }
 
 }
-
-new wp_tiles_settings();
-?>
+add_action( 'wp_loaded', array( 'wp_tiles_settings', 'init' ) );
