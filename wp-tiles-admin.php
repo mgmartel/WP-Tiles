@@ -40,7 +40,7 @@ class WP_Tiles_Settings_Config
         );
     }
 
-    protected function dropdowns() {
+    protected static function dropdowns() {
         $cats = get_categories();
         $cats_a = array( "" => "All");
         foreach ( $cats as $cat ) {
