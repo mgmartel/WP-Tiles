@@ -5,7 +5,7 @@ Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.2
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,6 +177,14 @@ function my_tiles_first_image_function( $src, $post ) {
     return '';
 }`
 
+= How can I use custom taxonomy queries in the shortcode? =
+
+Custom tax queries are supported in the shortcode (but they aren't pretty) using curly braces to create arrays. Use it like this:
+
+`
+[wp-tiles posts_query="tax_query{0}{taxonomy}=my_custom_tax&tax_query{0}{field}=slug&tax_query{0}{terms}=taxonomy-cat-1"]
+`
+
 == Screenshots ==
 
 1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
@@ -187,6 +195,11 @@ function my_tiles_first_image_function( $src, $post ) {
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.5.5 =
+
+* Fix warning static declaration of WP_Tiles_Settings_Config::dropdowns. (Thanks @chrishas35)
+* Allow for more complicated queries in the shortcode, using curly braces for arrays.
 
 = 0.5.4 =
 
