@@ -6,3 +6,6 @@ Currently, all future features have no target version attached to them. Whoever 
 * Loading indicator when tiles are loading
 * Custom content on the tiles
 * Hide current post in tiles using shortcode
+
+* Better filters on byline
+* Better support for custom post type taxonomies

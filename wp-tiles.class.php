@@ -96,8 +96,8 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                         $att = $this->shortcode_atts_rec( $options[$k], $att );
                     } elseif ( ! is_array( $att ) && strpos( $att, '=' ) ) {
                         $atts_parsed = array( );
-                        $att = str_replace( '{}', '[]', $att );
-                        wp_parse_str( html_entity_decode( $att ), $atts_parsed );
+                        $att = str_replace( array( '{', '}' ), array( '[', ']' ), html_entity_decode( $att ) );
+                        wp_parse_str( $att, $atts_parsed );
                         if ( !empty( $atts_parsed ) )
                             $att         = $atts_parsed;
                         if ( is_array( $options[$k] ) )
@@ -297,6 +297,9 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                 }
 
                 $color  = $colors[array_rand( $colors )];
+                /**
+                 * Byline opacity only when using random colors
+                 */
                 $data[] = array(
                     "id"          => $post->ID,
                     "title"       => $post->post_title,
@@ -325,7 +328,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
         }
 
         private function HexToRGB( $hex ) {
-            $hex   = ereg_replace( "#", "", $hex );
+            $hex   = str_replace( "#", "", $hex );
             $color = array( );
 
             if ( strlen( $hex ) == 3 ) {
