@@ -25,7 +25,9 @@ $wptiles_defaults = array(
                                     'posts_per_page'
                                                     => -1,
                                     'page'          => 1,
-                                    'tax_query'     => array()
+                                    'tax_query'     => array(),
+                                    'post_parent'   => 0,
+                                    'post_mime_type' => ''
                 ),
                 'colors'        => array (
                     "colors"        => array (
