@@ -185,6 +185,22 @@ Custom tax queries are supported in the shortcode (but they aren't pretty) using
 [wp-tiles posts_query="tax_query{0}{taxonomy}=my_custom_tax&tax_query{0}{field}=slug&tax_query{0}{terms}=taxonomy-cat-1"]
 `
 
+= The plugin does not work in Internet Explorer, help! =
+
+The plugin should work in IE, but if it does not, try adding the following to your theme's header:
+
+`<meta http-equiv="x-ua-compatible" content="IE=edge">`
+
+This will force IE to display the site as valid as possible and similiar to the competitors like Firefox and Chrome.
+
+(thanks to [48fps](http://wordpress.org/support/profile/48fps) for this tip!)
+
+= Can I show images attached to the current post using WP Tiles? =
+
+Yes! Since version 0.5.6 this is possible by using the appropriate query, which will look like this:
+
+`[wp-tiles posts_query='post_parent={POST_ID}&post_type=attachment&posts_per_page=-1&post_mime_type=image']`
+
 == Screenshots ==
 
 1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
@@ -195,6 +211,10 @@ Custom tax queries are supported in the shortcode (but they aren't pretty) using
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.5.6 =
+
+* Make sure images are still grabbed correctly when showing post attachments
 
 = 0.5.5 =
 
