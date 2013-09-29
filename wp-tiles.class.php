@@ -413,6 +413,11 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             private function _find_the_image( $post ) {
                 $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
 
+                if ( 'attachment' === get_post_type( $post->ID ) ) {
+                    $image = wp_get_attachment_image_src( $post->ID, $tile_image_size, false );
+                    return $image[0];
+                }
+
                 if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
                     $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
                     return $image[0];
