@@ -531,10 +531,10 @@ class WP_Tiles_Settings {
 
         foreach ( $default_value as $k => $current ) {
             printf ( "<div style='float:left'><input type='text' value='%s' name='%s' width=140px><br>
-                <textarea style='height:100px;width:140px' id='%s' name='%s'>%s</textarea></div>",
+                <textarea style='height:100px;width:140px' name='%s'>%s</textarea></div>",
                 $k,
                 "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][name][]",
-                $current['name'],
+                //$current['name'],
                 "{$wp_tiles_settings['option_name']}[{$value['group']}][{$value['name']}][field][]",
                 $current
             );
