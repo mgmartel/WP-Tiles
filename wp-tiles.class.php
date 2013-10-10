@@ -274,6 +274,15 @@ if ( !class_exists( 'WP_Tiles' ) ) :
 
             foreach ( $posts as $post ) {
                 $hideByline = apply_filters( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
+
+                $categories = wp_get_post_categories( $post->ID, array( "fields" => "all" ) );
+
+                $category_slugs = $category_names = array();
+                foreach( $categories as $category ) {
+                    $category_slugs[] = $category->slug;
+                    $category_names[] = $category->name;
+                }
+
                 switch ( $display_options['byline'] ) {
                     case 'nothing' :
                         $byline = '';
@@ -292,7 +301,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                         break;
                     case 'cats' :
                     default :
-                        $byline = wp_get_post_categories( $post->ID, array( "fields" => "names" ) );
+                        $byline = $category_names;
                         break;
                 }
 
@@ -309,7 +318,8 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                     "color"       => $color,
                     "bylineColor"
                     => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
-                    "hideByline"  => $hideByline
+                    "hideByline"  => $hideByline,
+                    "categories"  => $category_slugs
                 );
             }
 

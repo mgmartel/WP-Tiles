@@ -5,7 +5,7 @@ Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.2
-Stable tag: 0.5.5
+Stable tag: 0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -201,6 +201,10 @@ Yes! Since version 0.5.6 this is possible by using the appropriate query, which 
 
 `[wp-tiles posts_query='post_parent={POST_ID}&post_type=attachment&posts_per_page=-1&post_mime_type=image']`
 
+= How can I style my tiles per category? =
+
+WP Tiles automatically adds the class slug to your tiles, so you can add your own CSS rules for each category independently.
+
 == Screenshots ==
 
 1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
@@ -211,6 +215,10 @@ Yes! Since version 0.5.6 this is possible by using the appropriate query, which 
 1. Example of tile templates (plain)
 
 == Changelog ==
+
+= 0.5.7 =
+
+* Added categories to tile classes
 
 = 0.5.6 =
 
