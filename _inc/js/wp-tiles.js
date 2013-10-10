@@ -28,6 +28,7 @@ var debounce = function(func, wait, immediate) {
         grid.createTile = function(data) {
             var img     = data.img,
                 url     = data.url,
+                cats    = data.categories,
                 bylineExtra
                         = data.byline,
                 color   = data.color,
@@ -57,10 +58,12 @@ var debounce = function(func, wait, immediate) {
                 byline += "</div>";
             }
 
-            var tileClass;
+            var tileClass = '';
+            tileClass += cats.join(' ');
+
             if ( img )
-                tileClass = 'tile-bg';
-            else tileClass = 'tile-color';
+                tileClass += ' tile-bg';
+            else tileClass += ' tile-color';
 
             if ( hideByline ) tileClass += ' hide-byline';
 
