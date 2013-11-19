@@ -304,13 +304,12 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                  */
                 $data[] = array(
                     "id"          => $post->ID,
-                    "title"       => $post->post_title,
+                    "title"       => apply_filters( 'the_title', $post->post_title ),
                     "url"         => get_permalink( $post->ID ),
                     "byline"      => $byline,
                     "img"         => $this->get_first_image( $post ),
                     "color"       => $color,
-                    "bylineColor"
-                    => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
+                    "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
                     "hideByline"  => $hideByline,
                     "categories"  => $category_slugs
                 );
