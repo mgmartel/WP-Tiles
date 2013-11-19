@@ -109,6 +109,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
         }
 
         public function show_tiles( $atts_arg ) {
+
             /**
              * Options and attributes
              */
@@ -179,14 +180,6 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                 <?php endforeach; ?>
 
                     </ul>
-
-                <?php if ( $wp_query->max_num_pages > 1 ) : ?>
-                        <nav id="<?php echo $wptiles_id; ?>-pagination" class="navigation" role="navigation">
-                            <h3 class="assistive-text"><?php _e( 'Post navigation', 'twentytwelve' ); ?></h3>
-                            <div class="nav-previous alignleft"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'twentytwelve' ) ); ?></div>
-                            <div class="nav-next alignright"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'twentytwelve' ) ); ?></div>
-                        </nav><!-- #<?php echo $html_id; ?> .navigation -->
-                <?php endif; ?>
 
                 </div>
 
@@ -311,13 +304,12 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                  */
                 $data[] = array(
                     "id"          => $post->ID,
-                    "title"       => $post->post_title,
+                    "title"       => apply_filters( 'the_title', $post->post_title ),
                     "url"         => get_permalink( $post->ID ),
                     "byline"      => $byline,
                     "img"         => $this->get_first_image( $post ),
                     "color"       => $color,
-                    "bylineColor"
-                    => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
+                    "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
                     "hideByline"  => $hideByline,
                     "categories"  => $category_slugs
                 );
