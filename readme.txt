@@ -216,6 +216,10 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 
 == Changelog ==
 
+= 0.5.9 =
+
+* Added wp-tiles-byline filter
+
 = 0.5.8 =
 
 * Made plugin compatible with qTranslate
