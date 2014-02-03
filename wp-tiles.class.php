@@ -306,7 +306,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                     "id"          => $post->ID,
                     "title"       => apply_filters( 'the_title', $post->post_title ),
                     "url"         => get_permalink( $post->ID ),
-                    "byline"      => $byline,
+                    "byline"      => apply_filters( 'wp-tiles-byline', $byline, $post ),
                     "img"         => $this->get_first_image( $post ),
                     "color"       => $color,
                     "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
