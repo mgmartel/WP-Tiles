@@ -5,7 +5,7 @@ Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.5.2
-Stable tag: 0.5.8
+Stable tag: 0.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
