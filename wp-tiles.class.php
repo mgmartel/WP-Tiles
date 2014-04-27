@@ -187,11 +187,62 @@ if ( !class_exists( 'WP_Tiles' ) ) :
 
             <div class="wp-tile-container">
 
-                <div id="<?php echo $wptiles_id; ?>" class="grid"></div>
+                <div id="<?php echo $wptiles_id; ?>" class="grid">
+                    <?php $this->_render_tile_html($wptiles_id) ?>
+                </div>
 
             </div>
 
             <?php
+        }
+
+        private function _render_tile_html($wptiles_id) {
+            // This is the display for when the JS hasn't happened yet. Or for Google
+            $posts = $this->data[$wptiles_id]['posts'];
+            /*$post = array(
+                "id"          => $post->ID,
+                "title"       => apply_filters( 'the_title', $post->post_title ),
+                "url"         => get_permalink( $post->ID ),
+                "byline"      => apply_filters( 'wp-tiles-byline', $byline, $post ),
+                "img"         => $this->get_first_image( $post ),
+                "color"       => $color,
+                "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
+                "hideByline"  => $hideByline,
+                "categories"  => $category_slugs
+            );*/
+            foreach( $posts as $post ) :
+                if ( $post['img'] ) {
+                    $tile_class = 'tile-bg';
+                    $tile_style = 'background-image: url("' . $post['img'] . '");';
+                    $byline_class = '';
+                } else {
+                    $tile_class = 'tile-image';
+                    $tile_style = 'background-color: ' . $post['color'] . ';';
+                    $byline_class = 'tile-text-only';
+                }
+
+                $byline_style = '';
+                /*if ( $this->data['bylineBg'] == 'rand' )
+                    $byline_style = ' style="background-color: ' . $post['bylineColor'] . '"';
+                else
+                    $byline_style = '';*/
+
+                ?>
+                <div class='wp-tiles-tile' id='tile-<?php echo $post['id'] ?>'>
+                    <a href="<?php echo $post['url'] ?>">
+                        <div class='<?php echo $tile_class ?>' style='<?php echo $tile_style ?>'>
+                            <div class='tile-byline<?php echo $byline_class ?>'>
+                                <div class='title'><?php echo $post['title']; ?></div>
+                                <?php if ( !$post['hideByline'] ) :?>
+                                    <div class='extra'<?php echo $byline_style ?>><?php echo $post['byline']; ?></div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <?php
+            endforeach;
+
         }
 
         protected function enqueue_scripts() {
@@ -220,6 +271,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
 
         public function add_data() {
             wp_localize_script( 'wp-tiles', 'wptilesdata', $this->data );
+
         }
 
         /**
