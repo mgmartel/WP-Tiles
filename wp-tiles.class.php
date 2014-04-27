@@ -150,7 +150,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             $this->tiles_id++;
 
             // Keep array of data in class instance, so we can have multiple instances of WP Tiles
-            $this->set_data( $wptiles_id, $templates, $small_screen_template, $display_options, $data );
+            $this->set_data( $wptiles_id, $templates, $small_screen_template, $display_options );
             // ... and then process that array in the footer
             add_action( 'wp_footer', array( &$this, "add_data" ), 1 );
 
@@ -188,7 +188,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             <div class="wp-tile-container">
 
                 <div id="<?php echo $wptiles_id; ?>" class="grid">
-                    <?php $this->_render_tile_html($wptiles_id) ?>
+                    <?php $this->_render_tile_html( $data ) ?>
                 </div>
 
             </div>
@@ -196,9 +196,8 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             <?php
         }
 
-        private function _render_tile_html($wptiles_id) {
-            // This is the display for when the JS hasn't happened yet. Or for Google
-            $posts = $this->data[$wptiles_id]['posts'];
+        private function _render_tile_html( $posts ) {
+
             /*$post = array(
                 "id"          => $post->ID,
                 "title"       => apply_filters( 'the_title', $post->post_title ),
@@ -257,7 +256,7 @@ if ( !class_exists( 'WP_Tiles' ) ) :
             }
         }
 
-        protected function set_data( $wptiles_id, $templates, $small_screen_template, $display_options, $data ) {
+        protected function set_data( $wptiles_id, $templates, $small_screen_template, $display_options ) {
             $rowTemplates          = array_values( $templates );
             $rowTemplates['small'] = $small_screen_template;
 
@@ -265,7 +264,6 @@ if ( !class_exists( 'WP_Tiles' ) ) :
                 "id"              => $wptiles_id,
                 "rowTemplates"    => $rowTemplates,
                 "display_options" => $display_options,
-                "posts"           => $data,
             );
         }
 
