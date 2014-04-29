@@ -1,0 +1,156 @@
+/**************************************
+    Admin
+ **************************************/
+/* line 13, ../scss/wp-tiles.scss */
+.grid-template-editor {
+  width: 100%;
+  height: 100px;
+  max-width: 100%;
+  font-family: monospace;
+  letter-spacing: 0.5em; }
+
+/* line 22, ../scss/wp-tiles.scss */
+.wp-tiles-tile-letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  height: 1em;
+  width: 1em;
+  font-size: 2em; }
+
+/**************************************
+    Frontend
+ **************************************/
+/* line 39, ../scss/wp-tiles.scss */
+ul.template-selector {
+  list-style: none; }
+  /* line 42, ../scss/wp-tiles.scss */
+  ul.template-selector li {
+    background-image: -moz-linear-gradient(#252525, #0a0a0a);
+    background-image: -webkit-linear-gradient(#252525, #0a0a0a);
+    background-image: linear-gradient(#252525, #0a0a0a);
+    border: 1px solid #ffffff;
+    display: inline;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    padding: 6px 9px; }
+    /* line 53, ../scss/wp-tiles.scss */
+    ul.template-selector li:hover {
+      border: 1px solid #999999; }
+
+/* line 59, ../scss/wp-tiles.scss */
+.wp-tiles-container {
+  width: auto;
+  height: auto;
+  background: none;
+  overflow: visible; }
+
+/* line 66, ../scss/wp-tiles.scss */
+.wp-tile-container .grid,
+.wp-tiles-grid {
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none; }
+
+/* line 77, ../scss/wp-tiles.scss */
+.wp-tile-container .grid > div,
+.wp-tiles-tile {
+  position: absolute;
+  font-size: 13px;
+  background-color: #EEE;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer; }
+  /* line 80, ../scss/wp-tiles.scss */
+  .wp-tile-container .grid > div.wp-tiles-legacy .wp-tile-container .grid > div,
+  .wp-tiles-tile.wp-tiles-legacy .wp-tile-container .grid > div, .wp-tile-container .grid > div.wp-tiles-legacy
+  .wp-tiles-tile,
+  .wp-tiles-tile.wp-tiles-legacy
+  .wp-tiles-tile {
+    -moz-box-shadow: 6px 6px 10px;
+    -webkit-box-shadow: 6px 6px 10px;
+    box-shadow: 6px 6px 10px; }
+  /* line 90, ../scss/wp-tiles.scss */
+  .wp-tile-container .grid > div:hover,
+  .wp-tiles-tile:hover {
+    outline: 1px solid #ccc; }
+  /* line 94, ../scss/wp-tiles.scss */
+  .wp-tile-container .grid > div .title,
+  .wp-tiles-tile .title {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2em;
+    height: 2.2em;
+    color: white;
+    overflow: hidden;
+    padding: 5px;
+    padding-top: 2px; }
+  /* line 105, ../scss/wp-tiles.scss */
+  .wp-tile-container .grid > div .extra,
+  .wp-tiles-tile .extra {
+    padding: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #EEE;
+    position: absolute;
+    bottom: 2px;
+    white-space: nowrap;
+    width: 90%;
+    height: 1.2em;
+    overflow: hidden;
+    text-overflow: ellipsis; }
+
+/* line 120, ../scss/wp-tiles.scss */
+.wp-tiles-tile-text-only {
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  opacity: 1; }
+  /* line 126, ../scss/wp-tiles.scss */
+  .wp-tiles-tile-text-only .title {
+    font-size: 24px;
+    line-height: 1.15em;
+    padding-top: 15px;
+    color: #282828;
+    width: 85%;
+    height: 6.4em; }
+  /* line 135, ../scss/wp-tiles.scss */
+  .wp-tiles-tile-text-only .extra {
+    color: #303030;
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 600; }
+
+/* line 144, ../scss/wp-tiles.scss */
+.wp-tiles-tile-bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+  background-color: #282828; }
+
+/* line 154, ../scss/wp-tiles.scss */
+.wp-tiles-tile-color {
+  position: absolute;
+  width: 100%;
+  height: 100%; }
+
+/* line 160, ../scss/wp-tiles.scss */
+.wp-tiles-tile-byline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 5px; }

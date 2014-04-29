@@ -1,0 +1,168 @@
+@import "compass";
+
+@mixin user-select($select) {
+    $select: unquote($select);
+    @include experimental(user-select, $select,
+     -moz, -webkit, not -o, not -ms, -khtml, official
+    );
+}
+
+/**************************************
+    Admin
+ **************************************/
+.grid-template-editor {
+    width: 100%;
+    height: 100px;
+
+    max-width: 100%;
+    font-family: monospace;
+    letter-spacing: 0.5em;
+}
+
+.wp-tiles-tile-letter {
+    position: absolute;
+    top: 0;
+    left: 0; 
+    right: 0;
+    bottom: 0;
+
+    margin: auto;
+    height: 1em;
+    width: 1em;
+
+    font-size: 2em;
+}
+
+/**************************************
+    Frontend
+ **************************************/
+ul.template-selector {
+    list-style: none;
+
+    li {
+        @include background-image(linear-gradient(#252525,#0A0A0A));
+        border: 1px solid #ffffff;
+
+        display: inline;
+        border-radius: 10px;
+        color: white;
+        cursor: pointer;
+        text-align: center;
+        padding: 6px 9px;
+
+        &:hover {
+            border: 1px solid #999999;
+        }
+    }
+}
+
+.wp-tiles-container {
+	width: auto;
+	height: auto;
+	background: none;
+	overflow: visible;
+}
+
+.wp-tile-container .grid, // legacy
+.wp-tiles-grid // 1.0
+{
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    //height: 100%;
+    position: relative;
+    @include user-select ( none );
+}
+
+.wp-tile-container .grid > div, // legacy
+.wp-tiles-tile // 1.0
+{
+    &.wp-tiles-legacy & {
+        @include box-shadow ( 6px 6px 10px );
+    }
+    position: absolute;
+    font-size: 13px;
+    background-color: #EEE;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+        outline: 1px solid #ccc;
+    }
+
+    .title {
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.2em;
+        height: 2.2em;
+        color: white;
+        overflow: hidden;
+        padding: 5px;
+        padding-top: 2px;
+    }
+
+    .extra {
+        padding: 5px;
+        font-size: 10px;
+        font-weight: 600;
+        color: #EEE;
+        position: absolute;
+        bottom: 2px;
+        white-space: nowrap;
+        width: 90%;
+        height: 1.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.wp-tiles-tile-text-only {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+
+    .title {
+        font-size: 24px;
+        line-height: 1.15em;
+        padding-top: 15px;
+        color: #282828;
+        width: 85%;
+        height: 6.4em;
+    }
+
+    .extra {
+        color: #303030;
+        font-style: normal;
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+
+
+.wp-tiles-tile-bg {
+    background-size: cover;
+    background-repeat: no-repeat;
+    //background-position: top center;
+    background-position: center center; // @since 0.2.1
+    width: 100%;
+    height: 100%;
+    background-color: #282828;
+}
+
+.wp-tiles-tile-color {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.wp-tiles-tile-byline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px;
+}

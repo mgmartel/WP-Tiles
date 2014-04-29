@@ -1,0 +1,141 @@
+(function($){
+
+  var
+      // Constants
+      colors  = ["#50b2c0", "#83b437", "#7673b0", "#ec7e4a","#ff851b","#ffdc00"],
+      padding = 5,
+
+      // Locals
+      $el = $("#grid-template-demo"),
+      grid,
+
+      // Private functions
+      debounce = function(func, wait, immediate) { // debounce utility from underscorejs.org
+          var timeout;
+          return function() {
+            var context = this, args = arguments;
+            var later = function() {
+              timeout = null;
+              if (!immediate) func.apply(context, args);
+            };
+            if (immediate && !timeout) func.apply(context, args);
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+          };
+      },
+
+      get_tile_letters = function(g){
+        var u        = '',
+            g        = $("#grid_template").val(),
+            template = g.replace(/\s/g,'');
+
+        for(var i=0; i<template.length; i++){
+            if(template[i] == '.' || u.indexOf(template[i])==-1){
+                u += template[i];
+            }
+        }
+        return u;
+      },
+
+      resize_grid_container = function(){
+          var lastEl = $el.children().last(),
+              tileOffsetTop = parseInt ( $el.offset().top ),
+              newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + 10 + "px";
+
+          $el.parent('.wp-tiles-container').css('height', newHeight );
+      },
+
+      draw = function(callback){
+        var g = $("#grid_template").val(),
+            f = g.replace(/\r/g, "").split("\n"),
+            template = Tiles.Template.fromJSON(f);
+
+        grid.template = template;
+        grid.isDirty = true;
+        grid.resize();
+
+        // Generate list of numbers from 1 to tiles.length
+        var i = 0,
+            h = Array.apply(0, Array(template.rects.length)).map(function() { return i++; });
+
+        grid.updateTiles(h);
+        grid.redraw(false,function(){
+          if (typeof callback === 'function')
+            callback.call();
+
+          resize_grid_container();
+        });
+
+        $('.wp-tiles-show-help').click(function(e){
+          e.preventDefault();
+          $('#contextual-help-link').click();
+        });
+      };
+
+
+  ;;
+
+  grid = $.extend(new Tiles.Grid($el[0]),{
+    cellPadding: padding,
+    resizeColumns: function() {
+      return this.template.numCols;
+    },
+    createTile: function(i) {
+      var tile = new Tiles.Tile(i),
+          $el  = tile.$el;
+
+      $el
+        .addClass("wp-tiles-tile")
+        .css("background-color", colors[i % colors.length])
+        .append('<div class="wp-tiles-tile-number">' + i + "</div>")
+        .append('<div class="wp-tiles-tile-letter"></div>');
+
+      return tile;
+    }
+  });
+
+  ;;
+
+  //
+  // GRID TEMPLATE EDITOR
+  //
+
+  var tr =  ($.browser.webkit)  ? '-webkit-transition' :
+            ($.browser.mozilla) ? '-moz-transition' :
+            ($.browser.msie)    ? '-ms-transition' :
+            ($.browser.opera)   ? '-o-transition' : 'transition';
+
+  var o = { 'min-height': '50px' };
+  o[tr] = 'height 0.2s';
+
+  $("#grid_template")
+    .css(o)
+    .autosize({append:"\n"})
+    .on('keyup',function(e){
+      var t     = $(this).val(),
+          n     = t.replace(/ {1,}/g, "").replace(/\n[ ]{1,}/g, "\n"),
+          d     = n.length - t.length,
+          start = this.selectionStart + d,
+          end   = this.selectionEnd + d;
+
+      $(this).val(n.toUpperCase());
+
+      this.setSelectionRange(start, end);
+
+      draw(function(){
+        var letters = get_tile_letters();
+
+        $el.find('.wp-tiles-tile-letter').each(function(k){
+          $(this).text(letters[k]);
+        });
+      });
+    })
+    .trigger('keyup');
+
+  ;;
+
+  // Draw actions
+  $('.meta-box-sortables').on('sortupdate',draw);
+  $(window).resize(debounce(draw, 200));
+
+})(jQuery);
