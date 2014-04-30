@@ -48,6 +48,21 @@ defined( 'WP_TILES_DEBUG' ) or define( 'WP_TILES_DEBUG', false );
 if ( !defined( 'VP_VERSION' ) )
     require plugin_dir_path( __FILE__ ) .'../vafpress-framework/bootstrap.php';
 
+require WP_TILES_DIR . 'vendor/autoload.php';
+
+add_action( 'init', 'wp_tiles' );
+
+/**
+ * Get the one and only true instance of WP Tiles
+ *
+ * @return WP_Tiles
+ * @since 0.4.2
+ */
+function wp_tiles() {
+    return \WPTiles\WPTiles::get_instance();
+}
+
+/*
 require_once ( WPTILES_DIR . '/wp-tiles-admin.php' );
 require_once ( WPTILES_DIR . '/wp-tiles-admin-legacy.php' );
 
@@ -55,9 +70,9 @@ require_once ( WPTILES_DIR . '/lib/Shortcode.php' );
 require_once ( WPTILES_DIR . '/lib/GridTemplates.php' );
 
 require_once ( WPTILES_DIR . '/wp-tiles.class.php' );
-WP_Tiles_GridTemplates::get_instance();
+WP_Tiles_GridTemplates::get_instance();*/
 
 add_action( 'plugins_loaded', 'wptiles_load_pluggables' );
 function wptiles_load_pluggables() {
-    require_once( WPTILES_DIR . '/wp-tiles-pluggables.php' );
+    require_once( WP_TILES_DIR . '/wp-tiles-pluggables.php' );
 }

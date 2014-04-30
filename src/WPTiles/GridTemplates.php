@@ -1,9 +1,10 @@
-<?php
+<?php namespace WPTiles;
+
 // Exit if accessed directly
 if ( !defined ( 'ABSPATH' ) )
     exit;
 
-class WP_Tiles_GridTemplates
+class GridTemplates
 {
     const POST_TYPE = 'grid_template';
 

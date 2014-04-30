@@ -1,4 +1,5 @@
-<?php
+<?php namespace WPTiles;
+
 // Exit if accessed directly
 if ( !defined ( 'ABSPATH' ) )
     exit;
@@ -9,7 +10,7 @@ if ( !defined ( 'ABSPATH' ) )
  * Largely based on Display Posts Shortcode by ....
  * @since 1.0
  */
-class WP_Tiles_Shortcode
+class Shortcode
 {
     public static function get_options( $original_atts ) {
 
