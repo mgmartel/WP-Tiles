@@ -74,7 +74,7 @@
         createTile: function(data) {
           var tile = new Tiles.Tile(data.id,data),
               $el  = tile.$el,
-              i    = parseInt(data.id.match(/[0-9]./)),
+              i    = parseInt(data.id.match(/[0-9]{1,}/)),
               // @todo Custom colors using data-attributes?
               color = display_opts.colors[i % display_opts.colors.length];
 
