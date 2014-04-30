@@ -93,36 +93,37 @@
     }
 }
 
+.wp-tiles-byline {
+    max-height: 100%;
+}
+
 /* ==========================================================================
    BASE: Tile with BG image
    ========================================================================== */
 .wp-tiles-tile-bg {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-
-    .wp-tiles-img {
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-    }
+    background-size: cover;
+    background-position: 50% 50%;
 }
 
 .wp-tiles-tile-with-image {
+
     .wp-tiles-byline {
         position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
 
-        max-height: 100%;
         background: rgba(0, 0, 0, 0.8);
         padding: 5px;
+        max-height: 40%;
     }
 
     .wp-tiles-byline-title {
+    //h1, h2, h3, h4, h5, h6 {
 
-        font-weight: 600;
+        //font-weight: 600;
         margin: 0;
 
         color: white;
@@ -137,10 +138,11 @@
         font-weight: 600;
         color: #EEE;
 
-        white-space: nowrap;
         width: 90%;
         overflow: hidden;
-        text-overflow: ellipsis;
+
+        //white-space: nowrap;
+        //text-overflow: ellipsis;
     }
 }
 /* ==========================================================================
@@ -152,17 +154,19 @@
     width: 100%;
     height: 100%;
     opacity: 1;
+    padding: 5px;
 
     .wp-tiles-byline {
 
     }
     .wp-tiles-byline-title {
-        font-size: 24px;
+        margin: 0;
+        font-size: 1.5em;
         line-height: 1.15em;
         padding-top: 15px;
         color: #282828;
         width: 85%;
-        height: 6.4em;
+        //height: 6.4em;
     }
 
     .wp-tiles-byline-content {
@@ -192,7 +196,7 @@
         }
 
         &.slide {
-            
+
         }
     }
 

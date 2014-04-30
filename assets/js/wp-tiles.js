@@ -57,6 +57,9 @@
 
           onresize = function(){
             $.wptiles.resizeParent($el,display_opts.padding);
+            $('.wp-tiles-byline').dotdotdot();
+
+            $el.trigger('wp-tiles:resize');
           };
 
       choose_template();
@@ -83,6 +86,7 @@
 
           // Is this an image tile?
           if ( $('.wp-tiles-tile-with-image',$el).get(0) ) {
+
             // Then maybe also add the color to the byline
             if ( 'random' === display_opts.byline_color ) {
 
@@ -98,6 +102,11 @@
               $byline.css("background-color", rgba);
 
             }
+
+            // Set the background image
+            var $bg_img = $('.wp-tiles-tile-bg .wp-tiles-img',$el);
+            $('.wp-tiles-tile-bg',$el).css('background-image', 'url("'+$bg_img.attr('src')+'")');
+            $bg_img.remove();
           }
 
           return tile;

@@ -231,18 +231,6 @@ class WPTiles
 
         foreach( $posts as $post ) :
 
-            /*$post_a = array(
-                "id"          => $post->ID,
-                "title"       => apply_filters( 'the_title', $post->post_title ),
-                "url"         => get_permalink( $post->ID ),
-                "byline"      => apply_filters( 'wp-tiles-byline', $byline, $post ),
-                "img"         => $this->get_first_image( $post ),
-                "color"       => $color,
-                "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
-                "hideByline"  => $hideByline,
-                "categories"  => $category_slugs
-            );*/
-
             if ( !$display_options['text_only'] && $img = $this->get_first_image( $post ) ) {
                 $tile_class = 'wp-tiles-tile-with-image';
             } elseif ( $display_options['images_only'] ) {
@@ -260,7 +248,7 @@ class WPTiles
                 <?php endif; ?>
 
                     <?php //@todo Should this be article (both the tag & the schema)? ?>
-                    <article class='<?php echo $tile_class ?>' itemscope itemtype="http://schema.org/Thing">
+                    <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/Thing">
 
                         <?php if ( $img ) : ?>
                             <div class='wp-tiles-tile-bg'>
@@ -271,7 +259,7 @@ class WPTiles
                         <div class='wp-tiles-byline'>
 
                             <?php if ( !$display_options['hide_title'] ) : ?>
-                                <h4 itemprop="name"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
+                                <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
                             <?php endif; ?>
 
                             <div class='wp-tiles-byline-content' itemprop="description">
@@ -366,8 +354,10 @@ class WPTiles
             $script_path = WP_TILES_ASSETS_URL . '/js/';
             $ext = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
 
-            wp_enqueue_script( 'tilesjs',  $script_path . 'tiles'    . $ext, array( "jquery" ),  "2013-05-18",    true );
-            wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs" ), WP_TILES_VERSION, true );
+            wp_enqueue_script( 'tilesjs',  $script_path . 'tiles' . $ext, array( "jquery" ), "2013-05-18", true );
+            wp_enqueue_script( 'jquery-dotdotdot',  $script_path . 'jquery.dotdotdot' . $ext, array( "jquery" ),  "1.6.14", true );
+
+            wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs", "jquery-dotdotdot" ), WP_TILES_VERSION, true );
 
             add_action( 'wp_footer', array( &$this, "add_data" ), 1 );
         }
@@ -543,7 +533,7 @@ class WPTiles
          * @sice 0.5.2
          */
         private function _find_the_image( $post ) {
-            $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
+            $tile_image_size = apply_filters( 'wp-tiles-image-size', 'medium', $post );
 
             if ( 'attachment' === get_post_type( $post->ID ) ) {
                 $image = wp_get_attachment_image_src( $post->ID, $tile_image_size, false );

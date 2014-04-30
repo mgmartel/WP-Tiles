@@ -80,22 +80,22 @@
   .wp-tiles-tile:hover {
     outline: 1px solid #ccc; }
 
+/* line 96, ../scss/wp-tiles.scss */
+.wp-tiles-byline {
+  max-height: 100%; }
+
 /* ==========================================================================
    BASE: Tile with BG image
    ========================================================================== */
-/* line 99, ../scss/wp-tiles.scss */
+/* line 103, ../scss/wp-tiles.scss */
 .wp-tiles-tile-bg {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0; }
-  /* line 103, ../scss/wp-tiles.scss */
-  .wp-tiles-tile-bg .wp-tiles-img {
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto; }
+  bottom: 0;
+  background-size: cover;
+  background-position: 50% 50%; }
 
 /* line 112, ../scss/wp-tiles.scss */
 .wp-tiles-tile-with-image .wp-tiles-byline {
@@ -103,46 +103,44 @@
   left: 0;
   right: 0;
   bottom: 0;
-  max-height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  padding: 5px; }
+  padding: 5px;
+  max-height: 40%; }
 /* line 123, ../scss/wp-tiles.scss */
 .wp-tiles-tile-with-image .wp-tiles-byline-title {
-  font-weight: 600;
   margin: 0;
   color: white;
   overflow: hidden;
   padding: 5px;
   padding-top: 2px; }
-/* line 134, ../scss/wp-tiles.scss */
+/* line 135, ../scss/wp-tiles.scss */
 .wp-tiles-tile-with-image .wp-tiles-byline-content {
   padding: 5px;
   font-size: 10px;
   font-weight: 600;
   color: #EEE;
-  white-space: nowrap;
   width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis; }
+  overflow: hidden; }
 
 /* ==========================================================================
    BASE: Text Only
    ========================================================================== */
-/* line 150, ../scss/wp-tiles.scss */
+/* line 152, ../scss/wp-tiles.scss */
 .wp-tiles-tile-text-only {
   background-color: transparent;
   width: 100%;
   height: 100%;
-  opacity: 1; }
-  /* line 159, ../scss/wp-tiles.scss */
+  opacity: 1;
+  padding: 5px; }
+  /* line 162, ../scss/wp-tiles.scss */
   .wp-tiles-tile-text-only .wp-tiles-byline-title {
-    font-size: 24px;
+    margin: 0;
+    font-size: 1.5em;
     line-height: 1.15em;
     padding-top: 15px;
     color: #282828;
-    width: 85%;
-    height: 6.4em; }
-  /* line 168, ../scss/wp-tiles.scss */
+    width: 85%; }
+  /* line 172, ../scss/wp-tiles.scss */
   .wp-tiles-tile-text-only .wp-tiles-byline-content {
     color: #303030;
     font-style: normal;
@@ -155,7 +153,7 @@
 /**************************************
     Show-on-hover byline
  **************************************/
-/* line 189, ../scss/wp-tiles.scss */
+/* line 193, ../scss/wp-tiles.scss */
 .wp-tiles-style.byline-hover-effect .wp-tiles-tile-with-image .wp-tiles-byline {
   display: none; }
 
