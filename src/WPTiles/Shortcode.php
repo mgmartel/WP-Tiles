@@ -102,7 +102,7 @@ class Shortcode
         }
 
         private static function _boolean( $value ) {
-            if ( in_array( $value, array( true, 'yes', '1', 1 ), true ) )
+            if ( in_array( $value, array( true, 'true', 'yes', '1', 1 ), true ) )
                 return true;
 
             return false;
