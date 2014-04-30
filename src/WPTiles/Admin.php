@@ -162,7 +162,7 @@ class Admin
                     'name'        => 'small_screen_enabled',
                     'label'       => __( 'Different template on small screens?', 'vp_textdomain' ),
                     'description' => __( "Yay or nay? What's it going to be?", 'vp_textdomain' ),
-                    'default'     => '0',
+                    'default'     => '1',
                 );
             }
 
@@ -190,7 +190,7 @@ class Admin
                 'name'        => 'small_screen_breakpoint',
                 'label'       => __( 'Small Screen Breakpoint', 'vp_textdomain' ),
                 'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'vp_textdomain' ),
-                'default'     => '800',
+                'default'     => wp_tiles()->get_option_defaults( 'small_screen_breakpoint' ),
                 'validation'  => 'numeric',
                 'dependency'  => ( self::is_shortcode() ) ? false : array(
                     'field'    => 'small_screen_enabled',
@@ -202,20 +202,14 @@ class Admin
         }
 
         private static function _get_controls_colors() {
-            $default_colors = array(
-                "#009999",
-                "#1D7373",
-                "#006363",
-                "#33CCCC",
-                "#5CCCCC",
-            );
+            $default_colors = wp_tiles()->get_option_defaults( 'colors' );
 
             // @todo Make color field repeatable
             $i = 1;
             foreach( $default_colors as $color ) {
                 $controls[] = array(
                     'type' => 'color',
-                    'name' => 'default_colors_' . $i,
+                    'name' => 'color_' . $i,
                     'label' => sprintf( __('Color %d', 'vp_textdomain'), $i ),
                     'description' => __('Another color', 'vp_textdomain'),
                     'default' => $color,
@@ -236,7 +230,7 @@ class Admin
                     'name'                       => 'byline_template',
                     'label'                      => __( 'Byline Template', 'vp_textdomain' ),
                     'description'                => __( '@todo: Explain tags.', 'vp_textdomain' ),
-                    'default'                    => '%categories%',
+                    'default'                    => wp_tiles()->get_option_defaults( 'byline_template' ),
                     'use_external_plugins'       => '1',
                     'disabled_externals_plugins' => '',
                     'disabled_internals_plugins' => '',
@@ -246,7 +240,7 @@ class Admin
                     'name' => 'byline_opacity',
                     'label' => __('Byline Opacity', 'vp_textdomain'),
                     'description' => __('Set the byline opacity.', 'vp_textdomain'),
-                    'default' => '0.8',
+                    'default' => wp_tiles()->get_option_defaults( 'byline_opacity' ),
                     'validation' => 'numeric'
                 ),
                 array(
@@ -254,7 +248,7 @@ class Admin
                     'name' => 'byline_color',
                     'label' => __( 'Byline Color', 'vp_textdomain' ),
                     'description' => __('Color for the byline', 'vp_textdomain'),
-                    'default' => '#000',
+                    'default' => wp_tiles()->get_option_defaults( 'byline_color' ),
                     'format' => 'hex',
                 )
             );
@@ -296,7 +290,6 @@ class Admin
                     'type' => 'textbox',
                     'name' => 'posts_per_page',
                     'label' => __('Posts Per Page', 'vp_textdomain'),
-                    'default' => '10',
                     'validation' => 'numeric'
                 ),
 
@@ -546,7 +539,7 @@ class Admin
 
     //
     // DATA SOURCES
-    ///
+    //
 
     public static function get_grids() {
         $wp_posts = get_posts(array(

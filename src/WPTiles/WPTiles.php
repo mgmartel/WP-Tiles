@@ -41,18 +41,17 @@ class WPTiles
 
             $class = get_called_class();
             $instance = new $class;
+            $instance->init();
         }
 
         return $instance;
     }
 
-    /**
-     * Constructor
-     *
-     * @since 0.1
-     */
-    public function __construct() {
+    protected function __construct() {}
+
+    public function init() {
         GridTemplates::get_instance();
+        Admin::setup();
 
         add_shortcode( 'wp-tiles', array( &$this, 'shortcode' ) );
     }
@@ -63,6 +62,84 @@ class WPTiles
         $options = Shortcode::get_options( $atts );
 
         return $this->render_tiles( $posts, $options );
+    }
+
+    /**
+     * Return the plugin default settings
+     *
+     * @return array
+     */
+    public function get_option_defaults( $key = false ) {
+        static $option_defaults = array(
+            'grids' => false,
+            'small_screen_grid' => false,
+            'small_screen_breakpoint' => 800,
+
+            'colors' => array(
+                "#009999",
+                "#1D7373",
+                "#006363",
+                "#33CCCC",
+                "#5CCCCC",
+            ),
+            'padding' => 10,
+
+            'byline_template' => '%categories%',
+            'byline_opacity'  => '0.8',
+            'byline_color'    => '#000',
+
+            'text_only'    => false,
+            'link_to_post' => true,
+
+            'animate_init'     => true,
+            'animate_resize'   => true,
+            'animate_template' => true
+        );
+
+        if ( $key )
+            return isset( $option_defaults[$key] ) ? $option_defaults[$key] : null;
+
+        return $option_defaults;
+    }
+
+    public function get_defaults() {
+        static $defaults = false;
+
+        if ( !$defaults ) {
+
+            $defaults = array();
+            $options = $this->get_option_defaults();
+
+            foreach( $options as $option => $default ) {
+                $value = $this->get_option( $option );
+                $defaults[$option] = is_null( $value ) ? $default : $value;
+            }
+
+            // @todo Cache results?
+            $defaults['grids']             = $this->get_grids( $defaults['grids'] );
+            $defaults['small_screen_grid'] = $this->get_grids( $defaults['small_screen_grid'] );
+
+            // @todo 'Colors' is not a single option
+            $colors = array();
+            for ( $i = 1; $i <= 5; $i++ ) {
+                $color = $this->get_option( 'color_' . $i );
+                if ( $color )
+                    $colors[] = $color;
+            }
+
+            $defaults['colors'] = Helper::colors_to_rgba( $colors );
+
+            if ( 'random' !== $defaults['byline_color'] )
+                $defaults['byline_color'] = Helper::hex_to_rgba( $defaults['byline_color'], $defaults['byline_opacity'], true );
+
+        }
+
+        return $defaults;
+
+    }
+
+    public function get_option( $name ) {
+        return vp_option( "wp_tiles." . $name );
     }
 
     /**
@@ -504,6 +581,11 @@ class WPTiles
 
 
     public function get_grids( $q ) {
+        // Is this already a grid?
+        // Happens when default is passed through the shortcode
+        if ( is_array( $q ) && is_array( reset( $q ) ) )
+            return $q;
+
         $posts = $this->_get_grid_posts( $q );
 
         $grids = array();
@@ -515,6 +597,10 @@ class WPTiles
     }
 
         protected function _get_grid_posts( $q ) {
+            if ( !is_array( $q ) ) {
+                $q = strpos( $q, ',' ) !== false ? explode( ',', $q ) : array( $q );
+            }
+
             // Are we dealing with titles?
             if ( !is_numeric( reset( $q ) ) ) {
                 $q = $this->_get_grid_ids_by_titles( $q );

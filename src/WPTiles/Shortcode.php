@@ -13,36 +13,31 @@ if ( !defined ( 'ABSPATH' ) )
 class Shortcode
 {
     public static function get_options( $original_atts ) {
+        $defaults = wp_tiles()->get_defaults();
 
         $atts = shortcode_atts( array(
-            'grids' => '',
+            'grids' => $defaults['grids'],
             'grid'  => false,
 
-            'colors' => array (
-                "#009999",
-                "#1D7373",
-                "#006363",
-                "#33CCCC",
-                "#5CCCCC",
-            ),
+            'colors' => $defaults['colors'],
             'color' => false,
 
-            'breakpoint'        => false,
-            'small_screen_grid' => false,
+            'breakpoint'        => $defaults['small_screen_breakpoint'],
+            'small_screen_grid' => $defaults['small_screen_grid'],
 
-            'byline_template' => '%categories%',
-            'byline_opacity'  => '0.5',
-            'byline_color'    => 'random',
+            'byline_template' => $defaults['byline_template'],
+            'byline_opacity'  => $defaults['byline_opacity'],
+            'byline_color'    => $defaults['byline_color'],
 
-            'text_only' => false,
-            'link_to_post' => true,
+            'text_only'    => $defaults['text_only'],
+            'link_to_post' => $defaults['link_to_post'],
 
-            'padding' => 10,
+            'padding' => $defaults['padding'],
 
-            'animated' => true,
-            'animate_init'     => true,
-            'animate_resize'   => true,
-            'animate_template' => true,
+            'animated'         => true,
+            'animate_init'     => $defaults['animate_init'],
+            'animate_resize'   => $defaults['animate_resize'],
+            'animate_template' => $defaults['animate_template'],
 
         ), $original_atts );
 
@@ -83,15 +78,7 @@ class Shortcode
         private static function _get_colors( $colors, $color ) {
             $colors = self::_get_options_array( $colors, $color );
 
-            $rgba = array();
-            foreach( $colors as $c ) {
-                if ( strpos( $c, 'rgba' ) === 0 )
-                    $rgba[] = $c;
-                if ( strpos( $c, 'rgb' ) === 0 )
-                    $rgba[] = Helper::rgba_to_rgba( $c, 1, true );
-                elseif( strpos( $c, '#' ) === 0 )
-                    $rgba[] = Helper::hex_to_rgba( $c, 1, true );
-            }
+            $rgba = Helper::colors_to_rgba( $colors );
 
             return $rgba;
         }
@@ -109,7 +96,7 @@ class Shortcode
                 return array( $singular );
 
             $options = ( !is_array( $plural ) ) ? explode( ',', $plural ) : $plural;
-            return array_map( 'trim', $options );
+            return ( is_string( $options ) ) ? array_map( 'trim', $options ) : $options;
         }
 
         private static function _boolean( $value ) {
