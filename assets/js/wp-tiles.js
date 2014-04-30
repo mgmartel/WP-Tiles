@@ -119,8 +119,7 @@
       }
 
       // @todo Make animated an option
-      var animated = true;
-      grid.redraw(animated, onresize);
+      grid.redraw(display_opts.animate_init, onresize);
 
       // when the window resizes, redraw the grid
       $(window).resize($.wptiles.debounce(function() {
@@ -130,8 +129,7 @@
           grid.isDirty = true;
           grid.resize();
 
-          // @todo window resize animation
-          grid.redraw(animated, onresize);
+          grid.redraw(display_opts.animate_resize, onresize);
       }, 200));
 
 
@@ -153,8 +151,7 @@
         grid.isDirty  = true;
         grid.resize();
 
-        // @todo 'template change animation' option
-        grid.redraw(animated, onresize);
+        grid.redraw(display_opts.animate_template, onresize);
 
       });
     }

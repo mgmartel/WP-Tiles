@@ -39,6 +39,11 @@ class Shortcode
 
             'padding' => 10,
 
+            'animated' => true,
+            'animate_init'     => true,
+            'animate_resize'   => true,
+            'animate_template' => true,
+
         ), $original_atts );
 
         $grid_names = self::_get_options_array( $atts['grids'],  $atts['grid'] );
@@ -59,7 +64,11 @@ class Shortcode
             'text_only'    => self::_boolean( $atts['text_only'] ),
             'link_to_post' => self::_boolean( $atts['link_to_post'] ),
 
-            'padding' => $atts['padding']
+            'padding' => $atts['padding'],
+
+            'animate_init'     => ( $atts['animated'] && $atts['animate_init'] ),
+            'animate_resize'   => ( $atts['animated'] && $atts['animate_resize'] ),
+            'animate_template' => ( $atts['animated'] && $atts['animate_template'] ),
         );
 
         if ( $atts['breakpoint'] ) {
