@@ -318,6 +318,16 @@ class Admin
                     'validation' => 'numeric'
                 ),
                 array(
+                    'type' => 'slider',
+                    'name' => 'byline_height',
+                    'label' => __('Byline Height', 'vp_textdomain'),
+                    'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'vp_textdomain'),
+                    'default' => wp_tiles()->get_option_defaults( 'byline_height' ),
+                    'min' => '0',
+                    'max' => '100',
+                    'step' => '1',
+                ),
+                array(
                     'type' => 'color',
                     'name' => 'byline_color',
                     'label' => __( 'Byline Color', 'vp_textdomain' ),

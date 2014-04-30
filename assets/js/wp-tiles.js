@@ -160,9 +160,12 @@
         if ( 'random' !== display_opts.byline_color ) {
           $image_bylines.css('background-color', display_opts.byline_color); // Byline color includes alpha
         }
+
+        // Set the byline height
+        $image_bylines.css('height',display_opts.byline_height + '%');
       }
 
-      // @todo Make animated an option
+      // Draw!
       grid.redraw(display_opts.animate_init, onresize);
 
       // when the window resizes, redraw the grid

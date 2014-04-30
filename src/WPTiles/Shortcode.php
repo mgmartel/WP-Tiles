@@ -29,6 +29,7 @@ class Shortcode
             'byline_template_textonly' => $defaults['byline_template_textonly'],
             'byline_opacity'  => $defaults['byline_opacity'],
             'byline_color'    => $defaults['byline_color'],
+            'byline_height'   => $defaults['byline_height'],
 
             'text_only'    => $defaults['text_only'],
             'link_to_post' => $defaults['link_to_post'],
@@ -59,6 +60,7 @@ class Shortcode
             'byline_template_textonly' => $atts['byline_template_textonly'],
 
             'byline_opacity'  => $atts['byline_opacity'],
+            'byline_height'   => $atts['byline_height'],
             'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
 
             'text_only'    => self::_boolean( $atts['text_only'] ),
