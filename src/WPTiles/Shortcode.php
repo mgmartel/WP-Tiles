@@ -31,6 +31,7 @@ class Shortcode
 
             'text_only'    => $defaults['text_only'],
             'link_to_post' => $defaults['link_to_post'],
+            'images_only'  => $defaults['images_only'],
 
             'padding' => $defaults['padding'],
 
@@ -58,6 +59,7 @@ class Shortcode
 
             'text_only'    => self::_boolean( $atts['text_only'] ),
             'link_to_post' => self::_boolean( $atts['link_to_post'] ),
+            'images_only'  => self::_boolean( $atts['images_only'] ),
 
             'padding' => $atts['padding'],
 
@@ -100,7 +102,7 @@ class Shortcode
         }
 
         private static function _boolean( $value ) {
-            if ( true === $value || 'yes' === $value )
+            if ( in_array( $value, array( true, 'yes', '1', 1 ), true ) )
                 return true;
 
             return false;
