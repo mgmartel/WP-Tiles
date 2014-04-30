@@ -51,8 +51,10 @@ if ( !defined( 'VP_VERSION' ) )
 require_once ( WPTILES_DIR . '/wp-tiles-admin.php' );
 require_once ( WPTILES_DIR . '/wp-tiles-admin-legacy.php' );
 
-require_once ( WPTILES_DIR . '/wp-tiles.class.php' );
+require_once ( WPTILES_DIR . '/lib/Shortcode.php' );
 require_once ( WPTILES_DIR . '/lib/GridTemplates.php' );
+
+require_once ( WPTILES_DIR . '/wp-tiles.class.php' );
 WP_Tiles_GridTemplates::get_instance();
 
 add_action( 'plugins_loaded', 'wptiles_load_pluggables' );

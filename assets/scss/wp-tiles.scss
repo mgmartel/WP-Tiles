@@ -22,7 +22,7 @@
 .wp-tiles-tile-letter {
     position: absolute;
     top: 0;
-    left: 0; 
+    left: 0;
     right: 0;
     bottom: 0;
 
@@ -36,7 +36,7 @@
 /**************************************
     Frontend
  **************************************/
-ul.template-selector {
+.template-selector {
     list-style: none;
 
     li {
@@ -56,6 +56,11 @@ ul.template-selector {
     }
 }
 
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
 .wp-tiles-container {
 	width: auto;
 	height: auto;
@@ -63,9 +68,7 @@ ul.template-selector {
 	overflow: visible;
 }
 
-.wp-tile-container .grid, // legacy
-.wp-tiles-grid // 1.0
-{
+.wp-tiles-grid {
     top: 0;
     bottom: 0;
     width: 100%;
@@ -74,9 +77,7 @@ ul.template-selector {
     @include user-select ( none );
 }
 
-.wp-tile-container .grid > div, // legacy
-.wp-tiles-tile // 1.0
-{
+.wp-tiles-tile {
     &.wp-tiles-legacy & {
         @include box-shadow ( 6px 6px 10px );
     }
@@ -90,32 +91,61 @@ ul.template-selector {
     &:hover {
         outline: 1px solid #ccc;
     }
+}
 
-    .title {
-        font-size: 16px;
+/* ==========================================================================
+   BASE: Tile with BG image
+   ========================================================================== */
+.wp-tiles-tile-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+
+    .wp-tiles-img {
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+    }
+}
+
+.wp-tiles-tile-with-image {
+    .wp-tiles-byline {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        max-height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 5px;
+    }
+
+    .wp-tiles-byline-title {
+
         font-weight: 600;
-        line-height: 1.2em;
-        height: 2.2em;
+        margin: 0;
+
         color: white;
         overflow: hidden;
         padding: 5px;
         padding-top: 2px;
     }
 
-    .extra {
+    .wp-tiles-byline-content {
         padding: 5px;
         font-size: 10px;
         font-weight: 600;
         color: #EEE;
-        position: absolute;
-        bottom: 2px;
+
         white-space: nowrap;
         width: 90%;
-        height: 1.2em;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 }
+/* ==========================================================================
+   BASE: Text Only
+   ========================================================================== */
 
 .wp-tiles-tile-text-only {
     background-color: transparent;
@@ -123,7 +153,10 @@ ul.template-selector {
     height: 100%;
     opacity: 1;
 
-    .title {
+    .wp-tiles-byline {
+
+    }
+    .wp-tiles-byline-title {
         font-size: 24px;
         line-height: 1.15em;
         padding-top: 15px;
@@ -132,7 +165,7 @@ ul.template-selector {
         height: 6.4em;
     }
 
-    .extra {
+    .wp-tiles-byline-content {
         color: #303030;
         font-style: normal;
         font-size: 14px;
@@ -141,7 +174,43 @@ ul.template-selector {
 }
 
 
-.wp-tiles-tile-bg {
+
+
+/* ==========================================================================
+   Styles
+   ========================================================================== */
+
+/**************************************
+    Show-on-hover byline
+ **************************************/
+.wp-tiles-style {
+    &.byline-hover-effect {
+        .wp-tiles-tile-with-image {
+            .wp-tiles-byline {
+                display: none;
+            }
+        }
+
+        &.slide {
+            
+        }
+    }
+
+
+}
+
+
+/*
+.wp-tiles-tile-text-only {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+
+}*/
+
+
+/*.wp-tiles-tile-bg {
     background-size: cover;
     background-repeat: no-repeat;
     //background-position: top center;
@@ -165,4 +234,4 @@ ul.template-selector {
     height: 60px;
     background: rgba(0, 0, 0, 0.8);
     padding: 5px;
-}
+}*/

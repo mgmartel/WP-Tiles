@@ -1,6 +1,7 @@
 Currently, all future features have no target version attached to them. Whoever wants to can add them or if there are enough requests, some features will get priority:
 * Filter by Post Category (on the front end)
 * Custom predefined styles and animations
+    Hover effects: desaturate, 3D Cube, slide, fade, ...
 * Better admin screens
 * Shortcode builder
 * Loading indicator when tiles are loading
@@ -9,3 +10,30 @@ Currently, all future features have no target version attached to them. Whoever 
 
 * Better filters on byline
 * Better support for custom post type taxonomies
+
+* Save template choice in localStorage
+
+* Triangles?
+
+
+WP TILES 1.0:
+=============
+- Include pagination
+- PHP templates
+- Shortcode builder
+- Shortcodes like display_posts
+- Image size option
+- Category Filters (instead / over and above templates)
+- Multiple breakpoints
+- Use as gallery with lightbox
+
+Options:
+- Pre-built tile templates and transitions (css)
+- Byline template builder
+- Template preview
+
+
+New features:
+-------------
+- SEO friendly: tiles are rendered before the JS
+- Schema.org microtags
