@@ -18,7 +18,7 @@
     resizeParent: function($el, padding) {
       var lastEl = $el.children().last(),
           tileOffsetTop = parseInt ( $el.offset().top ),
-          newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + padding + "px";
+          newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + parseInt(padding) + "px";
 
       $el.parent('.wp-tiles-container').css('height', newHeight );
     }
@@ -110,6 +110,41 @@
           }
 
           return tile;
+        },
+
+        // Repeat the same template until tiles are exhausted
+        ensureTemplate: function(numTiles) {
+
+          // verfiy that the current template is still valid
+          if (!this.template || this.template.numCols !== this.numCols) {
+            this.template = this.createTemplate(this.numCols, numTiles);
+            this.isDirty = true;
+          } else {
+
+            // append another template if we don't have enough rects
+            var missingRects = numTiles - this.template.rects.length;
+            if (missingRects > 0) {
+              var copyRects = [],
+                len, i;
+
+              while (missingRects > 0) {
+
+                len = missingRects <= this.template.rects.length ? missingRects : this.template.rects.length;
+
+                for (i = 0; i < len; i++) {
+                  copyRects.push(this.template.rects[i].copy());
+                }
+                missingRects -= this.template.rects.length;
+              }
+
+              this.template.append(
+                new Tiles.Template(copyRects, this.numCols, this.numRows)
+                );
+
+              this.isDirty = true;
+            }
+
+          }
         }
       });
 
