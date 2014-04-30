@@ -86,6 +86,13 @@ class Admin
                         ),
                         array(
                             'type'       => 'section',
+                            'title'       => __( 'Animations', 'vp_textdomain' ),
+                            'name'        => 'animations_section',
+                            //'description' => __( '', 'vp_textdomain' ),
+                            'fields'      => self::_get_controls_animation()
+                        ),
+                        array(
+                            'type'       => 'section',
                             'title'       => __( 'Byline', 'vp_textdomain' ),
                             'name'        => 'byline_section',
                             'description' => __( 'The byline is the content line shown on every tile.', 'vp_textdomain' ),
@@ -126,7 +133,7 @@ class Admin
             'use_auto_group_naming' => true, // default to true
             'use_util_menu'         => true, // default to true, shows utility menu
             'minimum_role'          => 'manage_options', // default to 'edit_theme_options'
-            'layout'                => 'fluid', // fluid or fixed, default to fixed
+            'layout'                => 'fixed', // fluid or fixed, default to fixed
             'page_title'            => __( 'WP Tiles', 'wp-tiles' ), // page title
             'menu_label'            => __( 'WP Tiles', 'wp-tiles' ), // menu label
         ) );
@@ -185,6 +192,7 @@ class Admin
                     'function' => 'vp_dep_boolean',
                 ),
             );
+
             $controls[] = array(
                 'type'        => 'textbox',
                 'name'        => 'small_screen_breakpoint',
@@ -198,7 +206,63 @@ class Admin
                 ),
             );
 
+            $controls[] = array(
+                'type' => 'slider',
+                'name' => 'padding',
+                'label' => __('Tile Padding', 'vp_textdomain'),
+                'description' => __( 'Padding between the tiles in px', 'vp_textdomain'),
+                'min' => '0',
+                'max' => '100',
+                'step' => '1',
+                'default' => wp_tiles()->get_option_defaults( 'padding' ),
+            );
+
             return $controls;
+        }
+
+        private static function _get_controls_animation() {
+            return array(
+                array(
+                    'type' => 'toggle',
+                    'name' => 'animated',
+                    'label' => __('Enable Animations', 'vp_textdomain'),
+                    'description' => __( 'Controls animations when tiles are loaded, modified or resized', 'vp_textdomain'),
+                    'default' => true,
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'animate_init',
+                    'label' => __('Animation on load', 'vp_textdomain'),
+                    'description' => __( 'Show animation when tiles are first loaded', 'vp_textdomain'),
+                    'default' => wp_tiles()->get_option_defaults( 'animate_init' ),
+                    'dependency'  => ( self::is_shortcode() ) ? false : array(
+                        'field'    => 'animated',
+                        'function' => 'vp_dep_boolean',
+                    )
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'animate_resize',
+                    'label' => __('Animation on window resize', 'vp_textdomain'),
+                    'description' => __( 'Animate the tiles when the window is resized?', 'vp_textdomain'),
+                    'default' => wp_tiles()->get_option_defaults( 'animate_resize' ),
+                    'dependency'  => ( self::is_shortcode() ) ? false : array(
+                        'field'    => 'animated',
+                        'function' => 'vp_dep_boolean',
+                    )
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'animate_template',
+                    'label' => __('Animation on grid change', 'vp_textdomain'),
+                    'description' => __( 'Show animation when grid template changes', 'vp_textdomain'),
+                    'default' => wp_tiles()->get_option_defaults( 'animate_template' ),
+                    'dependency'  => ( self::is_shortcode() ) ? false : array(
+                        'field'    => 'animated',
+                        'function' => 'vp_dep_boolean',
+                    )
+                ),
+            );
         }
 
         private static function _get_controls_colors() {
@@ -247,10 +311,32 @@ class Admin
                     'type' => 'color',
                     'name' => 'byline_color',
                     'label' => __( 'Byline Color', 'vp_textdomain' ),
-                    'description' => __('Color for the byline', 'vp_textdomain'),
+                    'description' => __('Color for the byline. Leave empty to use the tile colors', 'vp_textdomain'),
                     'default' => wp_tiles()->get_option_defaults( 'byline_color' ),
                     'format' => 'hex',
-                )
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'text_only',
+                    'label' => __('Text-only tiles', 'vp_textdomain'),
+                    'description' => __( "Don't add the background image to Tiles", 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'text_only' )
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'images_only',
+                    'label' => __('Hide tiles with no images', 'vp_textdomain'),
+                    'description' => __( "Hide tiles that don't have an image.", 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'images_only' )
+                ),
+                array(
+                    'type' => 'toggle',
+                    'name' => 'link_to_post',
+                    'label' => __( 'Link to Post', 'vp_textdomain' ),
+                    'description' => __( "Make the whole tile a link to the tile post.", 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'link_to_post' )
+                ),
+
             );
         }
 

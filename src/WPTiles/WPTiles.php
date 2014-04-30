@@ -90,6 +90,7 @@ class WPTiles
 
             'text_only'    => false,
             'link_to_post' => true,
+            'images_only'  => false,
 
             'animate_init'     => true,
             'animate_resize'   => true,
@@ -119,7 +120,6 @@ class WPTiles
             $defaults['grids']             = $this->get_grids( $defaults['grids'] );
             $defaults['small_screen_grid'] = $this->get_grids( $defaults['small_screen_grid'] );
 
-            // @todo 'Colors' is not a single option
             $colors = array();
             for ( $i = 1; $i <= 5; $i++ ) {
                 $color = $this->get_option( 'color_' . $i );
@@ -128,6 +128,16 @@ class WPTiles
             }
 
             $defaults['colors'] = Helper::colors_to_rgba( $colors );
+
+            if ( empty( $defaults['byline_color'] ) )
+                $defaults['byline_color'] = 'random';
+
+            // Disable individual animations when disabled globally
+            if ( !$this->get_option( 'animated' ) ) {
+                foreach( array( 'animate_init', 'animate_resize', 'animate_template' ) as $a ) {
+                    $defaults[$a] = false;
+                }
+            }
 
             if ( 'random' !== $defaults['byline_color'] )
                 $defaults['byline_color'] = Helper::hex_to_rgba( $defaults['byline_color'], $defaults['byline_opacity'], true );
@@ -230,6 +240,9 @@ class WPTiles
 
             if ( !$display_options['text_only'] && $img = $this->get_first_image( $post ) ) {
                 $tile_class = 'wp-tiles-tile-with-image';
+            } elseif ( $display_options['images_only'] ) {
+                continue; // If text_only *and* image_only are enabled, the user should expect 0 tiles..
+
             } else {
                 $tile_class = 'wp-tiles-tile-text-only';
             }
