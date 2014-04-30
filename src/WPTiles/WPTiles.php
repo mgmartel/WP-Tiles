@@ -358,7 +358,7 @@ class WPTiles
                 "byline"      => apply_filters( 'wp-tiles-byline', $byline, $post ),
                 "img"         => $this->get_first_image( $post ),
                 "color"       => $color,
-                "bylineColor" => $this->HexToRGBA( $color, $display_options['bylineOpacity'], true ),
+                "bylineColor" => Helper::hex_to_rgba( $color, $display_options['bylineOpacity'], true ),
                 "hideByline"  => $hideByline,
                 "categories"  => $category_slugs
             );
@@ -376,32 +376,6 @@ class WPTiles
             $the_date .= mysql2date( $d, $post->post_date );
 
         return apply_filters( 'get_the_date', $the_date, $d );
-    }
-
-    private function HexToRGB( $hex ) {
-        $hex   = str_replace( "#", "", $hex );
-        $color = array( );
-
-        if ( strlen( $hex ) == 3 ) {
-            $color['r'] = hexdec( substr( $hex, 0, 1 ) . $r );
-            $color['g'] = hexdec( substr( $hex, 1, 1 ) . $g );
-            $color['b'] = hexdec( substr( $hex, 2, 1 ) . $b );
-        } else if ( strlen( $hex ) == 6 ) {
-            $color['r'] = hexdec( substr( $hex, 0, 2 ) );
-            $color['g'] = hexdec( substr( $hex, 2, 2 ) );
-            $color['b'] = hexdec( substr( $hex, 4, 2 ) );
-        }
-
-        return $color;
-    }
-
-    private function HexToRGBA( $hex, $alpha, $css = false ) {
-        $rgba      = $this->HexToRGB( $hex );
-        $rgba['a'] = $alpha;
-        if ( !$css )
-            return $rgba;
-
-        return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
     }
 
     function get_the_excerpt( $text, $excerpt = '' ) {

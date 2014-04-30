@@ -74,11 +74,31 @@
         createTile: function(data) {
           var tile = new Tiles.Tile(data.id,data),
               $el  = tile.$el,
-              i    = parseInt(data.id.match(/[0-9]./));
+              i    = parseInt(data.id.match(/[0-9]./)),
+              // @todo Custom colors using data-attributes?
+              color = display_opts.colors[i % display_opts.colors.length];
 
-          // @todo Custom colors using data-attributes?
           $el
-            .css("background-color", display_opts.colors[i % display_opts.colors.length]);
+            .css("background-color", color);
+
+          // Is this an image tile?
+          if ( $('.wp-tiles-tile-with-image',$el).get(0) ) {
+            // Then maybe also add the color to the byline
+            if ( 'random' === display_opts.byline_color ) {
+
+              var $byline  = $('.wp-tiles-byline',$el),
+                  alpha = display_opts.byline_opacity,
+                  //rgb   = $byline.css('background-color'),
+                  rgb   = color,
+                  rgbx  = rgb.substr(0,4) === 'rgba' ? rgb : rgb.replace('rgb', 'rgba').replace(')', ',' + alpha + ')'),
+                  comma = rgbx.lastIndexOf(','),
+                  rgba  = rgbx.slice(0, comma + 1) + alpha + ")";
+                  //rgba  = rgbx.replace(')', ',' + alpha + ')');
+
+              $byline.css("background-color", rgba);
+
+            }
+          }
 
           return tile;
         }
@@ -87,6 +107,16 @@
       // Pass the post tiles into Tiles.js
       var posts = $('.wp-tiles-tile',$el);
       grid.updateTiles(posts);
+
+      // Maybe do some work with bylies
+      var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline');
+      if ( $image_bylines.get(0) ) {
+
+        // Set color and opacity
+        if ( 'random' !== display_opts.byline_color ) {
+          $image_bylines.css('background-color', display_opts.byline_color); // Byline color includes alpha
+        }
+      }
 
       // @todo Make animated an option
       var animated = true;
@@ -98,7 +128,6 @@
           choose_template();
 
           grid.isDirty = true;
-
           grid.resize();
 
           // @todo window resize animation

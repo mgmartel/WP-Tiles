@@ -31,7 +31,8 @@ class Shortcode
             'small_screen_grid' => false,
 
             'byline_template' => '%categories%',
-            'byline_opacity'  => '1',
+            'byline_opacity'  => '0.5',
+            'byline_color'    => 'random',
 
             'text_only' => false,
             'link_to_post' => true,
@@ -49,10 +50,11 @@ class Shortcode
             'small_screen_grid' => '',
             'small_screen_breakpoint' => false,
 
-            'colors' => self::_get_options_array( $atts['colors'], $atts['color'] ),
+            'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
 
             'byline_template' => $atts['byline_template'],
-            'byline_opacity' => $atts['byline_opacity'],
+            'byline_opacity'  => $atts['byline_opacity'],
+            'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
 
             'text_only'    => self::_boolean( $atts['text_only'] ),
             'link_to_post' => self::_boolean( $atts['link_to_post'] ),
@@ -68,6 +70,30 @@ class Shortcode
         return $options;
 
     }
+
+        private static function _get_colors( $colors, $color ) {
+            $colors = self::_get_options_array( $colors, $color );
+
+            $rgba = array();
+            foreach( $colors as $c ) {
+                if ( strpos( $c, 'rgba' ) === 0 )
+                    $rgba[] = $c;
+                if ( strpos( $c, 'rgb' ) === 0 )
+                    $rgba[] = Helper::rgba_to_rgba( $c, 1, true );
+                elseif( strpos( $c, '#' ) === 0 )
+                    $rgba[] = Helper::hex_to_rgba( $c, 1, true );
+            }
+
+            return $rgba;
+        }
+
+
+        private static function _get_byline_color( $byline_color, $byline_opacity ) {
+            if ( 'random' === $byline_color )
+                return $byline_color;
+
+            return Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
+        }
 
         private static function _get_options_array( $plural, $singular = false ) {
             if ( $singular )
