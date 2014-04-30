@@ -72,13 +72,17 @@
         },
 
         createTile: function(data) {
-          return new Tiles.Tile(data.id,data);
+          var tile = new Tiles.Tile(data.id,data),
+              $el  = tile.$el,
+              i    = parseInt(data.id.match(/[0-9]./));
+
+          // @todo Custom colors using data-attributes?
+          $el
+            .css("background-color", display_opts.colors[i % display_opts.colors.length]);
+
+          return tile;
         }
       });
-
-      // @todo Which of these is really necessary?
-      //grid.isDirty = true;
-      grid.resize();
 
       // Pass the post tiles into Tiles.js
       var posts = $('.wp-tiles-tile',$el);
