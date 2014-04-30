@@ -1,90 +1,109 @@
-// debounce utility from underscorejs.org
-var debounce = function(func, wait, immediate) {
-    var timeout;
-    return function() {
-      var context = this, args = arguments;
-      var later = function() {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
-      };
-      if (immediate && !timeout) func.apply(context, args);
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-};
+(function($){
+  // Public methods
+  $.wptiles = {
+    // debounce utility from underscorejs.org
+    debounce: function(func, wait, immediate) {
+        var timeout;
+        return function() {
+          var context = this, args = arguments;
+          var later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+          };
+          if (immediate && !timeout) func.apply(context, args);
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+    },
+    resizeParent: function($el, padding) {
+      var lastEl = $el.children().last(),
+          tileOffsetTop = parseInt ( $el.offset().top ),
+          newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + padding + "px";
 
-jQuery(function($){
-  $.each ( wptilesdata, function() {
-
-    var tiledata = this,
-        el = document.getElementById(tiledata.id),
-        grid = new Tiles.Grid(el),
-        display_opts = tiledata.display_options;
-
-    // Fix the number of columns to the number in the current template
-    grid.resizeColumns = function() {
-        return this.template.numCols;
-    };
-
-    // Use the existing element as the new Tile data
-    grid.createTile = function(data) {
-      return new Tiles.Tile(data.id,data);
-    };
-
-    var largeTemplate = tiledata.rowTemplates[0],
-        smallTemplate = tiledata.rowTemplates['small'];
-
-    if ( false && $(el).width() < tiledata.display_options.small_screen_breakpoint ) {
-        $("div#" + tiledata.id + "-templates").hide();
-        grid.template = Tiles.Template.fromJSON(smallTemplate);
-        largeTemplate = Tiles.Template.fromJSON(largeTemplate);
-
-    } else {
-        $("div#" + tiledata.id + "-templates").show();
-        grid.template = Tiles.Template.fromJSON(largeTemplate);
+      $el.parent('.wp-tiles-container').css('height', newHeight );
     }
+  };
 
-    grid.isDirty = true;
-    grid.resize();
-    grid.cellPadding = parseInt(display_opts.padding);
-    //grid.cellPadding = 5;
+  $.fn.extend({
+    wptiles: function(tiledata){
+      var
+          // Locals
+          $el = $(this),
+          $templates = $("#" + tiledata.id + "-templates"),
+          $templateButtons = $('.template', $templates),
+          display_opts = tiledata.display_options,
+          grid,
 
-    var posts = $('.wp-tiles-tile',el);
-    grid.updateTiles(posts);
-    grid.redraw(true, resizeWpTiles);
+          currTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates[0]),
+          largeTemplate,
 
-    function resizeWpTiles() { // @todo is there a way to make this less hacky?
-          var $el = $('#' + tiledata.id),
-              lastEl = $el.children().last(),
-              tileOffsetTop = parseInt ( $el.offset().top ),
-              newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + 10 + "px";
+          // Private Methods
+          choose_template = function(){
+            if ( $el.width() < display_opts.small_screen_breakpoint && !largeTemplate ) {
+                $templates.hide();
 
-          $el.parent('.wp-tiles-container').css('height', newHeight );
-    }
+                // Save large template
+                largeTemplate = ( grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
+                currTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
 
-    // wait until users finishes resizing the browser
-    var debouncedResize = debounce(function() {
-        if ( $("#" + tiledata.id ).width() < tiledata.display_options.small_screen_width ) {
-            $("div#" + tiledata.id + "-templates").hide();
-            if ( ! largeTemplate )
-                largeTemplate = grid.template;
-            grid.template = Tiles.Template.fromJSON(smallTemplate);
-            grid.isDirty = true;
-        } else if ( largeTemplate ) {
-            $("div#" + tiledata.id + "-templates").show();
-            grid.template = Tiles.Template.fromJSON(largeTemplate);
-            grid.isDirty = true;
+            } else if ( largeTemplate ) {
+                $templates.show();
+
+                currTemplate = largeTemplate;
+                largeTemplate = false;
+            }
+
+          },
+
+          onresize = function(){
+            $.wptiles.resizeParent($el,display_opts.padding);
+          };
+
+      choose_template();
+
+      // Setup the Tiles grid
+      grid = $.extend(new Tiles.Grid($el),{
+        cellPadding: parseInt(display_opts.padding),
+
+        template: currTemplate,
+
+        resizeColumns: function() {
+          return this.template.numCols;
+        },
+
+        createTile: function(data) {
+          return new Tiles.Tile(data.id,data);
         }
+      });
 
-        grid.resize();
-        grid.redraw(true, resizeWpTiles);
-    }, 200);
+      // @todo Which of these is really necessary?
+      //grid.isDirty = true;
+      grid.resize();
 
-    // when the window resizes, redraw the grid
-    $(window).resize(debouncedResize);
+      // Pass the post tiles into Tiles.js
+      var posts = $('.wp-tiles-tile',$el);
+      grid.updateTiles(posts);
 
-    // Make the grid changable
-    var $templateButtons = $('#' + tiledata.id + '-templates li.template').on('click', function(e) {
+      // @todo Make animated an option
+      var animated = true;
+      grid.redraw(animated, onresize);
+
+      // when the window resizes, redraw the grid
+      $(window).resize($.wptiles.debounce(function() {
+          // @todo Only resize if template is the same?
+          choose_template();
+
+          grid.isDirty = true;
+
+          grid.resize();
+
+          // @todo window resize animation
+          grid.redraw(animated, onresize);
+      }, 200));
+
+
+      // Make the grid changable
+      $templateButtons.on('click', function(e) {
 
         // unselect all templates
         $templateButtons.removeClass("selected");
@@ -94,16 +113,30 @@ jQuery(function($){
 
         // get the JSON rows for the selection
         var index = $(e.target).index(),
-            rows = tiledata.rowTemplates[index];
+            rows  = tiledata.rowTemplates[index];
 
         // set the new template and resize the grid
         grid.template = Tiles.Template.fromJSON(rows);
-        grid.isDirty = true;
+        grid.isDirty  = true;
         grid.resize();
 
-        grid.redraw(true, resizeWpTiles);
-    });
-  });
-  $(window).trigger('resize');
+        // @todo 'template change animation' option
+        grid.redraw(animated, onresize);
 
-});
+      });
+    }
+  });
+
+  // Init using vars from wp_localize_script
+  $(function(){
+    $.each (wptilesdata, function() {
+      var tiledata = this,
+          $el = $('#' + tiledata.id);
+
+      $el.wptiles(tiledata);
+    });
+
+    $(window).trigger('resize');
+  });
+
+})(jQuery);
