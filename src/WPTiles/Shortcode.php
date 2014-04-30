@@ -126,15 +126,9 @@ class Shortcode
         $atts = shortcode_atts( array(
             'author'              => '',
             'category'            => '',
-            //'date_format'         => '(n/j/Y)',
             'id'                  => false,
             'ignore_sticky_posts' => false,
-            //'image_size'          => false,
-            //'include_content'     => false,
-            //'include_date'        => false,
-            //'include_excerpt'     => false,
             'meta_key'            => '',
-            //'no_posts_message'    => '',
             'offset'              => 0,
             'order'               => 'DESC',
             'orderby'             => 'date',
@@ -146,20 +140,13 @@ class Shortcode
             'tax_operator'        => 'IN',
             'tax_term'            => false,
             'taxonomy'            => false,
-            //'wrapper'             => 'ul',
         ), $original_atts );
 
         $author = sanitize_text_field( $atts['author'] );
         $category = sanitize_text_field( $atts['category'] );
-        //$date_format = sanitize_text_field( $atts['date_format'] );
         $id = $atts['id']; // Sanitized later as an array of integers
         $ignore_sticky_posts = (bool) $atts['ignore_sticky_posts'];
-        //$image_size = sanitize_key( $atts['image_size'] );
-        //$include_content = (bool)$atts['include_content'];
-        //$include_date = (bool)$atts['include_date'];
-        //$include_excerpt = (bool)$atts['include_excerpt'];
         $meta_key = sanitize_text_field( $atts['meta_key'] );
-        //$no_posts_message = sanitize_text_field( $atts['no_posts_message'] );
         $offset = intval( $atts['offset'] );
         $order = sanitize_key( $atts['order'] );
         $orderby = sanitize_key( $atts['orderby'] );
@@ -171,7 +158,6 @@ class Shortcode
         $tax_operator = $atts['tax_operator']; // Validated later as one of a few values
         $tax_term = sanitize_text_field( $atts['tax_term'] );
         $taxonomy = sanitize_key( $atts['taxonomy'] );
-        //$wrapper = sanitize_text_field( $atts['wrapper'] );
 
         // Set up initial query for post
         $args = array(
@@ -195,6 +181,10 @@ class Shortcode
         if( $id ) {
             $posts_in = array_map( 'intval', explode( ',', $id ) );
             $args['post__in'] = $posts_in;
+
+            if ( !isset( $original_atts['orderby'] ) || !$original_atts['orderby'] ) {
+                $args['orderby'] = 'post__in';
+            }
         }
 
         // Post Author
