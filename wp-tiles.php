@@ -50,12 +50,13 @@ if ( !defined( 'VP_VERSION' ) )
 
 require WP_TILES_DIR . 'vendor/autoload.php';
 
+WPTiles\Admin::setup_shortcode_generator();
 add_action( 'init', 'wp_tiles' );
 
 /**
  * Get the one and only true instance of WP Tiles
  *
- * @return WP_Tiles
+ * @return WPTiles\WPTiles
  * @since 0.4.2
  */
 function wp_tiles() {
