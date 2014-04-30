@@ -91,13 +91,13 @@ class Admin
                             //'description' => __( '', 'vp_textdomain' ),
                             'fields'      => self::_get_controls_animation()
                         ),
-                        array(
+                        /*array(
                             'type'       => 'section',
                             'title'       => __( 'Byline', 'vp_textdomain' ),
                             'name'        => 'byline_section',
                             'description' => __( 'The byline is the content line shown on every tile.', 'vp_textdomain' ),
                             'fields'      => self::_get_controls_byline()
-                        ),
+                        ),*/
                         array(
                             'type'       => 'section',
                             'title'       => __( 'Colors', 'vp_textdomain' ),
@@ -105,6 +105,27 @@ class Admin
                             'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
                             'fields'      => self::_get_controls_colors()
                         )
+                    )
+                ),
+                array(
+                    'title' => 'Byline',
+                    'name'  => 'Byline',
+                    'icon'     => 'font-awesome:fa-magic',
+                    'controls' => array(
+                        array(
+                            'type'       => 'section',
+                            'title'       => __( 'Tile Byline', 'vp_textdomain' ),
+                            'name'        => 'byline_layout_section',
+                            'description' => __( "The byline is all text that is displayed on the tile.", 'vp_textdomain' ),
+                            'fields'      => self::_get_controls_byline_layout()
+                        ),
+                        array(
+                            'type'       => 'section',
+                            'title'       => __( 'Byline Template', 'vp_textdomain' ),
+                            'name'        => 'byline_template_section',
+                            'description' => __( "", 'vp_textdomain' ),
+                            'fields'      => self::_get_controls_byline_template()
+                        ),
                     )
                 ),
                 array(
@@ -286,19 +307,8 @@ class Admin
             return $controls;
         }
 
-        private static function _get_controls_byline() {
-            // @todo Add byline tags buttons to TinyMCE
+        private static function _get_controls_byline_layout() {
             return array(
-                array(
-                    'type'                       => 'wpeditor',
-                    'name'                       => 'byline_template',
-                    'label'                      => __( 'Byline Template', 'vp_textdomain' ),
-                    'description'                => __( '@todo: Explain tags.', 'vp_textdomain' ),
-                    'default'                    => wp_tiles()->get_option_defaults( 'byline_template' ),
-                    'use_external_plugins'       => '1',
-                    'disabled_externals_plugins' => '',
-                    'disabled_internals_plugins' => '',
-                ),
                 array(
                     'type' => 'textbox',
                     'name' => 'byline_opacity',
@@ -335,6 +345,50 @@ class Admin
                     'label' => __( 'Link to Post', 'vp_textdomain' ),
                     'description' => __( "Make the whole tile a link to the tile post.", 'wp-tiles' ),
                     'default' => wp_tiles()->get_option_defaults( 'link_to_post' )
+                )
+            );
+        }
+
+        private static function _get_controls_byline_template() {
+            return array(
+
+                array(
+                    'type'        => 'codeeditor',
+                    'name'        => 'byline_template',
+                    'mode'        => 'html',
+                    'label'       => __( 'Byline Template (HTML)', 'vp_textdomain' ),
+                    'description' => __( '@todo: Explain tags.', 'vp_textdomain' ),
+                    'default'     => wp_tiles()->get_option_defaults( 'byline_template' ),
+                ),
+
+                array(
+                    'type'        => 'toggle',
+                    'name'        => 'byline_for_text_only',
+                    'label'       => __('Different template for text-only tiles?', 'vp_textdomain'),
+                    'description' => __( "Check this toggle to set up a different template for text-only tiles.", 'wp-tiles' ),
+                    'default'     => false
+                ),
+
+                // @todo (maybe) Trigger window resize when codeeditor is loaded via AJAX
+                array(
+                    'type'        => 'codeeditor',
+                    'name'        => 'byline_template_textonly',
+                    'mode'        => 'html',
+                    'label'       => __( 'Text-Only Byline Template', 'vp_textdomain' ),
+                    'description' => __( '', 'vp_textdomain' ),
+                    'default'     => wp_tiles()->get_option_defaults( 'byline_template' ),
+                    'dependency' => array(
+                        'field'    => 'byline_for_text_only',
+                        'function' => 'vp_dep_boolean',
+                    ),
+                ),
+
+                array(
+                    'type' => 'toggle',
+                    'name' => 'hide_title',
+                    'label' => __('Hide title on byline', 'vp_textdomain'),
+                    'description' => __( "By default, WP Tiles add the title of the post to the byline as a H4 tag. To add the title in the template above manually, select this option.", 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'hide_title' )
                 ),
 
             );

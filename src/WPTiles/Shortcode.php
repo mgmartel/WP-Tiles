@@ -26,12 +26,14 @@ class Shortcode
             'small_screen_grid' => $defaults['small_screen_grid'],
 
             'byline_template' => $defaults['byline_template'],
+            'byline_template_textonly' => $defaults['byline_template_textonly'],
             'byline_opacity'  => $defaults['byline_opacity'],
             'byline_color'    => $defaults['byline_color'],
 
             'text_only'    => $defaults['text_only'],
             'link_to_post' => $defaults['link_to_post'],
             'images_only'  => $defaults['images_only'],
+            'hide_title'   => $defaults['hide_title'],
 
             'padding' => $defaults['padding'],
 
@@ -53,13 +55,16 @@ class Shortcode
 
             'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
 
-            'byline_template' => $atts['byline_template'],
+            'byline_template'          => $atts['byline_template'],
+            'byline_template_textonly' => $atts['byline_template_textonly'],
+
             'byline_opacity'  => $atts['byline_opacity'],
             'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
 
             'text_only'    => self::_boolean( $atts['text_only'] ),
             'link_to_post' => self::_boolean( $atts['link_to_post'] ),
             'images_only'  => self::_boolean( $atts['images_only'] ),
+            'hide_title'   => self::_boolean( $atts['hide_title'] ),
 
             'padding' => $atts['padding'],
 

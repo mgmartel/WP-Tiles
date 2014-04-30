@@ -84,13 +84,15 @@ class WPTiles
             ),
             'padding' => 10,
 
-            'byline_template' => '%categories%',
+            'byline_template' => "%categories%",
+            'byline_template_textonly' => false,
             'byline_opacity'  => '0.8',
             'byline_color'    => '#000',
 
             'text_only'    => false,
             'link_to_post' => true,
             'images_only'  => false,
+            'hide_title'   => false,
 
             'animate_init'     => true,
             'animate_resize'   => true,
@@ -131,6 +133,9 @@ class WPTiles
 
             if ( empty( $defaults['byline_color'] ) )
                 $defaults['byline_color'] = 'random';
+
+            if ( !$this->get_option( 'byline_for_text_only' ) )
+                $defaults['byline_template_textonly'] = false;
 
             // Disable individual animations when disabled globally
             if ( !$this->get_option( 'animated' ) ) {
@@ -251,7 +256,7 @@ class WPTiles
             <div class='wp-tiles-tile' id='tile-<?php echo $post->ID ?>'>
 
                 <?php if ( $display_options['link_to_post'] ) : ?>
-                    <a href="<?php echo get_permalink( $post->ID ) ?>">
+                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
                 <?php endif; ?>
 
                     <?php //@todo Should this be article (both the tag & the schema)? ?>
@@ -265,14 +270,21 @@ class WPTiles
 
                         <div class='wp-tiles-byline'>
 
-                            <?php // @todo Is H4 a good bet? ?>
-                            <h4 class='wp-tiles-byline-title' itemprop="name"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
-
-                            <?php if ( $display_options['byline_template'] ) : ?>
-                                <div class='wp-tiles-byline-content' itemprop="description">
-                                    <?php echo $this->render_byline( $display_options['byline_template'], $post ); ?>
-                                </div>
+                            <?php if ( !$display_options['hide_title'] ) : ?>
+                                <h4 itemprop="name"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
                             <?php endif; ?>
+
+                            <div class='wp-tiles-byline-content' itemprop="description">
+                                <?php if ( $display_options['byline_template_textonly'] && ($display_options['text_only'] || !$img ) ) : ?>
+
+                                    <?php echo $this->render_byline( $display_options['byline_template_textonly'], $post ); ?>
+
+                                <?php elseif ( $display_options['byline_template'] ) : ?>
+
+                                    <?php echo $this->render_byline( $display_options['byline_template'], $post ); ?>
+
+                                <?php endif; ?>
+                            </div>
 
                         </div>
 
