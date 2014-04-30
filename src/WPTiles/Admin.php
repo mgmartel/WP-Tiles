@@ -150,13 +150,14 @@ class Admin
             'option_key'            => 'wp_tiles', // options key in db, required
             'page_slug'             => 'wp-tiles', // options page slug, required
             'template'              => $tmpl_opt, // template file path or array, required
-            'menu_page'             => array(), // parent menu slug or supply `array` (can contains 'icon_url' & 'position') for top level menu
+            //'menu_page'             => array(), // parent menu slug or supply `array` (can contains 'icon_url' & 'position') for top level menu
+            'menu_page'             => 'edit.php?post_type=grid_template', // parent menu slug or supply `array` (can contains 'icon_url' & 'position') for top level menu
             'use_auto_group_naming' => true, // default to true
             'use_util_menu'         => true, // default to true, shows utility menu
             'minimum_role'          => 'manage_options', // default to 'edit_theme_options'
             'layout'                => 'fixed', // fluid or fixed, default to fixed
             'page_title'            => __( 'WP Tiles', 'wp-tiles' ), // page title
-            'menu_label'            => __( 'WP Tiles', 'wp-tiles' ), // menu label
+            'menu_label'            => __( 'Settings', 'wp-tiles' ), // menu label
         ) );
     }
 
