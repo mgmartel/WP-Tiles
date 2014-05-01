@@ -170,6 +170,17 @@ class Controls
             $i++;
         }
 
+        $controls[] = array(
+            'type' => 'slider',
+            'name' => 'background_opacity',
+            'label' => __('Background Opacity (0 to 1)', 'wp-tiles'),
+            'description' => __('Set the background opacity for tiles without background image.', 'wp-tiles'),
+            'default' => wp_tiles()->get_option_defaults( 'background_opacity' ),
+            'min' => '0',
+            'max' => '1',
+            'step' => '0.01',
+        );
+
         return $controls;
     }
 

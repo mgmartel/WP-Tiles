@@ -114,6 +114,7 @@ class WPTiles
                 "#33CCCC",
                 "#5CCCCC",
             ),
+            'background_opacity' => 1,
             'padding' => 10,
 
             'byline_template' => "%categories%",
@@ -209,6 +210,18 @@ class WPTiles
         return Helper::color_to_rgba( $byline_color, $byline_opacity, true );
     }
 
+    public function get_colors( $opts_or_colors, $background_opacity = false ) {
+        if ( is_array( $opts_or_colors ) ) {
+            $background_opacity = $opts_or_colors['background_opacity'];
+            $colors = $opts_or_colors['colors'];
+        } else {
+            $colors = $opts_or_colors;
+
+        }
+
+        return Helper::colors_to_rgba( $colors, $background_opacity );
+    }
+
     public function get_option( $name, $get_default = false ) {
         $option = vp_option( "wp_tiles." . $name );
 
@@ -267,6 +280,7 @@ class WPTiles
         $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
 
         $opts['byline_color'] = $this->get_byline_color( $opts );
+        $opts['colors'] = $this->get_colors( $opts );
 
         /**
          * Make sure carousel module isn't loaded in vain
@@ -350,6 +364,7 @@ class WPTiles
 
         foreach( $posts as $post ) :
 
+            $img = false;
             if ( !$opts['text_only'] && $img = $this->get_first_image( $post, $opts['image_size'] ) ) {
                 $tile_class = 'wp-tiles-tile-with-image';
             } elseif ( $opts['images_only'] ) {
