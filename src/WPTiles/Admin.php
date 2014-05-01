@@ -71,99 +71,7 @@ class Admin
         $tmpl_opt = array(
             'title' => __( 'WP Tiles', 'wp-tiles' ),
             'logo'  => '',
-            'menus' => array(
-                array(
-                    'title' => __( 'Tile Defaults', 'wp-tiles' ),
-                    'name'  => __( 'Defaults', 'wp-tiles' ),
-                    'icon'     => 'font-awesome:fa-magic',
-                    'controls' => array(
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Grid Templates', 'vp_textdomain' ),
-                            'name'        => 'grid_templates_section',
-                            'description' => __( 'Select your default layout options', 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_grids()
-                        ),
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Animations', 'vp_textdomain' ),
-                            'name'        => 'animations_section',
-                            //'description' => __( '', 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_animation()
-                        ),
-                        /*array(
-                            'type'       => 'section',
-                            'title'       => __( 'Byline', 'vp_textdomain' ),
-                            'name'        => 'byline_section',
-                            'description' => __( 'The byline is the content line shown on every tile.', 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_byline()
-                        ),*/
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Colors', 'vp_textdomain' ),
-                            'name'        => 'colors_section',
-                            'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_colors()
-                        )
-                    )
-                ),
-                array(
-                    'title' => __( 'Byline', 'wp-tiles' ),
-                    'name'  => __( 'Byline', 'wp-tiles' ),
-                    'icon'     => 'font-awesome:fa-magic',
-                    'controls' => array(
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Tile Byline', 'vp_textdomain' ),
-                            'name'        => 'byline_layout_section',
-                            'description' => __( "The byline is all text that is displayed on the tile.", 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_byline_layout()
-                        ),
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Byline Template', 'vp_textdomain' ),
-                            'name'        => 'byline_template_section',
-                            'description' => __( "", 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_byline_template()
-                        ),
-                    )
-                ),
-                array(
-                    'title' => __( 'Images', 'wp-tiles' ),
-                    'name'  => __( 'Images', 'wp-tiles' ),
-                    'icon'     => 'font-awesome:fa-magic',
-                    'controls' => array(
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Tile Images', 'vp_textdomain' ),
-                            'name'        => 'images_section',
-                            'description' => __( "If an image is found, it will be displayed as the tile background.", 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_images()
-                        ),
-                        /*array(
-                            'type'       => 'section',
-                            'title'       => __( 'Byline Template', 'vp_textdomain' ),
-                            'name'        => 'byline_template_section',
-                            'description' => __( "", 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_byline_template()
-                        ),*/
-                    )
-                ),
-                array(
-                    'title' => 'Default Query',
-                    'name'  => 'Query',
-                    'icon'     => 'font-awesome:fa-magic',
-                    'controls' => array(
-                        array(
-                            'type'       => 'section',
-                            'title'       => __( 'Query', 'vp_textdomain' ),
-                            'name'        => 'query_section',
-                            'description' => __( '', 'vp_textdomain' ),
-                            'fields'      => self::_get_controls_query()
-                        ),
-                    )
-                )
-            )
+            'menus' => self::_get_menus()
         );
 
         return new \VP_Option( array(
@@ -180,6 +88,95 @@ class Admin
             'page_title'            => __( 'WP Tiles', 'wp-tiles' ), // page title
             'menu_label'            => __( 'Settings', 'wp-tiles' ), // menu label
         ) );
+    }
+
+    private static function _get_menus() {
+        return array(
+            array(
+                'title' => __( 'Tile Defaults', 'wp-tiles' ),
+                'name'  => __( 'Defaults', 'wp-tiles' ),
+                'icon'     => 'font-awesome:fa-magic',
+                'controls' => array(
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Grid Templates', 'vp_textdomain' ),
+                        'name'        => 'grid_templates_section',
+                        'description' => __( 'Select your default layout options', 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_grids()
+                    ),
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Animations', 'vp_textdomain' ),
+                        'name'        => 'animations_section',
+                        //'description' => __( '', 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_animation()
+                    ),
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Colors', 'vp_textdomain' ),
+                        'name'        => 'colors_section',
+                        'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_colors()
+                    )
+                )
+            ),
+            array(
+                'title' => __( 'Byline', 'wp-tiles' ),
+                'name'  => __( 'Byline', 'wp-tiles' ),
+                'icon'     => 'font-awesome:fa-magic',
+                'controls' => array(
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Tile Byline', 'vp_textdomain' ),
+                        'name'        => 'byline_layout_section',
+                        'description' => __( "The byline is all text that is displayed on the tile.", 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_byline_layout()
+                    ),
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Byline Template', 'vp_textdomain' ),
+                        'name'        => 'byline_template_section',
+                        'description' => __( "", 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_byline_template()
+                    ),
+                )
+            ),
+            array(
+                'title' => __( 'Images', 'wp-tiles' ),
+                'name'  => __( 'Images', 'wp-tiles' ),
+                'icon'     => 'font-awesome:fa-magic',
+                'controls' => array(
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Tile Images', 'vp_textdomain' ),
+                        'name'        => 'images_section',
+                        'description' => __( "If an image is found, it will be displayed as the tile background.", 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_images()
+                    ),
+                    /*array(
+                        'type'       => 'section',
+                        'title'       => __( 'Byline Template', 'vp_textdomain' ),
+                        'name'        => 'byline_template_section',
+                        'description' => __( "", 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_byline_template()
+                    ),*/
+                )
+            ),
+            array(
+                'title' => 'Default Query',
+                'name'  => 'Query',
+                'icon'     => 'font-awesome:fa-magic',
+                'controls' => array(
+                    array(
+                        'type'       => 'section',
+                        'title'       => __( 'Query', 'vp_textdomain' ),
+                        'name'        => 'query_section',
+                        'description' => __( '', 'vp_textdomain' ),
+                        'fields'      => self::_get_controls_query()
+                    ),
+                )
+            )
+        );
     }
 
     //
