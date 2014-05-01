@@ -7,6 +7,8 @@ if ( !defined ( 'ABSPATH' ) )
 class WPTiles
 {
 
+    const GRID_POST_TYPE = 'grid_template';
+
     /**
      * Store the current tiles id, in case we add more to one page
      *
@@ -50,10 +52,43 @@ class WPTiles
     protected function __construct() {}
 
     public function init() {
-        GridTemplates::get_instance();
-        Admin::setup();
+        Admin\Admin::setup();
 
+        add_action( 'init', array( &$this, 'register_post_type' ) );
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
+    }
+
+    public function register_post_type() {
+        register_post_type( self::GRID_POST_TYPE, apply_filters( 'wp_tiles/grid_template_post_type', array(
+            'labels'             => array(
+                'name'               => _x( 'Grids', 'post type general name', 'wp-tiles' ),
+                'singular_name'      => _x( 'Grid', 'post type singular name', 'wp-tiles' ),
+                'menu_name'          => _x( 'WP Tiles', 'admin menu', 'wp-tiles' ),
+                'name_admin_bar'     => _x( 'Grid', 'add new on admin bar', 'wp-tiles' ),
+                'add_new'            => _x( 'Add New Grid', 'book', 'wp-tiles' ),
+                'add_new_item'       => __( 'Add New Grid', 'wp-tiles' ),
+                'new_item'           => __( 'New Grid', 'wp-tiles' ),
+                'edit_item'          => __( 'Edit Grid', 'wp-tiles' ),
+                'view_item'          => __( 'View Grid', 'wp-tiles' ),
+                'all_items'          => __( 'All Grids', 'wp-tiles' ),
+                'search_items'       => __( 'Search Grids', 'wp-tiles' ),
+                'parent_item_colon'  => __( 'Parent Grids:', 'wp-tiles' ),
+                'not_found'          => __( 'No grids found.', 'wp-tiles' ),
+                'not_found_in_trash' => __( 'No grids found in Trash.', 'wp-tiles' ),
+            ),
+            'public'             => false,
+            'publicly_queryable' => false,
+            'show_ui'            => true,
+            'show_in_menu'       => true,
+            'query_var'          => false,
+            'rewrite'            => false,
+            'capability_type'    => 'post',
+            'has_archive'        => false,
+            'hierarchical'       => false,
+            'menu_position'      => 100,
+            'menu_icon'          => 'dashicons-screenoptions',
+            'supports'           => array( 'title' )
+        ) ) );
     }
 
     /**

@@ -50,7 +50,6 @@ if ( !defined( 'VP_VERSION' ) )
 
 require WP_TILES_DIR . 'vendor/autoload.php';
 
-WPTiles\Admin::setup_shortcode_generator();
 add_action( 'init', 'wp_tiles' );
 
 /**
@@ -76,4 +75,9 @@ WP_Tiles_GridTemplates::get_instance();*/
 add_action( 'plugins_loaded', 'wptiles_load_pluggables' );
 function wptiles_load_pluggables() {
     require_once( WP_TILES_DIR . '/wp-tiles-pluggables.php' );
+}
+
+// @todo include this somewhere else
+function wp_tiles_preview_tile() {
+    return WPTiles\Admin::preview_tile();
 }
