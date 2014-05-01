@@ -238,13 +238,13 @@ class Admin
          */
         $classes = array( 'wp-tiles-byline-align-' . $byline_align );
 
-        if ( !empty( $byline_effect ) && !in_array( $byline_effect, wp_tiles()->get_allowed_byline_effects() )  )
+        if ( !empty( $byline_effect ) && in_array( $byline_effect, wp_tiles()->get_allowed_byline_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-byline-animated',
                 'wp-tiles-byline-' . $byline_effect
             ) );
 
-        if ( !empty( $image_effect ) && !in_array( $image_effect, wp_tiles()->get_allowed_image_effects() )  )
+        if ( !empty( $image_effect ) && in_array( $image_effect, wp_tiles()->get_allowed_image_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-image-animated',
                 'wp-tiles-image-' . $image_effect
@@ -268,7 +268,7 @@ class Admin
                             <div class="wp-tiles-byline">
 
                                 <h4 itemprop="name" class="wp-tiles-byline-title"><?php _e( 'Byline Preview', 'wp-tiles' ); ?></h4>
-                                
+
                                 <div class="wp-tiles-byline-content" itemprop="description">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in...
                                 </div>
