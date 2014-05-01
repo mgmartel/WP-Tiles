@@ -31,44 +31,44 @@
           $el = $(this),
           $templates = $("#" + tiledata.id + "-templates"),
           $templateButtons = $('.template', $templates),
-          display_opts = tiledata.display_options,
+          opts = tiledata.display_options,
           grid,
-
-          currTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates[0]),
-          largeTemplate,
+          largeTemplate = false,
 
           // Private Methods
           choose_template = function(){
-            if ( $el.width() < display_opts.small_screen_breakpoint && !largeTemplate ) {
+            var is_small = $el.width() < opts.breakpoint,
+                current  = ( grid && grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
+
+            if ( is_small && !largeTemplate ) {
                 $templates.hide();
 
                 // Save large template
-                largeTemplate = ( grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
-                currTemplate = Tiles.Template.fromJSON(tiledata.rowTemplates['small']);
+                largeTemplate = ( grid && grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
+                current  = Tiles.Template.fromJSON(opts.small_screen_grid);
 
-            } else if ( largeTemplate ) {
+            } else if ( !is_small && largeTemplate ) {
                 $templates.show();
 
-                currTemplate = largeTemplate;
+                current  = largeTemplate;
                 largeTemplate = false;
             }
 
+            return current;
           },
 
           onresize = function(){
-            $.wptiles.resizeParent($el,display_opts.padding);
+            $.wptiles.resizeParent($el,opts.padding);
             $('.wp-tiles-byline').dotdotdot();
 
             $el.trigger('wp-tiles:resize');
           };
 
-      choose_template();
-
       // Setup the Tiles grid
       grid = $.extend(new Tiles.Grid($el),{
-        cellPadding: parseInt(display_opts.padding),
+        cellPadding: parseInt(opts.padding),
 
-        template: currTemplate,
+        template: choose_template(),
 
         resizeColumns: function() {
           return this.template.numCols;
@@ -79,7 +79,7 @@
               $el  = tile.$el,
               i    = parseInt(data.id.match(/[0-9]{1,}/)),
               // @todo Custom colors using data-attributes?
-              color = display_opts.colors[i % display_opts.colors.length];
+              color = opts.colors[i % opts.colors.length];
 
           $el
             .css("background-color", color);
@@ -88,10 +88,10 @@
           if ( $('.wp-tiles-tile-with-image',$el).get(0) ) {
 
             // Then maybe also add the color to the byline
-            if ( 'random' === display_opts.byline_color ) {
+            if ( 'random' === opts.byline_color ) {
 
               var $byline  = $('.wp-tiles-byline',$el),
-                  alpha = display_opts.byline_opacity,
+                  alpha = opts.byline_opacity,
                   //rgb   = $byline.css('background-color'),
                   rgb   = color,
                   rgbx  = rgb.substr(0,4) === 'rgba' ? rgb : rgb.replace('rgb', 'rgba').replace(')', ',' + alpha + ')'),
@@ -157,26 +157,26 @@
       if ( $image_bylines.get(0) ) {
 
         // Set color and opacity
-        if ( 'random' !== display_opts.byline_color ) {
-          $image_bylines.css('background-color', display_opts.byline_color); // Byline color includes alpha
+        if ( 'random' !== opts.byline_color ) {
+          $image_bylines.css('background-color', opts.byline_color); // Byline color includes alpha
         }
 
         // Set the byline height
-        $image_bylines.css('height',display_opts.byline_height + '%');
+        $image_bylines.css('height',opts.byline_height + '%');
       }
 
       // Draw!
-      grid.redraw(display_opts.animate_init, onresize);
+      grid.redraw(opts.animate_init, onresize);
 
       // when the window resizes, redraw the grid
       $(window).resize($.wptiles.debounce(function() {
           // @todo Only resize if template is the same?
-          choose_template();
+          grid.template = choose_template();
 
           grid.isDirty = true;
           grid.resize();
 
-          grid.redraw(display_opts.animate_resize, onresize);
+          grid.redraw(opts.animate_resize, onresize);
       }, 200));
 
 
@@ -198,7 +198,7 @@
         grid.isDirty  = true;
         grid.resize();
 
-        grid.redraw(display_opts.animate_template, onresize);
+        grid.redraw(opts.animate_template, onresize);
 
       });
     }
