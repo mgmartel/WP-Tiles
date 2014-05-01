@@ -50,7 +50,7 @@ class Gallery
 
         // Set Gallery specific defaults
         $atts = wp_parse_args( $atts, array(
-            'byline_template' => '<h4>%excerpt%</h4>',
+            'byline_template' => '<h4 class="wp-tiles-byline-title">%excerpt%</h4>',
             'hide_title' => 'true',
             'link' => wp_tiles()->get_option( 'link' ) == 'thickbox' ? 'thickbox' : 'file'
         ) );

@@ -369,7 +369,7 @@ class WPTiles
             }
 
             $tile_classes = array( 'wp-tiles-tile' );
-            
+
             if ( 'carousel' == $opts['link'] )
                 $tile_classes[] = 'gallery-item';
 
@@ -388,7 +388,7 @@ class WPTiles
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>">
 
                 <?php elseif ( 'carousel' == $opts['link'] ) : ?>
-                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="" rel="<?php echo $this->tiles_id ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
 
                 <?php endif; ?>
 
