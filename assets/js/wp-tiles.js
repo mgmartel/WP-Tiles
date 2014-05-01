@@ -25,26 +25,36 @@
   };
 
   $.fn.extend({
-    wptiles: function(tiledata){
+    wptiles: function(opts){
       var
           // Locals
           $el = $(this),
-          $templates = $("#" + tiledata.id + "-templates"),
+          $templates = $("#" + opts.id + "-templates"),
           $templateButtons = $('.template', $templates),
-          opts = tiledata.display_options,
           grid,
           largeTemplate = false,
 
           // Private Methods
+          get_first_grid = function(){
+            var grid;
+
+            $.each(opts.grids, function() {
+              grid = this;
+              return false;
+            });
+
+            return Tiles.Template.fromJSON(grid);
+          },
+
           choose_template = function(){
             var is_small = $el.width() < opts.breakpoint,
-                current  = ( grid && grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
+                current  = ( grid && grid.template ) ? grid.template : get_first_grid();
 
             if ( is_small && !largeTemplate ) {
                 $templates.hide();
 
                 // Save large template
-                largeTemplate = ( grid && grid.template ) ? grid.template : Tiles.Template.fromJSON(tiledata.rowTemplates[0]);
+                largeTemplate = current;
                 current  = Tiles.Template.fromJSON(opts.small_screen_grid);
 
             } else if ( !is_small && largeTemplate ) {
@@ -182,16 +192,16 @@
 
       // Make the grid changable
       $templateButtons.on('click', function(e) {
+        e.preventDefault();
 
         // unselect all templates
         $templateButtons.removeClass("selected");
 
         // select the template we clicked on
-        $(e.target).addClass("selected");
+        $(this).addClass("selected");
 
         // get the JSON rows for the selection
-        var index = $(e.target).index(),
-            rows  = tiledata.rowTemplates[index];
+        var rows = opts.grids[$(this).data('grid')];
 
         // set the new template and resize the grid
         grid.template = Tiles.Template.fromJSON(rows);
@@ -213,6 +223,7 @@
       $el.wptiles(tiledata);
     });
 
+    // @todo Is this really needed?
     $(window).trigger('resize');
   });
 

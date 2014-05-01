@@ -170,38 +170,32 @@ class WPTiles
         $wptiles_id = "wp-tiles-" . $this->tiles_id;
         $this->tiles_id++;
 
-        /**
-         * Setup the grid(s)
-         */
-        $grids = $options['grids'];
+        // Cleanup grids
+        $grid__pretty_names = array_keys( $options['grids'] );
+        $options['grids'] = $this->format_grids( $options['grids'] );
+        $grid_names = array_combine( array_keys( $options['grids'] ), $grid__pretty_names );
 
-        // @todo Is this needed?
-        array_walk( $grids, function( &$grid ){
-            if ( !is_array( $grid ) )
-                $grid = explode( "\n", $grid );
-        });
-
-        $small_screen_grid = $options['small_screen_grid'];
+        $options['small_screen_grid'] = $this->format_grid( $options['small_screen_grid'] );
 
         /**
          * Pass the required info to the JS
          */
-        $this->add_data_for_js( $wptiles_id, $grids, $small_screen_grid, $options );
+        $this->add_data_for_js( $wptiles_id, $options );
 
         /**
          * Time to start rendering our template
          */
         ?>
 
-        <?php if ( count( $grids ) > 1 ) : ?>
+        <?php if ( count( $grid_names ) > 1 ) : ?>
 
             <div id="<?php echo $wptiles_id; ?>-templates" class="tile-templates">
 
                 <ul class="template-selector">
 
-            <?php foreach ( array_keys( $grids ) as $k ) : ?>
+            <?php foreach ( $grid_names as $slug => $name ) : ?>
 
-                        <li class="template"><?php echo $k; ?></li>
+                        <li class="template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
 
             <?php endforeach; ?>
 
@@ -317,7 +311,7 @@ class WPTiles
         return str_replace( array_keys( $tags ), array_values( $tags ), $template );
     }
 
-    protected function add_data_for_js( $wptiles_id, $templates, $small_screen_grids, $display_options ) {
+    protected function add_data_for_js( $wptiles_id, $display_options ) {
         static $enqueued = false;
 
         if ( !$enqueued ) {
@@ -327,14 +321,8 @@ class WPTiles
             $enqueued = true;
         }
 
-        $grids          = array_values( $templates );
-        $grids['small'] = $small_screen_grids;
-
-        $this->data[$wptiles_id] = array(
-            "id"              => $wptiles_id,
-            "rowTemplates"    => $grids,
-            "display_options" => $display_options,
-        );
+        $display_options['id'] = $wptiles_id;
+        $this->data[$wptiles_id] = $display_options;
     }
 
     public function add_data() {
@@ -658,4 +646,22 @@ class WPTiles
             return $ids;
 
        }
+
+    public function format_grids( $grids ) {
+        $ret = array();
+        foreach( $grids as $name => $grid ) {
+            $ret[sanitize_title($name)] = $this->format_grid( $grid );
+        }
+
+        return $ret;
+    }
+
+    public function format_grid( $grid ) {
+        if ( !is_array( $grid ) )
+            $grid = explode( "\n", $grid );
+
+        $grid = array_map( 'trim', $grid );
+
+        return $grid;
+    }
 }
