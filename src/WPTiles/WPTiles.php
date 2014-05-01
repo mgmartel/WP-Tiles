@@ -451,7 +451,7 @@ class WPTiles
             '%content%' => $post->post_content,
             '%excerpt%' => $this->get_the_excerpt( $post ),
             '%date%'    => $this->get_the_date( $post ),
-            '%link%'    => get_permalink( $post )
+            '%link%'    => get_permalink( $post ),
         );
 
         // Only do the more expensive tags if needed
@@ -460,6 +460,9 @@ class WPTiles
         }
         if ( strpos( $template, '%tags%' ) !== false ) {
             $tags['%tags%'] = implode( ', ', wp_get_post_tags( $post->ID, array( "fields" => "names" ) ) );
+        }
+        if ( strpos( $template, '%featured_image%' ) !== false ) {
+            $tags['%featured_image%'] = get_the_post_thumbnail( $post->ID );
         }
 
         $tags = apply_filters( 'wp_tiles_byline_tags', $tags, $post, $template );
