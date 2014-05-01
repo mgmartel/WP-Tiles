@@ -16,8 +16,8 @@ class Controls
             $controls[] = array(
                 'type'        => 'sorter',
                 'name'        => 'grids',
-                'label'       => __( 'Grids', 'vp_textdomain' ),
-                'description' => __( 'Select which Grids to use', 'vp_textdomain' ),
+                'label'       => __( 'Grids', 'wp-tiles' ),
+                'description' => __( 'Select which Grids to use', 'wp-tiles' ),
                 'default'     => '{{last}}',
                 'items'       => array(
                     'data' => array(
@@ -32,8 +32,8 @@ class Controls
             $controls[] = array(
                 'type'        => 'select',
                 'name'        => 'default_grid',
-                'label'       => __( 'Default Grid', 'vp_textdomain' ),
-                'description' => __( 'Select which Grid to use by default', 'vp_textdomain' ),
+                'label'       => __( 'Default Grid', 'wp-tiles' ),
+                'description' => __( 'Select which Grid to use by default', 'wp-tiles' ),
                 'default'     => '{{last}}',
                 'validation'  => 'required',
                 'items'       => array(
@@ -53,8 +53,8 @@ class Controls
             $controls[] = array(
                 'type'        => 'toggle',
                 'name'        => 'small_screen_enabled',
-                'label'       => __( 'Different template on small screens?', 'vp_textdomain' ),
-                'description' => __( "Yay or nay? What's it going to be?", 'vp_textdomain' ),
+                'label'       => __( 'Different template on small screens?', 'wp-tiles' ),
+                'description' => __( "Yay or nay? What's it going to be?", 'wp-tiles' ),
                 'default'     => '1',
             );
 
@@ -63,8 +63,8 @@ class Controls
         $controls[] = array(
             'type'        => 'select',
             'name'        => 'small_screen_grid',
-            'label'       => __( 'Small Screen Grid', 'vp_textdomain' ),
-            'description' => __( 'Select the grid to use on small screens.', 'vp_textdomain' ),
+            'label'       => __( 'Small Screen Grid', 'wp-tiles' ),
+            'description' => __( 'Select the grid to use on small screens.', 'wp-tiles' ),
             'default'     => '{{last}}',
             'items'       => array(
                 'data' => array(
@@ -83,8 +83,8 @@ class Controls
         $controls[] = array(
             'type'        => 'textbox',
             'name'        => 'small_screen_breakpoint',
-            'label'       => __( 'Small Screen Breakpoint', 'vp_textdomain' ),
-            'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'vp_textdomain' ),
+            'label'       => __( 'Small Screen Breakpoint', 'wp-tiles' ),
+            'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'wp-tiles' ),
             'default'     => wp_tiles()->get_option_defaults( 'small_screen_breakpoint' ),
             'validation'  => 'numeric',
             'dependency'  => ( Admin::is_shortcode() ) ? false : array(
@@ -96,8 +96,8 @@ class Controls
         $controls[] = array(
             'type' => 'slider',
             'name' => 'padding',
-            'label' => __('Tile Padding', 'vp_textdomain'),
-            'description' => __( 'Padding between the tiles in px', 'vp_textdomain'),
+            'label' => __('Tile Padding', 'wp-tiles'),
+            'description' => __( 'Padding between the tiles in px', 'wp-tiles'),
             'min' => '0',
             'max' => '100',
             'step' => '1',
@@ -112,15 +112,15 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'animated',
-                'label' => __('Enable Animations', 'vp_textdomain'),
-                'description' => __( 'Controls animations when tiles are loaded, modified or resized', 'vp_textdomain'),
+                'label' => __('Enable Animations', 'wp-tiles'),
+                'description' => __( 'Controls animations when tiles are loaded, modified or resized', 'wp-tiles'),
                 'default' => true,
             ),
             array(
                 'type' => 'toggle',
                 'name' => 'animate_init',
-                'label' => __('Animation on load', 'vp_textdomain'),
-                'description' => __( 'Show animation when tiles are first loaded', 'vp_textdomain'),
+                'label' => __('Animation on load', 'wp-tiles'),
+                'description' => __( 'Show animation when tiles are first loaded', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'animate_init' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
@@ -130,8 +130,8 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'animate_resize',
-                'label' => __('Animation on window resize', 'vp_textdomain'),
-                'description' => __( 'Animate the tiles when the window is resized?', 'vp_textdomain'),
+                'label' => __('Animation on window resize', 'wp-tiles'),
+                'description' => __( 'Animate the tiles when the window is resized?', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'animate_resize' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
@@ -141,8 +141,8 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'animate_template',
-                'label' => __('Animation on grid change', 'vp_textdomain'),
-                'description' => __( 'Show animation when grid template changes', 'vp_textdomain'),
+                'label' => __('Animation on grid change', 'wp-tiles'),
+                'description' => __( 'Show animation when grid template changes', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'animate_template' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
@@ -161,8 +161,8 @@ class Controls
             $controls[] = array(
                 'type' => 'color',
                 'name' => 'color_' . $i,
-                'label' => sprintf( __('Color %d', 'vp_textdomain'), $i ),
-                'description' => __('Another color', 'vp_textdomain'),
+                'label' => sprintf( __('Color %d', 'wp-tiles'), $i ),
+                'description' => __('Another color', 'wp-tiles'),
                 'default' => $color,
                 'format' => 'hex',
             );
@@ -178,21 +178,21 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'text_only',
-                'label' => __('Text-only tiles', 'vp_textdomain'),
+                'label' => __('Text-only tiles', 'wp-tiles'),
                 'description' => __( "Don't add the background image to Tiles", 'wp-tiles' ),
                 'default' => wp_tiles()->get_option_defaults( 'text_only' )
             ),
             array(
                 'type' => 'toggle',
                 'name' => 'images_only',
-                'label' => __('Hide tiles with no images', 'vp_textdomain'),
+                'label' => __('Hide tiles with no images', 'wp-tiles'),
                 'description' => __( "Hide tiles that don't have an image.", 'wp-tiles' ),
                 'default' => wp_tiles()->get_option_defaults( 'images_only' )
             ),
             array(
                 'type' => 'radiobutton',
                 'name' => 'link',
-                'label' => __( 'Link To', 'vp_textdomain' ),
+                'label' => __( 'Link To', 'wp-tiles' ),
                 'description' => __( "Where should people go when they click on a tile (if anywhere?)", 'wp-tiles' ),
                 'default' => wp_tiles()->get_option_defaults( 'link' ),
                 'items' => array(
@@ -228,15 +228,15 @@ class Controls
                 'type'        => 'codeeditor',
                 'name'        => 'byline_template',
                 'mode'        => 'html',
-                'label'       => __( 'Byline Template (HTML)', 'vp_textdomain' ),
-                'description' => __( '@todo: Explain tags.', 'vp_textdomain' ),
+                'label'       => __( 'Byline Template (HTML)', 'wp-tiles' ),
+                'description' => __( '@todo: Explain tags.', 'wp-tiles' ),
                 'default'     => wp_tiles()->get_option_defaults( 'byline_template' ),
             ),
 
             array(
                 'type'        => 'toggle',
                 'name'        => 'byline_for_text_only',
-                'label'       => __('Different template for text-only tiles?', 'vp_textdomain'),
+                'label'       => __('Different template for text-only tiles?', 'wp-tiles'),
                 'description' => __( "Check this toggle to set up a different template for text-only tiles.", 'wp-tiles' ),
                 'default'     => false
             ),
@@ -246,8 +246,8 @@ class Controls
                 'type'        => 'codeeditor',
                 'name'        => 'byline_template_textonly',
                 'mode'        => 'html',
-                'label'       => __( 'Text-Only Byline Template', 'vp_textdomain' ),
-                'description' => __( '', 'vp_textdomain' ),
+                'label'       => __( 'Text-Only Byline Template', 'wp-tiles' ),
+                'description' => __( '', 'wp-tiles' ),
                 'default'     => wp_tiles()->get_option_defaults( 'byline_template' ),
                 'dependency' => array(
                     'field'    => 'byline_for_text_only',
@@ -258,7 +258,7 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'hide_title',
-                'label' => __('Hide title on byline', 'vp_textdomain'),
+                'label' => __('Hide title on byline', 'wp-tiles'),
                 'description' => __( "By default, WP Tiles add the title of the post to the byline as a H4 tag. To add the title in the template above manually, select this option.", 'wp-tiles' ),
                 'default' => wp_tiles()->get_option_defaults( 'hide_title' )
             ),
@@ -272,8 +272,8 @@ class Controls
             array(
                 'type'        => 'sorter',
                 'name'        => 'id',
-                'label'       => __( 'Manual Selection', 'vp_textdomain' ),
-                'description' => __( 'Select posts manually', 'vp_textdomain' ),
+                'label'       => __( 'Manual Selection', 'wp-tiles' ),
+                'description' => __( 'Select posts manually', 'wp-tiles' ),
                 'items'       => array(
                     'data' => array(
                         array(
@@ -301,7 +301,7 @@ class Controls
             array(
                 'type' => 'textbox',
                 'name' => 'posts_per_page',
-                'label' => __('Posts Per Page', 'vp_textdomain'),
+                'label' => __('Posts Per Page', 'wp-tiles'),
                 'validation' => 'numeric'
             ),
 
@@ -370,7 +370,7 @@ class Controls
             array(
                 'type' => 'textbox',
                 'name' => 'tax_term',
-                'label' => __('Taxonomy Term', 'vp_textdomain'),
+                'label' => __('Taxonomy Term', 'wp-tiles'),
             ),
 
             array(
@@ -467,21 +467,21 @@ class Controls
             array(
                 'type' => 'textbox',
                 'name' => 'meta_key',
-                'label' => __('Meta Key', 'vp_textdomain'),
+                'label' => __('Meta Key', 'wp-tiles'),
             ),
 
             array(
                 'type' => 'textbox',
                 'name' => 'offset',
-                'label' => __('Offset', 'vp_textdomain'),
+                'label' => __('Offset', 'wp-tiles'),
                 'validation' => 'numeric'
             ),
 
             array(
                 'type'        => 'select',
                 'name'        => 'post_parent',
-                'label'       => __( 'Post Parent', 'vp_textdomain' ),
-                'description' => __( 'Only show children of selected post', 'vp_textdomain' ),
+                'label'       => __( 'Post Parent', 'wp-tiles' ),
+                'description' => __( 'Only show children of selected post', 'wp-tiles' ),
                 'items'       => array(
                         array(
                             'label' => '[Use Current Post]',
@@ -543,7 +543,7 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'ignore_sticky_posts',
-                'label' => __('Ignore Sticky Posts', 'vp_textdomain'),
+                'label' => __('Ignore Sticky Posts', 'wp-tiles'),
             ),
         );
     }
@@ -613,8 +613,8 @@ class Controls
             array(
                 'type' => 'slider',
                 'name' => 'byline_opacity',
-                'label' => __('Byline Opacity (0 to 1)', 'vp_textdomain'),
-                'description' => __('Set the byline opacity.', 'vp_textdomain'),
+                'label' => __('Byline Opacity (0 to 1)', 'wp-tiles'),
+                'description' => __('Set the byline opacity.', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'byline_opacity' ),
                 'min' => '0',
                 'max' => '1',
@@ -624,8 +624,8 @@ class Controls
             array(
                 'type' => 'slider',
                 'name' => 'byline_height',
-                'label' => __('Byline Height (px)', 'vp_textdomain'),
-                'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'vp_textdomain'),
+                'label' => __('Byline Height (px)', 'wp-tiles'),
+                'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'byline_height' ),
                 'min' => '0',
                 'max' => '100',
@@ -634,8 +634,8 @@ class Controls
             array(
                 'type' => 'color',
                 'name' => 'byline_color',
-                'label' => __( 'Byline Color', 'vp_textdomain' ),
-                'description' => __('Color for the byline. Leave empty to use the tile colors', 'vp_textdomain'),
+                'label' => __( 'Byline Color', 'wp-tiles' ),
+                'description' => __('Color for the byline. Leave empty to use the tile colors', 'wp-tiles'),
                 'default' => wp_tiles()->get_option_defaults( 'byline_color' ),
                 'format' => 'hex',
             ),
