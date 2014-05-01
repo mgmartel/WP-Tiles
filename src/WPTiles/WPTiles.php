@@ -53,9 +53,13 @@ class WPTiles
 
     public function init() {
         Admin\Admin::setup();
-
         add_action( 'init', array( &$this, 'register_post_type' ) );
+
+        // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
+
+        // The Gallery
+        add_filter( 'post_gallery', array( '\WPTiles\Gallery', 'maybe_do_gallery' ), 999, 2 );
     }
 
     public function register_post_type() {

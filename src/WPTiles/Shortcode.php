@@ -76,8 +76,7 @@ class Shortcode
             'byline_template_textonly' => $atts['byline_template_textonly'],
 
             'byline_opacity'  => $atts['byline_opacity'],
-            //'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
-            'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
+            'byline_color'    => $atts['byline_color'],
             'byline_height'   => $atts['byline_height'],
             'byline_align'    => $atts['byline_align'],
             'byline_effect'   => $atts['byline_effect'],
