@@ -69,12 +69,12 @@ class Admin
         self::$context = self::CONTEXT_OPTIONS;
 
         $tmpl_opt = array(
-            'title' => 'WP Tiles Title',
+            'title' => __( 'WP Tiles', 'wp-tiles' ),
             'logo'  => '',
             'menus' => array(
                 array(
-                    'title' => 'Tile Defaults',
-                    'name'  => 'Defaults',
+                    'title' => __( 'Tile Defaults', 'wp-tiles' ),
+                    'name'  => __( 'Defaults', 'wp-tiles' ),
                     'icon'     => 'font-awesome:fa-magic',
                     'controls' => array(
                         array(
@@ -108,8 +108,8 @@ class Admin
                     )
                 ),
                 array(
-                    'title' => 'Byline',
-                    'name'  => 'Byline',
+                    'title' => __( 'Byline', 'wp-tiles' ),
+                    'name'  => __( 'Byline', 'wp-tiles' ),
                     'icon'     => 'font-awesome:fa-magic',
                     'controls' => array(
                         array(
@@ -126,6 +126,27 @@ class Admin
                             'description' => __( "", 'vp_textdomain' ),
                             'fields'      => self::_get_controls_byline_template()
                         ),
+                    )
+                ),
+                array(
+                    'title' => __( 'Images', 'wp-tiles' ),
+                    'name'  => __( 'Images', 'wp-tiles' ),
+                    'icon'     => 'font-awesome:fa-magic',
+                    'controls' => array(
+                        array(
+                            'type'       => 'section',
+                            'title'       => __( 'Tile Images', 'vp_textdomain' ),
+                            'name'        => 'images_section',
+                            'description' => __( "If an image is found, it will be displayed as the tile background.", 'vp_textdomain' ),
+                            'fields'      => self::_get_controls_images()
+                        ),
+                        /*array(
+                            'type'       => 'section',
+                            'title'       => __( 'Byline Template', 'vp_textdomain' ),
+                            'name'        => 'byline_template_section',
+                            'description' => __( "", 'vp_textdomain' ),
+                            'fields'      => self::_get_controls_byline_template()
+                        ),*/
                     )
                 ),
                 array(
@@ -687,6 +708,51 @@ class Admin
             );
         }
 
+        private static function _get_controls_images() {
+            return array(
+                array(
+                    'type' => 'select',
+                    'name' => 'image_size',
+                    'label' => __( 'Use image size', 'wp-tiles' ),
+                    'description' => __( 'Define the image size WP Tiles should use for tile background. Set to a larger size if Tile backgrounds come out too pixelated.', 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'image_size' ),
+                    'items'       => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( __CLASS__, 'get_image_sizes' ),
+                            ),
+                        ),
+                    ),
+                ),
+                array(
+                    'type' => 'select',
+                    'name' => 'image_source',
+                    'label' => __( 'Image Source', 'wp-tiles' ),
+                    'description' => __( 'Where should WP Tiles look for the images for the background of tiles?', 'wp-tiles' ),
+                    'default' => wp_tiles()->get_option_defaults( 'image_source' ),
+                    'items'       => array(
+                        array(
+                            'label' => __( 'Any', 'wp-tiles' ),
+                            'value' => 'all'
+                        ),
+                        array(
+                            'label' => __( "Attached Only (don't look in post)", 'wp-tiles' ),
+                            'value' => 'attached_only'
+                        ),
+                        array(
+                            'label' => __( "Featured Image Only", 'wp-tiles' ),
+                            'value' => 'featured_only'
+                        ),
+                        array(
+                            'label' => __( "Only show image for Media Posts", 'wp-tiles' ),
+                            'value' => 'attachment_only'
+                        ),
+                    ),
+                )
+            );
+        }
+
 
     //
     // DATA SOURCES
@@ -747,6 +813,28 @@ class Admin
         $result = array();
         foreach( get_taxonomies( array( 'public' => true ), 'objects' ) as $post_type => $post_type_obj ) {
             $result[] = array( 'value' => $post_type, 'label' => $post_type_obj->labels->name );
+        }
+
+        return $result;
+    }
+
+    public static function get_image_sizes() {
+        global $_wp_additional_image_sizes;
+
+        $result = array();
+        foreach( array('thumbnail', 'medium', 'large') as $size ) {
+            $width = get_option( "{$size}_size_w" );
+            $height = get_option( "{$size}_size_h" );
+
+            if ( $width && $height ) {
+                $name = ucfirst( $size );
+                $result[] = array( 'value' => $size, 'label' => "$name ({$width}x{$height})" );
+            }
+        }
+
+        foreach( $_wp_additional_image_sizes as $size => $atts ) {
+            $name = ucwords( str_replace( array( '-', '_' ), " ", $size ) );
+            $result[] = array( 'value' => $size, 'label' => "$name ({$atts['width']}x{$atts['height']})" );
         }
 
         return $result;

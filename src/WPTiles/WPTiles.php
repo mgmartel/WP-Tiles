@@ -89,7 +89,10 @@ class WPTiles
 
             'animate_init'     => true,
             'animate_resize'   => true,
-            'animate_template' => true
+            'animate_template' => true,
+
+            'image_size'       => 'medium',
+            'image_source'     => 'all'
         );
 
         if ( $key )
@@ -148,8 +151,13 @@ class WPTiles
 
     }
 
-    public function get_option( $name ) {
-        return vp_option( "wp_tiles." . $name );
+    public function get_option( $name, $get_default = false ) {
+        $option = vp_option( "wp_tiles." . $name );
+
+        if ( $get_default && is_null( $option ) )
+            $option = $this->get_option_defaults( $name );
+
+        return $option;
     }
 
     /**
@@ -438,31 +446,42 @@ class WPTiles
          * @param WP_Post $post
          * @return string Source
          * @sice 0.5.2
+         * @todo Cache?
          */
         private function _find_the_image( $post ) {
-            $tile_image_size = apply_filters( 'wp-tiles-image-size', 'medium', $post );
+            $tile_image_size = apply_filters( 'wp-tiles-image-size', $this->get_option( 'image_size', true ), $post );
+            $image_source = $this->get_option( 'image_source', true );
 
             if ( 'attachment' === get_post_type( $post->ID ) ) {
                 $image = wp_get_attachment_image_src( $post->ID, $tile_image_size, false );
                 return $image[0];
             }
 
+            if ( 'attachment_only' == $image_source )
+                return '';
+
             if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
                 $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
                 return $image[0];
             }
 
+            if ( 'featured_only' == $image_source )
+                return '';
+
             $images = get_children( array(
                 'post_parent'    => $post->ID,
                 'numberposts'    => 1,
                 'post_mime_type' => 'image'
-                    ) );
+            ) );
 
             if ( !empty( $images ) ) {
                 $images = current( $images );
                 $src    = wp_get_attachment_image_src( $images->ID, $size   = $tile_image_size );
                 return $src[0];
             }
+
+            if ( 'attached_only' == $image_source )
+                return '';
 
             if ( !empty( $post->post_content ) ) {
                 $xpath = new \DOMXPath( @\DOMDocument::loadHTML( $post->post_content ) );
