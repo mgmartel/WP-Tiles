@@ -170,7 +170,9 @@ class WPTiles
         $wptiles_id = "wp_tiles_" . $this->tiles_id;
         $this->tiles_id++;
 
-        // Cleanup grids
+        /**
+         *  Cleanup grids and set names
+         */
         $grid__pretty_names = array_keys( $options['grids'] );
         $options['grids'] = $this->format_grids( $options['grids'] );
         $grid_names = array_combine( array_keys( $options['grids'] ), $grid__pretty_names );
@@ -364,74 +366,6 @@ class WPTiles
         wp_enqueue_style( 'wp-tiles', $located, false, WP_TILES_VERSION );
     }
 
-    protected function extract_data( $posts, $display_options, $colors ) {
-        $data = array( );
-
-        if ( is_array( $colors ) )
-            $colors = $colors['colors'];
-        else {
-            $delimiter = ( strpos( $colors, "," ) ) ? ',' : "\n";
-            $colors    = explode( $delimiter, str_replace( " ", "", $colors ) );
-        }
-        $colors = apply_filters( "wp-tiles-colors", array_filter( $colors ) );
-
-        $display_options = apply_filters( "wp-tiles-display_options", $display_options );
-
-        $hideByline = ( 'show' == $display_options['text'] ) ? false : true;
-
-        foreach ( $posts as $post ) {
-            $hideByline = apply_filters( 'wp-tiles-hide-byline', $hideByline, $post->ID, $post );
-
-            $categories = wp_get_post_categories( $post->ID, array( "fields" => "all" ) );
-
-            $category_slugs = $category_names = array();
-            foreach( $categories as $category ) {
-                $category_slugs[] = $category->slug;
-                $category_names[] = $category->name;
-            }
-
-            switch ( $display_options['byline'] ) {
-                case 'nothing' :
-                    $byline = '';
-                    break;
-                case 'excerpt' :
-                    $byline = $this->get_the_excerpt( $post->post_content, $post->post_excerpt );
-                    break;
-                case 'date1' :
-                    $byline = $this->get_the_date( $post );
-                    break;
-                case 'date2' :
-                    $byline = $this->get_the_date( $post, 'd-m-Y' );
-                    break;
-                case 'date3' :
-                    $byline = $this->get_the_date( $post, 'm-d-Y' );
-                    break;
-                case 'cats' :
-                default :
-                    $byline = $category_names;
-                    break;
-            }
-
-            $color  = $colors[array_rand( $colors )];
-            /**
-             * Byline opacity only when using random colors
-             */
-            $data[] = array(
-                "id"          => $post->ID,
-                "title"       => apply_filters( 'the_title', $post->post_title ),
-                "url"         => get_permalink( $post->ID ),
-                "byline"      => apply_filters( 'wp-tiles-byline', $byline, $post ),
-                "img"         => $this->get_first_image( $post ),
-                "color"       => $color,
-                "bylineColor" => Helper::hex_to_rgba( $color, $display_options['bylineOpacity'], true ),
-                "hideByline"  => $hideByline,
-                "categories"  => $category_slugs
-            );
-        }
-
-        return apply_filters( 'wp-tiles-data', $data, $posts, $colors, $this );
-    }
-
     private function get_the_date( $post, $d = '' ) {
         $the_date = '';
 
@@ -544,6 +478,8 @@ class WPTiles
      * @param string|array $atts
      * @return array Properly formatted $atts
      * @since 0.4.2
+     * @deprecated
+     * @todo Make compatible with 1.0
      */
     public function parse_post_query_string( $atts ) {
         if ( is_array( $atts ) ) {
@@ -637,6 +573,16 @@ class WPTiles
 
        }
 
+    /**
+     * Takes an array of grids and returns a sanitized version that can be passed
+     * to the JS
+     *
+     * Sets a sanitized title for the key and explodes and trims the grid template.
+     *
+     * @param array $grids
+     * @return array
+     * @see WPTiles::format_grid()
+     */
     public function format_grids( $grids ) {
         $ret = array();
         foreach( $grids as $name => $grid ) {
@@ -646,6 +592,14 @@ class WPTiles
         return $ret;
     }
 
+    /**
+     * Takes a grid and formats it for insertion in the JS
+     *
+     * Explodes the grid on newlines if it's not an array and trims every line
+     *
+     * @param string|array $grid
+     * @return array
+     */
     public function format_grid( $grid ) {
         if ( !is_array( $grid ) )
             $grid = explode( "\n", $grid );
