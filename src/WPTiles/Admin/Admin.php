@@ -1,5 +1,7 @@
 <?php namespace WPTiles\Admin;
 
+use WPTiles\Helper;
+
 // Exit if accessed directly
 if ( !defined ( 'ABSPATH' ) )
     exit;
@@ -208,9 +210,6 @@ class Admin
     public static function preview_tile() {
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 
-            $allowed_byline_effects = array( 'none', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'fade-in' );
-            $allowed_image_effects  = array( 'scale-up', 'scale-down', 'saturate', 'desaturate' );
-
             list( $byline_height, $byline_color, $byline_opacity, $byline_align, $byline_effect, $image_effect ) = $_POST['params'];
 
             // Sanitize!
@@ -223,12 +222,6 @@ class Admin
 
             $byline_opacity = (float) $byline_opacity;
             $byline_align = 'top' == $byline_align ? 'top' : 'bottom';
-
-            if ( !in_array( $byline_effect, $allowed_byline_effects ) )
-                $byline_effect = 'none';
-
-            if ( !in_array( $image_effect, $allowed_image_effects ) )
-                $image_effect = 'none';
 
         } else {
             $byline_height  = wp_tiles()->get_option( 'byline_height', true );
@@ -245,13 +238,13 @@ class Admin
          */
         $classes = array( 'wp-tiles-byline-align-' . $byline_align );
 
-        if ( !empty( $byline_effect ) && 'none' != $byline_effect  )
+        if ( !empty( $byline_effect ) && !in_array( $byline_effect, wp_tiles()->get_allowed_byline_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-byline-animated',
                 'wp-tiles-byline-' . $byline_effect
             ) );
 
-        if ( !empty( $image_effect ) && 'none' != $image_effect  )
+        if ( !empty( $image_effect ) && !in_array( $image_effect, wp_tiles()->get_allowed_image_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-image-animated',
                 'wp-tiles-image-' . $image_effect
@@ -268,13 +261,14 @@ class Admin
 
                     <a href="javascript:void(0)" title="Animation Demo">
 
-                        <article class="wp-tiles-tile-with-image wp-tiles-tile-wrapper" itemscope itemtype="http://schema.org/Thing">
+                        <article class="wp-tiles-tile-with-image wp-tiles-tile-wrapper" itemscope itemtype="http://schema.org/CreateWork">
 
-                            <div class="wp-tiles-tile-bg" style=""></div>
+                            <div class="wp-tiles-tile-bg"></div>
 
-                            <div class="wp-tiles-byline" style="height: <?php echo $byline_height; ?>%;">
+                            <div class="wp-tiles-byline">
 
-                                <h4 itemprop="name" class="wp-tiles-byline-title">Byline Preview</h4>
+                                <h4 itemprop="name" class="wp-tiles-byline-title"><?php _e( 'Byline Preview', 'wp-tiles' ); ?></h4>
+                                
                                 <div class="wp-tiles-byline-content" itemprop="description">
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in...
                                 </div>
@@ -292,6 +286,7 @@ class Admin
         <style>
             .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-byline {
                 background: <?php echo $byline_color ?>;
+                height: <?php echo $byline_height; ?>%;
             }
         </style>
         <?php

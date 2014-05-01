@@ -114,7 +114,7 @@ class WPTiles
             'byline_template' => "%categories%",
             'byline_template_textonly' => false,
             'byline_opacity'  => '0.8',
-            'byline_color'    => '#000',
+            'byline_color'    => '#fff',
             'byline_height'   => 40,
 
             'text_only'    => false,
@@ -181,8 +181,8 @@ class WPTiles
                 }
             }
 
-            if ( 'random' !== $defaults['byline_color'] )
-                $defaults['byline_color'] = Helper::hex_to_rgba( $defaults['byline_color'], $defaults['byline_opacity'], true );
+            //if ( 'random' !== $defaults['byline_color'] )
+            //    $defaults['byline_color'] = Helper::hex_to_rgba( $defaults['byline_color'], $defaults['byline_opacity'], true );
 
         }
 
@@ -199,6 +199,14 @@ class WPTiles
         return $option;
     }
 
+    public function get_allowed_byline_effects() {
+        return array( 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'fade-in' );
+    }
+
+    public function get_allowed_image_effects() {
+        return array( 'scale-up', 'scale-down', 'saturate', 'desaturate' );
+    }
+
     /**
      * @deprecated since version 1.0
      */
@@ -206,7 +214,7 @@ class WPTiles
         echo $this->shortcode( $atts_arg );
     }*/
 
-    public function render_tiles( $posts, $options ) {
+    public function render_tiles( $posts, $opts ) {
 
         if ( empty( $posts ) )
             return;
@@ -220,16 +228,35 @@ class WPTiles
         /**
          *  Cleanup grids and set names
          */
-        $grid__pretty_names = array_keys( $options['grids'] );
-        $options['grids'] = $this->format_grids( $options['grids'] );
-        $grid_names = array_combine( array_keys( $options['grids'] ), $grid__pretty_names );
+        $grid__pretty_names = array_keys( $opts['grids'] );
+        $opts['grids'] = $this->format_grids( $opts['grids'] );
+        $grid_names = array_combine( array_keys( $opts['grids'] ), $grid__pretty_names );
 
-        $options['small_screen_grid'] = $this->format_grid( $options['small_screen_grid'] );
+        $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
 
         /**
          * Pass the required info to the JS
          */
-        $this->add_data_for_js( $wptiles_id, $options );
+        $this->add_data_for_js( $wptiles_id, $opts );
+
+        /**
+         * Get the animation classes
+         */
+        $classes = array(
+            ( 'top' == $opts['byline_align'] ) ? 'wp-tiles-byline-align-top' : 'wp-tiles-byline-align-bottom'
+        );
+
+        if ( !empty( $opts['byline_effect'] ) && in_array( $opts['byline_effect'], wp_tiles()->get_allowed_byline_effects() ) )
+            $classes = array_merge( $classes, array(
+                'wp-tiles-byline-animated',
+                'wp-tiles-byline-' . $opts['byline_effect']
+            ) );
+
+        if ( !empty( $opts['image_effect'] ) && in_array( $opts['image_effect'], wp_tiles()->get_allowed_image_effects() )  )
+            $classes = array_merge( $classes, array(
+                'wp-tiles-image-animated',
+                'wp-tiles-image-' . $opts['image_effect']
+            ) );
 
         /**
          * Time to start rendering our template
@@ -256,8 +283,8 @@ class WPTiles
 
         <div class="wp-tiles-container">
 
-            <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid wp-tiles-byline-animated wp-tiles-byline-slide-up">
-                <?php $this->_render_tile_html( $posts, $options ) ?>
+            <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+                <?php $this->_render_tile_html( $posts, $opts ) ?>
             </div>
 
         </div>
@@ -265,13 +292,13 @@ class WPTiles
         <?php
     }
 
-    private function _render_tile_html( $posts, $display_options ) {
+    private function _render_tile_html( $posts, $opts ) {
 
         foreach( $posts as $post ) :
 
-            if ( !$display_options['text_only'] && $img = $this->get_first_image( $post ) ) {
+            if ( !$opts['text_only'] && $img = $this->get_first_image( $post ) ) {
                 $tile_class = 'wp-tiles-tile-with-image';
-            } elseif ( $display_options['images_only'] ) {
+            } elseif ( $opts['images_only'] ) {
                 continue; // If text_only *and* image_only are enabled, the user should expect 0 tiles..
 
             } else {
@@ -281,7 +308,7 @@ class WPTiles
             ?>
             <div class='wp-tiles-tile' id='tile-<?php echo $post->ID ?>'>
 
-                <?php if ( $display_options['link_to_post'] ) : ?>
+                <?php if ( $opts['link_to_post'] ) : ?>
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
                 <?php endif; ?>
 
@@ -296,18 +323,18 @@ class WPTiles
 
                         <div class='wp-tiles-byline'>
 
-                            <?php if ( !$display_options['hide_title'] ) : ?>
+                            <?php if ( !$opts['hide_title'] ) : ?>
                                 <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
                             <?php endif; ?>
 
                             <div class='wp-tiles-byline-content' itemprop="description">
-                                <?php if ( $display_options['byline_template_textonly'] && ($display_options['text_only'] || !$img ) ) : ?>
+                                <?php if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) : ?>
 
-                                    <?php echo $this->render_byline( $display_options['byline_template_textonly'], $post ); ?>
+                                    <?php echo $this->render_byline( $opts['byline_template_textonly'], $post ); ?>
 
-                                <?php elseif ( $display_options['byline_template'] ) : ?>
+                                <?php elseif ( $opts['byline_template'] ) : ?>
 
-                                    <?php echo $this->render_byline( $display_options['byline_template'], $post ); ?>
+                                    <?php echo $this->render_byline( $opts['byline_template'], $post ); ?>
 
                                 <?php endif; ?>
                             </div>
@@ -316,7 +343,7 @@ class WPTiles
 
                     </article>
 
-                <?php if ( $display_options['link_to_post'] ) : ?>
+                <?php if ( $opts['link_to_post'] ) : ?>
                     </a>
                 <?php endif; ?>
             </div>
@@ -590,7 +617,7 @@ class WPTiles
 
             if ( $q ) {
                 $query = array(
-                    'post_type' => GridTemplates::POST_TYPE,
+                    'post_type' => self::GRID_POST_TYPE,
                     'posts_per_page' => -1,
                     'post__in' => $q
                 );
@@ -602,7 +629,7 @@ class WPTiles
 
             // If no posts are found, return all of them
             return get_posts( array(
-                'post_type' => GridTemplates::POST_TYPE,
+                'post_type' => self::GRID_POST_TYPE,
                 'posts_per_page' => -1
             ) );
         }
@@ -624,7 +651,7 @@ class WPTiles
                 FROM $wpdb->posts
                 WHERE post_title IN ($post_title_in_string)
                 AND post_type = %s
-            ", GridTemplates::POST_TYPE );
+            ", self::GRID_POST_TYPE );
 
             $ids = $wpdb->get_col( $sql );
             return $ids;

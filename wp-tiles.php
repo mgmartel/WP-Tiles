@@ -50,8 +50,6 @@ if ( !defined( 'VP_VERSION' ) )
 
 require WP_TILES_DIR . 'vendor/autoload.php';
 
-add_action( 'init', 'wp_tiles' );
-
 /**
  * Get the one and only true instance of WP Tiles
  *
@@ -61,6 +59,7 @@ add_action( 'init', 'wp_tiles' );
 function wp_tiles() {
     return \WPTiles\WPTiles::get_instance();
 }
+wp_tiles();
 
 /*
 require_once ( WPTILES_DIR . '/wp-tiles-admin.php' );
@@ -79,5 +78,5 @@ function wptiles_load_pluggables() {
 
 // @todo include this somewhere else
 function wp_tiles_preview_tile() {
-    return WPTiles\Admin::preview_tile();
+    return WPTiles\Admin\Admin::preview_tile();
 }
