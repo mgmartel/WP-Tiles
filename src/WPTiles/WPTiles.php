@@ -155,9 +155,9 @@ class WPTiles
     /**
      * @deprecated since version 1.0
      */
-    public function show_tiles( $atts_arg ) {
+    /*public function show_tiles( $atts_arg ) {
         echo $this->shortcode( $atts_arg );
-    }
+    }*/
 
     public function render_tiles( $posts, $options ) {
 
@@ -167,7 +167,7 @@ class WPTiles
         /**
          * Set the variables in the instance
          */
-        $wptiles_id = "wp-tiles-" . $this->tiles_id;
+        $wptiles_id = "wp_tiles_" . $this->tiles_id;
         $this->tiles_id++;
 
         // Cleanup grids
@@ -267,16 +267,6 @@ class WPTiles
 
                     </article>
 
-<?php /*
-                    <div class='<?php echo $tile_class ?>' style='<?php echo $tile_style ?>'>
-                        <div class='tile-byline<?php echo $byline_class ?>'>
-                            <div class='title'><?php echo $post['title']; ?></div>
-                            <?php if ( !$post['hideByline'] ) :?>
-                                <div class='extra'<?php echo $byline_style ?>><?php echo $post['byline']; ?></div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-*/ ?>
                 <?php if ( $display_options['link_to_post'] ) : ?>
                     </a>
                 <?php endif; ?>
