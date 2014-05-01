@@ -163,7 +163,7 @@
       grid.updateTiles(posts);
 
       // Maybe do some work with bylies
-      var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline');
+      var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
       if ( $image_bylines.get(0) ) {
 
         // Set color and opacity
