@@ -44,7 +44,7 @@ class Shortcode
             'image_effect'    => $defaults['image_effect'],
 
             'text_only'    => $defaults['text_only'],
-            'link_to_post' => $defaults['link_to_post'],
+            'link'         => $defaults['link'],
             'images_only'  => $defaults['images_only'],
             'hide_title'   => $defaults['hide_title'],
 
@@ -82,8 +82,8 @@ class Shortcode
             'byline_effect'   => $atts['byline_effect'],
             'image_effect'    => $atts['image_effect'],
 
+            'link'         => $atts['link'],
             'text_only'    => self::_boolean( $atts['text_only'] ),
-            'link_to_post' => self::_boolean( $atts['link_to_post'] ),
             'images_only'  => self::_boolean( $atts['images_only'] ),
             'hide_title'   => self::_boolean( $atts['hide_title'] ),
 

@@ -167,12 +167,34 @@ class Controls
                 'default' => wp_tiles()->get_option_defaults( 'images_only' )
             ),
             array(
-                'type' => 'toggle',
-                'name' => 'link_to_post',
-                'label' => __( 'Link to Post', 'vp_textdomain' ),
-                'description' => __( "Make the whole tile a link to the tile post.", 'wp-tiles' ),
-                'default' => wp_tiles()->get_option_defaults( 'link_to_post' )
-            )
+                'type' => 'radiobutton',
+                'name' => 'link',
+                'label' => __( 'Link To', 'vp_textdomain' ),
+                'description' => __( "Where should people go when they click on a tile (if anywhere?)", 'wp-tiles' ),
+                'default' => wp_tiles()->get_option_defaults( 'link' ),
+                'items' => array(
+                    array(
+                        'value' => 'post',
+                        'label' => __( 'The Post (default)', 'wp-tiles' )
+                    ),
+                    /*array(
+                        'value' => 'attachment',
+                        'label' => __( 'Attachment page', 'wp-tiles' )
+                    ),*/
+                    array(
+                        'value' => 'file',
+                        'label' => __( 'Image File', 'wp-tiles' )
+                    ),
+                    array(
+                        'value' => 'thickbox',
+                        'label' => __( 'Open image in default Thickbox', 'wp-tiles' )
+                    ),
+                    array(
+                        'value' => 'none',
+                        'label' => __( 'No Link', 'wp-tiles' )
+                    ),
+                )
+            ),
         );
     }
 

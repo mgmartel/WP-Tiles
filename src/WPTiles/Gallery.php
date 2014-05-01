@@ -22,7 +22,6 @@ class Gallery
             'id'         => $post ? $post->ID : 0,
             'include'    => '',
             'exclude'    => '',
-            'link'       => ''
         ), $atts, 'gallery');
 
         $id = intval($gallery_atts['id']);
@@ -31,7 +30,6 @@ class Gallery
         $orderby = $gallery_atts['orderby'];
         $include = $gallery_atts['include'];
         $exclude = $gallery_atts['exclude'];
-        $link    = $gallery_atts['link'];
 
         if ( 'RAND' == $order )
             $orderby = 'none';
@@ -53,8 +51,12 @@ class Gallery
         // Set Gallery specific defaults
         $atts = wp_parse_args( $atts, array(
             'byline_template' => '<h4>%excerpt%</h4>',
-            'hide_title' => 'true'
+            'hide_title' => 'true',
+            'link' => wp_tiles()->get_option( 'link' ) == 'thickbox' ? 'thickbox' : 'file'
         ) );
+
+        if ( $atts['link'] == 'attachment' )
+            $atts['link'] = 'post';
 
         // Get rest of shortcode options
         $options = Shortcode::get_options( $atts );

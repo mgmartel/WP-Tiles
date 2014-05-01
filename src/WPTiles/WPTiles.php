@@ -122,7 +122,7 @@ class WPTiles
             'byline_height'   => 40,
 
             'text_only'    => false,
-            'link_to_post' => true,
+            'link'         => 'post', //post|file|thickbox|attachment|none
             'images_only'  => false,
             'hide_title'   => false,
 
@@ -294,10 +294,6 @@ class WPTiles
         /**
          * Time to start rendering our template
          */
-        /*if ( true || $opts['gallery'] ) {
-            add_thickbox();
-        }*/
-
         ob_start();
         ?>
 
@@ -360,9 +356,15 @@ class WPTiles
             ?>
             <div class='wp-tiles-tile' id='tile-<?php echo $post->ID ?>'>
 
-                <?php if ( $opts['link_to_post'] ) : ?>
+                <?php if ( 'post' == $opts['link'] ) : ?>
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
-                    <!--<a href="<?php echo $img ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>" class="thickbox">-->
+
+                <?php elseif ( 'file' == $opts['link'] ) : ?>
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
+
+                <?php elseif ( 'thickbox' == $opts['link'] ) : ?>
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>">
+
                 <?php endif; ?>
 
                     <?php //@todo Should this be article (both the tag & the schema)? ?>
@@ -391,7 +393,7 @@ class WPTiles
 
                     </article>
 
-                <?php if ( $opts['link_to_post'] ) : ?>
+                <?php if ( $opts['link'] && 'none' != $opts['link'] ) : ?>
                     </a>
                 <?php endif; ?>
             </div>
@@ -428,7 +430,7 @@ class WPTiles
         return !empty( $ret ) ? $ret : false;
     }
 
-    protected function add_data_for_js( $wptiles_id, $display_options ) {
+    protected function add_data_for_js( $wptiles_id, $opts ) {
         static $enqueued = false;
 
         if ( !$enqueued ) {
@@ -438,8 +440,11 @@ class WPTiles
             $enqueued = true;
         }
 
-        $display_options['id'] = $wptiles_id;
-        $this->data[$wptiles_id] = $display_options;
+        if ( 'thickbox' == $opts['link'] )
+            add_thickbox();
+
+        $opts['id'] = $wptiles_id;
+        $this->data[$wptiles_id] = $opts;
     }
 
     public function add_data() {
@@ -540,15 +545,23 @@ class WPTiles
      * Uses cache. Plugins can hijack this method by hooking into 'pre_wp_tiles_image'.
      * @param WP_Post $post
      * @return string Image url
+     * @todo invalidate cache
      */
-    public function get_first_image( $post ) {
+    public function get_first_image( $post, $size = false ) {
+
+        if ( !$size )
+            $size = $this->get_option( 'image_size', true );
+
+        // @todo legacy filter: wp-tiles-image-size
+        $size = apply_filters( 'wp_tiles_image_size', $size, $post );
+
         // Allow plugins to hijack image loading
-        $src = apply_filters( 'pre_wp_tiles_image', false, $post );
+        $src = apply_filters( 'pre_wp_tiles_image', false, $post, $size );
         if ( false !== $src )
             return $src;
 
-        if ( !$src = wp_cache_get( 'wp_tiles_image_' . $post->ID, 'wp-tiles' ) ) {
-            $src = $this->_find_the_image( $post );
+        if ( !$src = wp_cache_get( 'wp_tiles_image_' . $post->ID . '_' . $size, 'wp-tiles' ) ) {
+            $src = $this->_find_the_image( $post, $size );
             wp_cache_set( 'wp_tiles_image_' . $post->ID, $src, 'wp-tiles' );
         }
 
@@ -565,8 +578,8 @@ class WPTiles
          * @sice 0.5.2
          * @todo Cache?
          */
-        private function _find_the_image( $post ) {
-            $tile_image_size = apply_filters( 'wp-tiles-image-size', $this->get_option( 'image_size', true ), $post );
+        private function _find_the_image( $post, $size ) {
+            $tile_image_size = apply_filters( 'wp-tiles-image-size', $size, $post );
             $image_source = $this->get_option( 'image_source', true );
 
             if ( 'attachment' === get_post_type( $post->ID ) ) {
