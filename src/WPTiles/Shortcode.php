@@ -12,6 +12,14 @@ if ( !defined ( 'ABSPATH' ) )
  */
 class Shortcode
 {
+    public static function do_shortcode( $atts ) {
+
+        $posts   = self::get_posts( $atts );
+        $options = self::get_options( $atts );
+
+        return wp_tiles()->render_tiles( $posts, $options );
+    }
+
     public static function get_options( $original_atts ) {
         $defaults = wp_tiles()->get_defaults();
 

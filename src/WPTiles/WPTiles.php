@@ -53,15 +53,7 @@ class WPTiles
         GridTemplates::get_instance();
         Admin::setup();
 
-        add_shortcode( 'wp-tiles', array( &$this, 'shortcode' ) );
-    }
-
-    public function shortcode( $atts ) {
-
-        $posts   = Shortcode::get_posts( $atts );
-        $options = Shortcode::get_options( $atts );
-
-        return $this->render_tiles( $posts, $options );
+        add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
     }
 
     /**
