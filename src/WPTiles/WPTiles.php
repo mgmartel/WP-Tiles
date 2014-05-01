@@ -121,7 +121,9 @@ class WPTiles
 
             // @todo Cache results?
             $defaults['grids']             = $this->get_grids( $defaults['grids'] );
-            $defaults['small_screen_grid'] = $this->get_grids( $defaults['small_screen_grid'] );
+
+            $small_screen_grids = $this->get_grids( $defaults['small_screen_grid'] );
+            $defaults['small_screen_grid'] = end( $small_screen_grids );
 
             $colors = array();
             for ( $i = 1; $i <= 5; $i++ ) {
@@ -606,7 +608,7 @@ class WPTiles
 
         $grids = array();
         foreach( $posts as $post ) {
-            $grids[$post->post_title] = explode( "\n", $post->post_content );
+            $grids[$post->post_title] = array_map( 'trim', explode( "\n", $post->post_content ) );
         }
 
         return $grids;
