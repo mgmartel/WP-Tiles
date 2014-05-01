@@ -11,23 +11,45 @@ class Controls
         $grid_callback = ( Admin::is_shortcode() ) ? array( 'WPTiles\Admin\DataSources', 'get_grids_names' ) : array( 'WPTiles\Admin\DataSources', 'get_grids' );
 
         $controls   = array();
-        $controls[] = array(
-            'type'        => 'sorter',
-            'name'        => 'grids',
-            'label'       => __( 'Grids', 'vp_textdomain' ),
-            'description' => __( 'Select which Grids to use', 'vp_textdomain' ),
-            'default'     => '{{all}}',
-            'items'       => array(
-                'data' => array(
-                    array(
-                        'source' => 'function',
-                        'value'  => $grid_callback,
+
+        if ( Admin::is_shortcode() ) {
+            $controls[] = array(
+                'type'        => 'sorter',
+                'name'        => 'grids',
+                'label'       => __( 'Grids', 'vp_textdomain' ),
+                'description' => __( 'Select which Grids to use', 'vp_textdomain' ),
+                'default'     => '{{last}}',
+                'items'       => array(
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => $grid_callback,
+                        ),
                     ),
                 ),
-            ),
-        );
+            );
+        } else {
+            $controls[] = array(
+                'type'        => 'select',
+                'name'        => 'default_grid',
+                'label'       => __( 'Default Grid', 'vp_textdomain' ),
+                'description' => __( 'Select which Grid to use by default', 'vp_textdomain' ),
+                'default'     => '{{last}}',
+                'validation'  => 'required',
+                'items'       => array(
+                    array(
+                        'label' => __( 'All', 'wp-tiles' ),
+                        'value' => 'all',
+                    ),
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => $grid_callback,
+                        ),
+                    ),
+                ),
+            );
 
-        if ( !Admin::is_shortcode() ) {
             $controls[] = array(
                 'type'        => 'toggle',
                 'name'        => 'small_screen_enabled',
@@ -35,6 +57,7 @@ class Controls
                 'description' => __( "Yay or nay? What's it going to be?", 'vp_textdomain' ),
                 'default'     => '1',
             );
+
         }
 
         $controls[] = array(

@@ -103,6 +103,7 @@ class WPTiles
     public function get_option_defaults( $key = false ) {
         static $option_defaults = array(
             'grids' => false,
+            'default_grid' => false,
             'small_screen_grid' => false,
             'small_screen_breakpoint' => 800,
 
@@ -158,7 +159,7 @@ class WPTiles
             }
 
             // @todo Cache results?
-            $defaults['grids']             = $this->get_grids( $defaults['grids'] );
+            $defaults['grids'] = $this->get_grids( $defaults['default_grid'] );
 
             $small_screen_grids = $this->get_grids( $defaults['small_screen_grid'] );
             $defaults['small_screen_grid'] = end( $small_screen_grids );
@@ -695,7 +696,7 @@ class WPTiles
     }
 
         protected function _get_grid_posts( $query = false ) {
-            if ( $query ) {
+            if ( $query && 'all' !== $query ) {
                 if ( !is_array( $query ) ) {
                     $query = strpos( $query, ',' ) !== false ? explode( ',', $query ) : array( $query );
                 }
