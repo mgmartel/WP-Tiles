@@ -102,6 +102,9 @@
 .wp-tiles-tile {
     &.wp-tiles-legacy & {
         @include box-shadow ( 6px 6px 10px );
+        &:hover {
+            outline: 1px solid #ccc;
+        }
     }
     position: absolute;
     font-size: 13px;
@@ -110,9 +113,6 @@
     overflow: hidden;
     cursor: pointer;
 
-    &:hover {
-        outline: 1px solid #ccc;
-    }
 }
 
 .wp-tiles-byline {
@@ -229,48 +229,50 @@
     }
 }
 
-.wp-tiles-byline-slide-up {
-    .wp-tiles-byline {
-        bottom: 0;
-        @include transform(translateY(100%));
+.wp-tiles-tile-with-image {
+    .wp-tiles-byline-slide-up & {
+        .wp-tiles-byline {
+            bottom: 0;
+            @include transform(translateY(100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
     }
-    .wp-tiles-tile:hover .wp-tiles-byline{
-        @extend %no-translate;
+    .wp-tiles-byline-slide-down & {
+        .wp-tiles-byline {
+            top: 0;
+            @include transform(translateY(-100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
     }
-}
-.wp-tiles-byline-slide-down {
-    .wp-tiles-byline {
-        top: 0;
-        @include transform(translateY(-100%));
-    }
-    .wp-tiles-tile:hover .wp-tiles-byline{
-        @extend %no-translate;
-    }
-}
 
-.wp-tiles-byline-slide-left {
-    .wp-tiles-byline {
-        right: -100%;
-        @include transform(translateX(100%));
+    .wp-tiles-byline-slide-left & {
+        .wp-tiles-byline {
+            right: -100%;
+            @include transform(translateX(100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
     }
-    .wp-tiles-tile:hover .wp-tiles-byline{
-        @extend %no-translate;
+    .wp-tiles-byline-slide-right & {
+        .wp-tiles-byline {
+            @include transform(translateX(-100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
     }
-}
-.wp-tiles-byline-slide-right {
-    .wp-tiles-byline {
-        @include transform(translateX(-100%));
-    }
-    .wp-tiles-tile:hover .wp-tiles-byline{
-        @extend %no-translate;
-    }
-}
-.wp-tiles-byline-fade-in {
-    .wp-tiles-byline {
-        opacity: 0;
-    }
-    .wp-tiles-tile:hover .wp-tiles-byline{
-        opacity: 1;
+    .wp-tiles-byline-fade-in & {
+        .wp-tiles-byline {
+            opacity: 0;
+        }
+        &:hover .wp-tiles-byline{
+            opacity: 1;
+        }
     }
 }
 
