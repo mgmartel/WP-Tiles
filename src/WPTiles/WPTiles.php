@@ -59,7 +59,7 @@ class WPTiles
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
 
         // The Gallery
-        add_filter( 'post_gallery', array( '\WPTiles\Gallery', 'maybe_do_gallery' ), 999, 2 );
+        add_filter( 'post_gallery', array( '\WPTiles\Gallery', 'maybe_do_gallery' ), 1001, 2 );
     }
 
     public function register_post_type() {
@@ -268,6 +268,14 @@ class WPTiles
         $opts['byline_color'] = $this->get_byline_color( $opts );
 
         /**
+         * Make sure carousel module isn't loaded in vain
+         */
+        if ( 'carousel' == $opts['link']
+            && ( !doing_filter( 'post_gallery' ) ||  !class_exists( 'No_Jetpack_Carousel' ) && !class_exists( 'Jetpack_Carousel' ) ) ) {
+            $opts['link'] = 'thickbox';
+        }
+
+        /**
          * Pass the required info to the JS
          */
         $this->add_data_for_js( $wptiles_id, $opts );
@@ -317,7 +325,14 @@ class WPTiles
 
         <div class="wp-tiles-container">
 
-            <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+                <?php if ( 'carousel' == $opts['link'] ):?>
+                    <?php echo apply_filters( 'gallery_style', '<div id="' . $wptiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
+
+                <?php else : ?>
+                    <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+
+                <?php endif; ?>
+
                 <?php $this->_render_tile_html( $posts, $opts ) ?>
             </div>
 
@@ -334,7 +349,7 @@ class WPTiles
 
         foreach( $posts as $post ) :
 
-            if ( !$opts['text_only'] && $img = $this->get_first_image( $post ) ) {
+            if ( !$opts['text_only'] && $img = $this->get_first_image( $post, $opts['image_size'] ) ) {
                 $tile_class = 'wp-tiles-tile-with-image';
             } elseif ( $opts['images_only'] ) {
                 continue; // If text_only *and* image_only are enabled, the user should expect 0 tiles..
@@ -353,8 +368,15 @@ class WPTiles
                 $byline = false;
             }
 
+            $tile_classes = array( 'wp-tiles-tile' );
+            
+            if ( 'carousel' == $opts['link'] )
+                $tile_classes[] = 'gallery-item';
+
+            $tile_classes = apply_filters( 'wp_tiles_tile_classes', $tile_classes );
+
             ?>
-            <div class='wp-tiles-tile' id='tile-<?php echo $post->ID ?>'>
+            <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
 
                 <?php if ( 'post' == $opts['link'] ) : ?>
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
@@ -364,6 +386,9 @@ class WPTiles
 
                 <?php elseif ( 'thickbox' == $opts['link'] ) : ?>
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>">
+
+                <?php elseif ( 'carousel' == $opts['link'] ) : ?>
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="" rel="<?php echo $this->tiles_id ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
 
                 <?php endif; ?>
 

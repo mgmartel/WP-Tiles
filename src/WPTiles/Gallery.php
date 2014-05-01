@@ -55,13 +55,31 @@ class Gallery
             'link' => wp_tiles()->get_option( 'link' ) == 'thickbox' ? 'thickbox' : 'file'
         ) );
 
-        if ( $atts['link'] == 'attachment' )
+        if ( 'attachment' == $atts['link'] )
             $atts['link'] = 'post';
 
         // Get rest of shortcode options
         $options = Shortcode::get_options( $atts );
 
         $ret = wp_tiles()->get_tiles( $attachments, $options );
+
+        return $ret;
+    }
+
+    public static function get_carousel_image_attr( $attachment ) {
+        $attr = apply_filters( 'wp_get_attachment_image_attributes', array( 'src' => '', 'class' => '', 'alt' => '' ), $attachment );
+        $attr = array_map( 'esc_attr', $attr );
+        unset( $attr['src'], $attr['class'], $attr['alt'] );
+
+        /**
+         *  The caption is gotten in a roundabout way, by flying to .parents('dl').find('dd.gallery-caption')
+         *  Right now, won't fix.
+         */
+
+        $ret = '';
+        foreach ( $attr as $name => $value ) {
+            $ret .= " $name=" . '"' . $value . '"';
+        }
 
         return $ret;
     }
