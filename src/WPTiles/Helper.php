@@ -6,16 +6,22 @@ if ( !defined ( 'ABSPATH' ) )
 
 class Helper
 {
-    public static function colors_to_rgba( $colors ) {
+    public static function colors_to_rgba( $colors, $alpha = 1 ) {
         $rgba = array();
         foreach( $colors as $c ) {
-            if ( strpos( $c, 'rgba' ) === 0 )
-                $rgba[] = $c;
-            if ( strpos( $c, 'rgb' ) === 0 )
-                $rgba[] = Helper::rgb_to_rgba( $c, 1, true );
-            elseif( strpos( $c, '#' ) === 0 )
-                $rgba[] = Helper::hex_to_rgba( $c, 1, true );
+            $rgba[] = self::color_to_rgba( $c, $alpha, true );
         }
+
+        return $rgba;
+    }
+
+    public static function color_to_rgba( $color, $alpha = 1, $css = false ) {
+        if ( strpos( $color, 'rgba' ) === 0 )
+            $rgba = self::rgba_opacity( $color, $alpha, $css );
+        if ( strpos( $color, 'rgb' ) === 0 )
+            $rgba = self::rgb_to_rgba( $color, $alpha, $css );
+        elseif( strpos( $color, '#' ) === 0 )
+            $rgba = self::hex_to_rgba( $color, $alpha, $css );
 
         return $rgba;
     }
@@ -49,6 +55,10 @@ class Helper
         return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
     }
 
+    public static function rgba_opacity( $rgba, $alpha = 1, $css = false ) {
+        return self::rgb_to_rgba( $rgba, $alpha, $css );
+    }
+
     public static function hex_to_rgba( $hex, $alpha, $css = false ) {
         $rgba      = self::hex_to_rgb( $hex );
         $rgba['a'] = $alpha;
@@ -57,4 +67,5 @@ class Helper
 
         return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
     }
+
 }

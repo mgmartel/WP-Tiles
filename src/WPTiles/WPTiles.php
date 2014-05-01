@@ -171,6 +171,8 @@ class WPTiles
             if ( empty( $defaults['byline_color'] ) )
                 $defaults['byline_color'] = 'random';
 
+            $defaults['byline_color'] = $this->get_byline_color( $defaults );
+
             if ( !$this->get_option( 'byline_for_text_only' ) )
                 $defaults['byline_template_textonly'] = false;
 
@@ -181,13 +183,25 @@ class WPTiles
                 }
             }
 
-            //if ( 'random' !== $defaults['byline_color'] )
-            //    $defaults['byline_color'] = Helper::hex_to_rgba( $defaults['byline_color'], $defaults['byline_opacity'], true );
-
         }
 
         return $defaults;
 
+    }
+
+    public function get_byline_color( $opts_or_byline_color, $byline_opacity = false ) {
+        if ( is_array( $opts_or_byline_color ) ) {
+            $byline_opacity = $opts_or_byline_color['byline_opacity'];
+            $byline_color   = $opts_or_byline_color['byline_color'];
+        } else {
+            $byline_color   = $opts_or_byline_color;
+
+        }
+
+        if ( !$byline_color || empty( $byline_color ) || 'random' === $byline_color )
+            return 'random';
+
+        return Helper::color_to_rgba( $byline_color, $byline_opacity, true );
     }
 
     public function get_option( $name, $get_default = false ) {
@@ -214,10 +228,20 @@ class WPTiles
         echo $this->shortcode( $atts_arg );
     }*/
 
-    public function render_tiles( $posts, $opts ) {
+    public function get_tiles( $posts, $opts = array() ) {
+        $defaults = $this->get_defaults();
+        $opts = wp_parse_args( $opts, $defaults );
+
+        return $this->render_tiles( $posts, $opts );
+    }
+
+    public function render_tiles( $posts, $opts = false ) {
 
         if ( empty( $posts ) )
             return;
+
+        if ( !$opts )
+            $opts = $this->get_defaults();
 
         /**
          * Set the variables in the instance
@@ -228,11 +252,16 @@ class WPTiles
         /**
          *  Cleanup grids and set names
          */
+        if ( !$opts['grids'] )
+            $opts['grids'] = $this->get_grids();
+
         $grid__pretty_names = array_keys( $opts['grids'] );
         $opts['grids'] = $this->format_grids( $opts['grids'] );
         $grid_names = array_combine( array_keys( $opts['grids'] ), $grid__pretty_names );
 
         $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
+
+        $opts['byline_color'] = $this->get_byline_color( $opts );
 
         /**
          * Pass the required info to the JS
@@ -240,7 +269,7 @@ class WPTiles
         $this->add_data_for_js( $wptiles_id, $opts );
 
         /**
-         * Get the animation classes
+         * Get the classes
          */
         $classes = array(
             ( 'top' == $opts['byline_align'] ) ? 'wp-tiles-byline-align-top' : 'wp-tiles-byline-align-bottom'
@@ -261,6 +290,11 @@ class WPTiles
         /**
          * Time to start rendering our template
          */
+        /*if ( true || $opts['gallery'] ) {
+            add_thickbox();
+        }*/
+
+        ob_start();
         ?>
 
         <?php if ( count( $grid_names ) > 1 ) : ?>
@@ -290,6 +324,10 @@ class WPTiles
         </div>
 
         <?php
+        $out = ob_get_contents();
+        ob_end_clean();
+
+        return $out;
     }
 
     private function _render_tile_html( $posts, $opts ) {
@@ -305,11 +343,22 @@ class WPTiles
                 $tile_class = 'wp-tiles-tile-text-only';
             }
 
+             if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) {
+                $byline = $this->render_byline( $opts['byline_template_textonly'], $post );
+
+            } elseif ( $opts['byline_template'] ) {
+                $byline = $this->render_byline( $opts['byline_template'], $post );
+
+            } else {
+                $byline = false;
+            }
+
             ?>
             <div class='wp-tiles-tile' id='tile-<?php echo $post->ID ?>'>
 
                 <?php if ( $opts['link_to_post'] ) : ?>
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
+                    <!--<a href="<?php echo $img ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>" class="thickbox">-->
                 <?php endif; ?>
 
                     <?php //@todo Should this be article (both the tag & the schema)? ?>
@@ -321,25 +370,20 @@ class WPTiles
                             </div>
                         <?php endif; ?>
 
+                        <?php if ( $byline || !$opts['hide_title'] ) : ?>
                         <div class='wp-tiles-byline'>
 
                             <?php if ( !$opts['hide_title'] ) : ?>
                                 <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
                             <?php endif; ?>
 
-                            <div class='wp-tiles-byline-content' itemprop="description">
-                                <?php if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) : ?>
-
-                                    <?php echo $this->render_byline( $opts['byline_template_textonly'], $post ); ?>
-
-                                <?php elseif ( $opts['byline_template'] ) : ?>
-
-                                    <?php echo $this->render_byline( $opts['byline_template'], $post ); ?>
-
-                                <?php endif; ?>
-                            </div>
-
+                            <?php if ( $byline ) : ?>
+                                <div class='wp-tiles-byline-content' itemprop="description">
+                                    <?php echo $byline; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
+                        <?php endif; ?>
 
                     </article>
 
@@ -349,7 +393,6 @@ class WPTiles
             </div>
             <?php
         endforeach;
-
     }
 
     protected function render_byline( $template, $post ) {
@@ -374,7 +417,11 @@ class WPTiles
 
         $tags = apply_filters( 'wp_tiles_byline_tags', $tags, $post, $template );
 
-        return str_replace( array_keys( $tags ), array_values( $tags ), $template );
+        $ret = str_replace( array_keys( $tags ), array_values( $tags ), $template );
+
+        // Strip empty paragraphs and headings
+        $ret = preg_replace( "/<(p|h[1-6])[^>]*>[\s|&nbsp;]*<\/(p|h[1-6])>/i", '', $ret );
+        return !empty( $ret ) ? $ret : false;
     }
 
     protected function add_data_for_js( $wptiles_id, $display_options ) {
@@ -589,13 +636,13 @@ class WPTiles
     }
 
 
-    public function get_grids( $q ) {
+    public function get_grids( $query = false ) {
         // Is this already a grid?
         // Happens when default is passed through the shortcode
-        if ( is_array( $q ) && is_array( reset( $q ) ) )
-            return $q;
+        if ( is_array( $query ) && is_array( reset( $query ) ) )
+            return $query;
 
-        $posts = $this->_get_grid_posts( $q );
+        $posts = $this->_get_grid_posts( $query );
 
         $grids = array();
         foreach( $posts as $post ) {
@@ -605,26 +652,28 @@ class WPTiles
         return $grids;
     }
 
-        protected function _get_grid_posts( $q ) {
-            if ( !is_array( $q ) ) {
-                $q = strpos( $q, ',' ) !== false ? explode( ',', $q ) : array( $q );
-            }
+        protected function _get_grid_posts( $query = false ) {
+            if ( $query ) {
+                if ( !is_array( $query ) ) {
+                    $query = strpos( $query, ',' ) !== false ? explode( ',', $query ) : array( $query );
+                }
 
-            // Are we dealing with titles?
-            if ( !is_numeric( reset( $q ) ) ) {
-                $q = $this->_get_grid_ids_by_titles( $q );
-            }
+                // Are we dealing with titles?
+                if ( !is_numeric( reset( $query ) ) ) {
+                    $query = $this->_get_grid_ids_by_titles( $query );
+                }
 
-            if ( $q ) {
-                $query = array(
-                    'post_type' => self::GRID_POST_TYPE,
-                    'posts_per_page' => -1,
-                    'post__in' => $q
-                );
-                $posts = get_posts( $query );
+                if ( $query ) {
+                    $query = array(
+                        'post_type' => self::GRID_POST_TYPE,
+                        'posts_per_page' => -1,
+                        'post__in' => $query
+                    );
+                    $posts = get_posts( $query );
 
-                if ( $posts )
-                    return $posts;
+                    if ( $posts )
+                        return $posts;
+                }
             }
 
             // If no posts are found, return all of them

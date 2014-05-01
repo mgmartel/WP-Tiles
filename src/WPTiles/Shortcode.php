@@ -76,6 +76,7 @@ class Shortcode
             'byline_template_textonly' => $atts['byline_template_textonly'],
 
             'byline_opacity'  => $atts['byline_opacity'],
+            //'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
             'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
             'byline_height'   => $atts['byline_height'],
             'byline_align'    => $atts['byline_align'],
@@ -115,12 +116,12 @@ class Shortcode
         }
 
 
-        private static function _get_byline_color( $byline_color, $byline_opacity ) {
+        /*private static function _get_byline_color( $byline_color, $byline_opacity ) {
             if ( 'random' === $byline_color )
                 return $byline_color;
 
             return Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
-        }
+        }*/
 
         private static function _get_options_array( $plural, $singular = false ) {
             if ( $singular )
