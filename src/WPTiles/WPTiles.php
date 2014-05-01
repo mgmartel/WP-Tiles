@@ -92,7 +92,11 @@ class WPTiles
             'animate_template' => true,
 
             'image_size'       => 'medium',
-            'image_source'     => 'all'
+            'image_source'     => 'all',
+
+            'byline_effect' => 'none',
+            'byline_align'  => 'bottom',
+            'image_effect'  => 'none'
         );
 
         if ( $key )
@@ -217,7 +221,7 @@ class WPTiles
 
         <div class="wp-tiles-container">
 
-            <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid">
+            <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid wp-tiles-byline-animated wp-tiles-byline-slide-up">
                 <?php $this->_render_tile_html( $posts, $options ) ?>
             </div>
 
@@ -247,7 +251,7 @@ class WPTiles
                 <?php endif; ?>
 
                     <?php //@todo Should this be article (both the tag & the schema)? ?>
-                    <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/Thing">
+                    <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/CreativeWork">
 
                         <?php if ( $img ) : ?>
                             <div class='wp-tiles-tile-bg'>
@@ -330,8 +334,8 @@ class WPTiles
 
     }
 
-    protected function enqueue_scripts() {
-        if ( !is_admin() ) {
+    public function enqueue_scripts() {
+        //if ( !is_admin() ) {
             wp_enqueue_script( "jquery" );
 
             $script_path = WP_TILES_ASSETS_URL . '/js/';
@@ -343,13 +347,13 @@ class WPTiles
             wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs", "jquery-dotdotdot" ), WP_TILES_VERSION, true );
 
             add_action( 'wp_footer', array( &$this, "add_data" ), 1 );
-        }
+        //}
     }
 
     /**
      * Look for the stylesheet in a million places
      */
-    protected function enqueue_styles() {
+    public function enqueue_styles() {
         $stylesheet_name = "wp-tiles.css";
 
         if ( file_exists( STYLESHEETPATH . '/' . $stylesheet_name ) ) {
@@ -476,7 +480,7 @@ class WPTiles
 
             if ( !empty( $images ) ) {
                 $images = current( $images );
-                $src    = wp_get_attachment_image_src( $images->ID, $size   = $tile_image_size );
+                $src    = wp_get_attachment_image_src( $images->ID, $tile_image_size );
                 return $src[0];
             }
 

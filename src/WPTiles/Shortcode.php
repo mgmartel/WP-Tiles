@@ -35,14 +35,21 @@ class Shortcode
 
             'byline_template' => $defaults['byline_template'],
             'byline_template_textonly' => $defaults['byline_template_textonly'],
+
             'byline_opacity'  => $defaults['byline_opacity'],
             'byline_color'    => $defaults['byline_color'],
             'byline_height'   => $defaults['byline_height'],
+            'byline_align'    => $defaults['byline_align'],
+            'byline_effect'   => $defaults['byline_effect'],
+            'image_effect'    => $defaults['image_effect'],
 
             'text_only'    => $defaults['text_only'],
             'link_to_post' => $defaults['link_to_post'],
             'images_only'  => $defaults['images_only'],
             'hide_title'   => $defaults['hide_title'],
+
+            'image_size'   => $defaults['image_size'],
+            'image_source' => $defaults['image_source'],
 
             'padding' => $defaults['padding'],
 
@@ -50,6 +57,7 @@ class Shortcode
             'animate_init'     => $defaults['animate_init'],
             'animate_resize'   => $defaults['animate_resize'],
             'animate_template' => $defaults['animate_template'],
+
 
         ), $original_atts );
 
@@ -68,15 +76,21 @@ class Shortcode
             'byline_template_textonly' => $atts['byline_template_textonly'],
 
             'byline_opacity'  => $atts['byline_opacity'],
-            'byline_height'   => $atts['byline_height'],
             'byline_color'    => self::_get_byline_color( $atts['byline_color'], $atts['byline_opacity'] ),
+            'byline_height'   => $atts['byline_height'],
+            'byline_align'    => $atts['byline_align'],
+            'byline_effect'   => $atts['byline_effect'],
+            'image_effect'    => $atts['image_effect'],
 
             'text_only'    => self::_boolean( $atts['text_only'] ),
             'link_to_post' => self::_boolean( $atts['link_to_post'] ),
             'images_only'  => self::_boolean( $atts['images_only'] ),
             'hide_title'   => self::_boolean( $atts['hide_title'] ),
 
-            'padding' => $atts['padding'],
+            'image_source' => $atts['image_source'],
+            'image_size'   => $atts['image_size'],
+
+            'padding' => (int) $atts['padding'],
 
             'animate_init'     => ( $atts['animated'] && $atts['animate_init'] ),
             'animate_resize'   => ( $atts['animated'] && $atts['animate_resize'] ),
