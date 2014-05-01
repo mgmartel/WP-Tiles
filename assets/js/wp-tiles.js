@@ -144,12 +144,13 @@
                 for (i = 0; i < len; i++) {
                   copyRects.push(this.template.rects[i].copy());
                 }
-                missingRects -= this.template.rects.length;
-              }
 
-              this.template.append(
-                new Tiles.Template(copyRects, this.numCols, this.numRows)
+                missingRects -= len;
+
+                this.template.append(
+                  new Tiles.Template(copyRects, this.template.numCols, this.template.numRows)
                 );
+              }
 
               this.isDirty = true;
             }
