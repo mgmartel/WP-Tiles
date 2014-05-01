@@ -68,10 +68,10 @@
 
         $('.wp-tiles-show-help').click(function(e){
           e.preventDefault();
+          e.stopPropagation();
           $('#contextual-help-link').click();
         });
       };
-
 
   ;;
 
@@ -99,6 +99,9 @@
   //
   // GRID TEMPLATE EDITOR
   //
+
+  // Force scrollbar
+  $('html').css('overflow-y','scroll');
 
   var tr =  ($.browser.webkit)  ? '-webkit-transition' :
             ($.browser.mozilla) ? '-moz-transition' :
