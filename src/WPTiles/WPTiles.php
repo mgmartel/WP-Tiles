@@ -266,10 +266,15 @@ class WPTiles
             return;
 
         // Is $posts a query?
-        $query = false;
         if ( is_array( $posts ) && count(array_filter(array_keys( $posts ), 'is_string') ) ) {
-            $query = $posts;
-            $posts = get_posts( apply_filters( 'wp_tiles_get_posts_query', $query ) );
+            $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
+        }
+
+        // Is posts a WP_Query? (enables pagination)
+        $wp_query = false;
+        if ( is_a( $posts, 'WP_Query' ) ) {
+            $wp_query = $posts;
+            $posts = $wp_query->posts;
         }
 
         if ( !$opts )
@@ -304,17 +309,29 @@ class WPTiles
             $opts['link'] = 'thickbox';
         }
 
-        // Only allow pagination when the query has been passed directly into WP Tiles
-        if ( 'ajax' == $opts['pagination'] && $query ) {
-            $next_query = $query;
-            $next_query['paged'] = ( isset( $query['paged'] ) && $query['paged'] > 0 ) ? $query['paged'] + 1 : 2;
+        /**
+         * Pagination
+         */
 
-            $opts['next_query'] = array(
-                'query' => $next_query,
-                'action' => Ajax::ACTION_GET_POSTS,
-                '_ajax_nonce' => $this->get_query_nonce( $next_query )
-            );
-            $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
+        // Only allow pagination when we have a WP Query
+        if ( 'ajax' == $opts['pagination'] && $wp_query ) {
+            $next_query = $wp_query->query;
+
+            $max_page  = $wp_query->max_num_pages;
+            $next_page = intval( $wp_query->get( 'paged', 2 ) );
+
+            if ( $next_page <= $max_page ) {
+
+                $next_query['paged'] = $next_page;
+
+                $opts['next_query'] = array(
+                    'query' => $next_query,
+                    'action' => Ajax::ACTION_GET_POSTS,
+                    '_ajax_nonce' => $this->get_query_nonce( $next_query )
+                );
+                $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
+
+            }
         }
 
         /**
