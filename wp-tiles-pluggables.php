@@ -91,7 +91,7 @@ if ( ! function_exists( 'wp_tiles_paging_nav' ) ) :
      * Based on TwentyFourteen 1.0
      * @since 1.0
      */
-    function wp_tiles_paging_nav( $wp_query = false ) {
+    function wp_tiles_paging_nav( $wp_query = false, $anchor = false ) {
 
         if ( !$wp_query )
             $wp_query = $GLOBALS['wp_query'];
@@ -112,6 +112,9 @@ if ( ! function_exists( 'wp_tiles_paging_nav' ) ) :
 
         $pagenum_link = remove_query_arg( array_keys( $query_args ), $pagenum_link );
         $pagenum_link = trailingslashit( $pagenum_link ) . '%_%';
+
+        if ( $anchor )
+            $pagenum_link .= '#' . $anchor;
 
         $format  = $GLOBALS['wp_rewrite']->using_index_permalinks() && ! strpos( $pagenum_link, 'index.php' ) ? 'index.php/' : '';
         $format .= $GLOBALS['wp_rewrite']->using_permalinks() ? user_trailingslashit( 'page/%#%', 'paged' ) : '?paged=%#%';
@@ -149,7 +152,7 @@ if ( ! function_exists( 'wp_tiles_prev_next_nav' ) ) :
      * Based on TwentyFourteen 1.0
      * @since 1.0
      */
-    function wp_tiles_prev_next_nav( $wp_query ) {
+    function wp_tiles_prev_next_nav( $wp_query = false, $anchor = false ) {
 
         if ( !$wp_query )
             $wp_query = $GLOBALS['wp_query'];
@@ -177,8 +180,8 @@ if ( ! function_exists( 'wp_tiles_prev_next_nav' ) ) :
         <nav class="navigation wp-tiles-pagination wp-tiles-pagination-prev-next" role="navigation">
             <h1 class="screen-reader-text"><?php _e( 'Post navigation', 'twentyfourteen' ); ?></h1>
             <div class="pagination loop-pagination">
-                <?php if ( $previous ) : ?><a href='<?php echo previous_posts(false); ?>' class='prev prev-next'><?php _e( '&larr; Previous', 'wp-tiles' ) ?></a><?php endif; ?>
-                <?php if ( $next ) : ?><a href='<?php echo next_posts( $max_page, false ); ?>' class='next prev-next'><?php _e( 'Next &rarr;', 'wp-tiles' ) ?><?php endif; ?>
+                <?php if ( $previous ) : ?><a href='<?php echo previous_posts(false); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='prev prev-next'><?php _e( '&larr; Previous', 'wp-tiles' ) ?></a><?php endif; ?>
+                <?php if ( $next ) : ?><a href='<?php echo next_posts( $max_page, false ); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='next prev-next'><?php _e( 'Next &rarr;', 'wp-tiles' ) ?><?php endif; ?>
             </div><!-- .pagination -->
         </nav><!-- .navigation -->
         <?php

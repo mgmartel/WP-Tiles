@@ -288,7 +288,7 @@ class WPTiles
         /**
          * Set the variables in the instance
          */
-        $wptiles_id = "wp_tiles_" . $this->tiles_id;
+        $wp_tiles_id = "wp_tiles_" . $this->tiles_id;
         $this->tiles_id++;
 
         /**
@@ -353,7 +353,7 @@ class WPTiles
         /**
          * Pass the required info to the JS
          */
-        $this->add_data_for_js( $wptiles_id, $opts );
+        $this->add_data_for_js( $wp_tiles_id, $opts );
 
         /**
          * Get the classes
@@ -382,7 +382,7 @@ class WPTiles
 
         <?php if ( count( $grid_names ) > 1 ) : ?>
 
-            <div id="<?php echo $wptiles_id; ?>-templates" class="tile-templates">
+            <div id="<?php echo $wp_tiles_id; ?>-templates" class="tile-templates">
 
                 <ul class="template-selector">
 
@@ -401,10 +401,10 @@ class WPTiles
         <div class="wp-tiles-container">
 
                 <?php if ( 'carousel' == $opts['link'] ):?>
-                    <?php echo apply_filters( 'gallery_style', '<div id="' . $wptiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
+                    <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
 
                 <?php else : ?>
-                    <div id="<?php echo $wptiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+                    <div id="<?php echo $wp_tiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
 
                 <?php endif; ?>
 
@@ -421,17 +421,17 @@ class WPTiles
 
         <?php if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
-            <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wptiles_id; ?>-pagination">
+            <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
                 <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
             </nav>
 
         <?php elseif ( 'prev_next' === $opts['pagination'] ) : ?>
 
-            <?php wp_tiles_prev_next_nav( $wp_query ); ?>
+            <?php wp_tiles_prev_next_nav( $wp_query, $wp_tiles_id ); ?>
 
         <?php elseif ( 'paging' === $opts['pagination'] ) : ?>
 
-            <?php wp_tiles_paging_nav( $wp_query ); ?>
+            <?php wp_tiles_paging_nav( $wp_query, $wp_tiles_id ); ?>
 
         <?php endif; ?>
 
@@ -558,7 +558,7 @@ class WPTiles
     /**
      * @todo Filter out vars we don't need
      */
-    protected function add_data_for_js( $wptiles_id, $opts ) {
+    protected function add_data_for_js( $wp_tiles_id, $opts ) {
         static $enqueued = false;
 
         if ( !$enqueued ) {
@@ -571,8 +571,8 @@ class WPTiles
         if ( 'thickbox' == $opts['link'] )
             add_thickbox();
 
-        $opts['id'] = $wptiles_id;
-        $this->data[$wptiles_id] = $opts;
+        $opts['id'] = $wp_tiles_id;
+        $this->data[$wp_tiles_id] = $opts;
     }
 
     public function add_data() {
