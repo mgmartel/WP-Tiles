@@ -7,7 +7,7 @@
 /**************************************
     Grid Editor
  **************************************/
-/* line 8, ../scss/admin.scss */
+/* line 8, ../scss/_admin.scss */
 .grid-template-editor {
   width: 100%;
   height: 100px;
@@ -16,7 +16,7 @@
   letter-spacing: 0.5em;
 }
 
-/* line 17, ../scss/admin.scss */
+/* line 17, ../scss/_admin.scss */
 .wp-tiles-tile-letter {
   position: absolute;
   top: 0;
@@ -32,24 +32,24 @@
 /**************************************
     Tile designer
  **************************************/
-/* line 34, ../scss/admin.scss */
+/* line 34, ../scss/_admin.scss */
 .wp-tiles-container.wp-tiles-tile-demo {
   height: 276px;
   width: 276px;
   margin: 0 auto;
 }
-/* line 39, ../scss/admin.scss */
+/* line 39, ../scss/_admin.scss */
 .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-tile {
   background-color: #33cccc;
   width: 266px;
   height: 266px;
   display: block;
 }
-/* line 46, ../scss/admin.scss */
+/* line 46, ../scss/_admin.scss */
 .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-tile-bg {
   background-image: url('../images/tile-demo-1.jpg?1398890921');
 }
-/* line 50, ../scss/admin.scss */
+/* line 50, ../scss/_admin.scss */
 .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-byline {
   background-color: rgba(51, 204, 204, 0.5);
   overflow: hidden;
@@ -315,13 +315,49 @@
 /* ==========================================================================
    Pagination
    ========================================================================== */
-/* line 9, ../scss/_pagination.scss */
+/**************************************
+    Ajax Load More
+ **************************************/
+/* line 12, ../scss/_pagination.scss */
 .wp-tiles-pagination-ajax {
   line-height: 24px;
   text-align: center;
 }
-/* line 13, ../scss/_pagination.scss */
+/* line 16, ../scss/_pagination.scss */
 .wp-tiles-pagination-ajax.loading {
   background: url('../images/loading.gif?1399040924') no-repeat 50%;
   text-indent: -9999px;
+}
+
+/**************************************
+    Paging Navigation
+    (based on TwentyFourteen)
+ **************************************/
+/* line 32, ../scss/_pagination.scss */
+.wp-tiles-paging-navigation .loop-pagination {
+  margin-top: -5px;
+  text-align: center;
+}
+/* line 37, ../scss/_pagination.scss */
+.wp-tiles-paging-navigation .page-numbers {
+  border-top: 5px solid transparent;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 900;
+  margin-right: 1px;
+  padding: 7px 16px;
+  text-transform: uppercase;
+}
+/* line 47, ../scss/_pagination.scss */
+.wp-tiles-paging-navigation a {
+  color: #2b2b2b;
+}
+/* line 51, ../scss/_pagination.scss */
+.wp-tiles-paging-navigation .page-numbers.current {
+  border-top: 5px solid #24890d;
+}
+/* line 55, ../scss/_pagination.scss */
+.wp-tiles-paging-navigation a:hover {
+  border-top: 5px solid #41a62a;
+  color: #2b2b2b;
 }

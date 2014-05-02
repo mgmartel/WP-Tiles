@@ -140,7 +140,7 @@ class WPTiles
             'byline_align'  => 'bottom',
             'image_effect'  => 'none',
 
-            'pagination' => 'ajax'
+            'pagination' => 'paging'
         );
 
         if ( $key )
@@ -403,12 +403,20 @@ class WPTiles
 
         </div>
 
-        <?php // Maybe render pagination ?>
+        <?php
+        /**
+        * Pagination
+        **/
+        ?>
         <?php if ( 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
             <div class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wptiles_id; ?>-pagination">
                 <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
             </div>
+
+        <?php elseif ( 'paging' === $opts['pagination'] ) : ?>
+
+            <?php wp_tiles_paging_nav( $wp_query ); ?>
 
         <?php endif; ?>
 
