@@ -7,7 +7,8 @@ if ( !defined ( 'ABSPATH' ) )
 /**
  * Parses the shortcode for WP Tiles
  *
- * Largely based on Display Posts Shortcode by ....
+ * Parses the Tiles arguments in a tile array and sets a post query that is
+ * largely based on Display Posts Shortcode by ....
  * @since 1.0
  */
 class Shortcode
@@ -37,6 +38,7 @@ class Shortcode
             'byline_template' => $defaults['byline_template'],
             'byline_template_textonly' => $defaults['byline_template_textonly'],
 
+            'border_radius'   => $defaults['border_radius'],
             'byline_opacity'  => $defaults['byline_opacity'],
             'byline_color'    => $defaults['byline_color'],
             'byline_height'   => $defaults['byline_height'],
@@ -72,14 +74,14 @@ class Shortcode
             'small_screen_breakpoint' => false,
 
             'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
-            'background_opacity' => $atts['background_opacity'],
+            'background_opacity' => (float) $atts['background_opacity'],
 
             'byline_template'          => $atts['byline_template'],
             'byline_template_textonly' => $atts['byline_template_textonly'],
 
-            'byline_opacity'  => $atts['byline_opacity'],
+            'byline_opacity'  => (float) $atts['byline_opacity'],
             'byline_color'    => $atts['byline_color'],
-            'byline_height'   => $atts['byline_height'],
+            'byline_height'   => (int) $atts['byline_height'],
             'byline_align'    => $atts['byline_align'],
             'byline_effect'   => $atts['byline_effect'],
             'image_effect'    => $atts['image_effect'],
@@ -101,7 +103,7 @@ class Shortcode
 
         if ( $atts['breakpoint'] ) {
             $options['small_screen_grid'] = $atts['small_screen_grid'];
-            $options['breakpoint'] = $atts['breakpoint'];
+            $options['breakpoint'] = (int) $atts['breakpoint'];
         }
 
         return $options;
