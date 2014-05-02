@@ -161,7 +161,7 @@ class Shortcode
             'post_status'         => 'publish',
             'post_type'           => 'post',
             'posts_per_page'      => '10',
-            'paged'               => 'paged',
+            'paged'               => 1,
             'tag'                 => '',
             'tax_operator'        => 'IN',
             'tax_term'            => false,

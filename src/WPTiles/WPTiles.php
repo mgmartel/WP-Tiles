@@ -267,6 +267,11 @@ class WPTiles
 
         // Is $posts a query?
         if ( is_array( $posts ) && count(array_filter(array_keys( $posts ), 'is_string') ) ) {
+
+            // Automatically set paged var if tile pagination is on
+            if ( $opts['pagination'] )
+                $posts['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+
             $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
         }
 
@@ -318,7 +323,7 @@ class WPTiles
             $next_query = $wp_query->query;
 
             $max_page  = $wp_query->max_num_pages;
-            $next_page = intval( $wp_query->get( 'paged', 2 ) );
+            $next_page = intval( $wp_query->get( 'paged' ) ) + 1;
 
             if ( $next_page <= $max_page ) {
 
