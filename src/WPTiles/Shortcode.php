@@ -161,7 +161,7 @@ class Shortcode
             'post_status'         => 'publish',
             'post_type'           => 'post',
             'posts_per_page'      => '10',
-            'paged'               => 1,
+            'paged'               => 'paged',
             'tag'                 => '',
             'tax_operator'        => 'IN',
             'tax_term'            => false,
@@ -185,8 +185,8 @@ class Shortcode
         $tax_term = sanitize_text_field( $atts['tax_term'] );
         $taxonomy = sanitize_key( $atts['taxonomy'] );
 
-        // Set paged to auto to use pagination parameters
-        if ( 'auto' === $atts['paged'] )
+        // Set paged to 'paged' to use pagination parameters
+        if ( 'paged' === $atts['paged'] )
             $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
         else
             $paged = intval( $atts['paged'] );
