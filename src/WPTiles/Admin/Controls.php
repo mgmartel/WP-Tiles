@@ -197,7 +197,7 @@ class Controls
                 'type' => 'toggle',
                 'name' => 'images_only',
                 'label' => __('Hide tiles with no images', 'wp-tiles'),
-                'description' => __( "Hide tiles that don't have an image.", 'wp-tiles' ),
+                'description' => __( "Hide tiles that don't have an image. Please note that setting this option is incompatible with pagination!", 'wp-tiles' ),
                 'default' => wp_tiles()->get_option_defaults( 'images_only' )
             ),
             array(

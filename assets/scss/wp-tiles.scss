@@ -78,6 +78,20 @@
     }
 }
 
+.wp-tiles-pagination {
+
+}
+
+.wp-tiles-pagination-ajax {
+    line-height: 24px;
+    text-align: center;
+
+    &.loading {
+        background: image-url('loading.gif') no-repeat 50%;
+        text-indent: -9999px;
+    }
+}
+
 
 /* ==========================================================================
    Base Styles

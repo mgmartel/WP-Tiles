@@ -319,6 +319,7 @@ class WPTiles
          */
 
         // Only allow pagination when we have a WP Query
+        $opts['next_query'] = false;
         if ( 'ajax' == $opts['pagination'] && $wp_query ) {
             $next_query = $wp_query->query;
 
@@ -401,6 +402,15 @@ class WPTiles
             </div>
 
         </div>
+
+        <?php // Maybe render pagination ?>
+        <?php if ( 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
+
+            <div class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wptiles_id; ?>-pagination">
+                <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
+            </div>
+
+        <?php endif; ?>
 
         <?php
         $out = ob_get_contents();

@@ -39,8 +39,8 @@
       var
           // Locals
           $el = $(this),
-          $templates = $("#" + opts.id + "-templates"),
-          $templateButtons = $('.template', $templates),
+          $templates  = $("#" + opts.id + "-templates"),
+          $pagination = $("#" + opts.id + "-pagination"),
           grid,
           curr_large_template = false,
           using_small = false,
@@ -111,6 +111,8 @@
               // Set the byline height
               $image_bylines.css('height',opts.byline_height + '%');
             }
+
+            //if ( 'ajax' == opts.pagination &&  )
           };
 
       // Init the grids
@@ -203,8 +205,16 @@
         },
 
         nextPage: function(){
+
           if ( !opts.next_query)
             return;
+
+          // Only allow one instance (per WP Tiles instance) at a time
+          if ( typeof grid.nextPage.running !== 'undefined' &&grid.nextPage.running )
+            return;
+
+          grid.nextPage.running = true;
+          $pagination.addClass('loading');
 
           if( !opts.next_query.opts ) {
             opts.next_query.opts = {};
@@ -223,24 +233,34 @@
 
           $.post(opts.ajaxurl,opts.next_query)
             .success(function(response){
-              if ( '-1' == response ) { // @todo
-                alert( 'No more posts available.' );
-                return;
+
+              if ( '-1' == response ) {
+                $pagination.fadeOut(function(){
+                  $pagination.removeClass('loading');
+                });
               }
 
-              opts.next_query.query.paged++;
-              opts.next_query._ajax_nonce = response._ajax_nonce;
+              if ( response.has_more ) {
+                opts.next_query.query.paged++;
+                opts.next_query._ajax_nonce = response._ajax_nonce;
+                $pagination.removeClass('loading');
+
+              } else {
+                opts.next_query = false;
+                $pagination.fadeOut(function(){
+                  $pagination.removeClass('loading');
+                });
+
+              }
 
               var tiles = $('<div />').html(response.tiles).find('.wp-tiles-tile').get();
-
-              /*if (tiles.length < opts.next_query.posts_per_page) {
-                // Not last page if image_only is enabled..
-              }*/
 
               grid.addTiles(tiles);
               grid.redraw(opts.animate_template, onresize);
               style_tiles();
 
+              grid.nextPage.running = false;
+              //$pagination.removeClass('loading');
             });
 
         }
@@ -268,29 +288,45 @@
       }, 200));
 
 
-      // Make the grid changable
-      $templateButtons.on('click', function(e) {
-        e.preventDefault();
+      /**
+       * Template Buttons
+       */
+      if ( $templates.get(0) ) {
+        var $templateButtons = $('.template', $templates);
 
-        // unselect all templates
-        $templateButtons.removeClass("selected");
+        $templateButtons.on('click', function(e) {
+          e.preventDefault();
 
-        // select the template we clicked on
-        $(this).addClass("selected");
+          // unselect all templates
+          $templateButtons.removeClass("selected");
 
-        // get the JSON rows for the selection
-        var rows = opts.grids[$(this).data('grid')];
+          // select the template we clicked on
+          $(this).addClass("selected");
 
-        // set the new template and resize the grid
-        //grid.template = Tiles.Template.fromJSON(rows);
-        set_template(rows);
+          // get the JSON rows for the selection
+          var rows = opts.grids[$(this).data('grid')];
 
-        grid.isDirty  = true;
-        grid.resize();
+          // set the new template and resize the grid
+          set_template(rows);
 
-        grid.redraw(opts.animate_template, onresize);
+          grid.isDirty  = true;
+          grid.resize();
 
-      });
+          grid.redraw(opts.animate_template, onresize);
+        });
+      }
+
+      /**
+       * Pagination
+       */
+      if ( $pagination.get(0) ) {
+        if ( $pagination.hasClass('wp-tiles-pagination-ajax') ) {
+          $pagination.click(function(e){
+            e.preventDefault();
+            grid.nextPage();
+          });
+        }
+      }
 
       opts.grid = grid;
     }

@@ -20,14 +20,14 @@ class Ajax
         check_ajax_referer( $hash );
 
         // $query is signed by nonce
-        $posts = get_posts( $query );
+        $wp_query = new \WP_Query( $query );
+        $posts = $wp_query->posts;
 
         if ( !$posts ) {
             exit('-1');
         }
 
         $posted_opts = $_POST['opts'];
-
         $opts = array(
             'hide_title'               => $this->_bool( $posted_opts['hide_title'] ),
             'link'                     => in_array( $posted_opts['link'], array( 'post', 'file', 'thickbox', 'none' ) )
@@ -44,12 +44,23 @@ class Ajax
         $html = ob_get_contents();
         ob_end_clean();
 
-        $query['paged']++;
+        $ret = array( 'tiles' => $html );
 
-        $this->_return( array(
-            'tiles' => $html,
-            '_ajax_nonce' => wp_tiles()->get_query_nonce( $query )
-        ) );
+        $max_page  = $wp_query->max_num_pages;
+        $next_page = intval( $wp_query->get( 'paged' ) ) + 1;
+
+        // Is there another page?
+        if ( $next_page <= $max_page ) {
+            $ret['has_more'] = true;
+            $query['paged'] = $next_page;
+            $ret['_ajax_nonce'] = wp_tiles()->get_query_nonce( $query );
+
+        } else {
+            $ret['has_more'] = false;
+
+        }
+
+        $this->_return( $ret );
     }
 
     private function _bool( $value ) {
