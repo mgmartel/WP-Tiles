@@ -32,7 +32,8 @@
           $templates = $("#" + opts.id + "-templates"),
           $templateButtons = $('.template', $templates),
           grid,
-          largeTemplate = false,
+          curr_large_template = false,
+          using_small = false,
 
           // Private Methods
           get_first_grid = function(){
@@ -43,28 +44,42 @@
               return false;
             });
 
-            return Tiles.Template.fromJSON(grid);
+            return grid;
           },
 
-          choose_template = function(){
-            var is_small = $el.width() < opts.breakpoint,
-                current  = ( grid && grid.template ) ? grid.template : get_first_grid();
+          get_template = function(){
+            var is_small;
 
-            if ( is_small && !largeTemplate ) {
+            // First run?
+            if ( !curr_large_template )
+              curr_large_template = get_first_grid();
+
+            // Setup for responsiveness?
+            if ( !opts.breakpoint )
+              return curr_large_template;
+
+            is_small = $el.width() < opts.breakpoint;
+
+            if ( is_small && !using_small ) {
                 $templates.hide();
 
                 // Save large template
-                largeTemplate = current;
-                current  = Tiles.Template.fromJSON(opts.small_screen_grid);
+                using_small = true;
+                return opts.small_screen_grid;
 
-            } else if ( !is_small && largeTemplate ) {
+            } else if ( !is_small && using_small ) {
                 $templates.show();
+                using_small = false;
 
-                current  = largeTemplate;
-                largeTemplate = false;
+                return curr_large_template;
             }
 
-            return current;
+            return ( is_small ) ? opts.small_screen_grid : curr_large_template;
+          },
+
+          set_template = function(template){
+            curr_large_template = template;
+            grid.template = template;
           },
 
           onresize = function(){
@@ -74,11 +89,53 @@
             $el.trigger('wp-tiles:resize');
           };
 
+      // Init the grids
+      if ( opts.breakpoint )
+        opts.small_screen_grid = Tiles.Template.fromJSON(opts.small_screen_grid);
+
+      var grids = {};
+      $.each(opts.grids,function(key){
+        grids[key] = Tiles.Template.fromJSON(this);
+      });
+
+      opts.grids = grids;
+
       // Setup the Tiles grid
       grid = $.extend(new Tiles.Grid($el),{
         cellPadding: parseInt(opts.padding),
 
-        template: choose_template(),
+        template: get_template(),
+
+        templateFactory: {
+            get: function(numCols, numTiles) {
+              //var numRows      = Math.ceil(numTiles / numCols),
+              var template     = get_template().copy(),
+                  missingRects = numTiles - template.rects.length;
+
+              while (missingRects > 0) {
+                var copyRects = [],
+                    i, t = get_template().copy();
+
+                if ( missingRects <= t.rects.length ) {
+                  copyRects = t.rects;
+                  missingRects = 0;
+
+                } else {
+                  for (i = 0; i < t.rects.length; i++) {
+                    copyRects.push(t.rects[i].copy());
+                  }
+
+                  missingRects -= t.rects.length;
+                }
+
+                template.append(
+                  new Tiles.Template(copyRects, t.numCols, t.numRows)
+                );
+              }
+
+              return template;
+            }
+        },
 
         resizeColumns: function() {
           return this.template.numCols;
@@ -107,7 +164,6 @@
                   rgbx  = rgb.substr(0,4) === 'rgba' ? rgb : rgb.replace('rgb', 'rgba').replace(')', ',' + alpha + ')'),
                   comma = rgbx.lastIndexOf(','),
                   rgba  = rgbx.slice(0, comma + 1) + alpha + ")";
-                  //rgba  = rgbx.replace(')', ',' + alpha + ')');
 
               $byline.css("background-color", rgba);
 
@@ -120,48 +176,12 @@
           }
 
           return tile;
-        },
-
-        // Repeat the same template until tiles are exhausted
-        ensureTemplate: function(numTiles) {
-
-          // verfiy that the current template is still valid
-          if (!this.template || this.template.numCols !== this.numCols) {
-            this.template = this.createTemplate(this.numCols, numTiles);
-            this.isDirty = true;
-          } else {
-
-            // append another template if we don't have enough rects
-            var missingRects = numTiles - this.template.rects.length;
-            if (missingRects > 0) {
-              var copyRects = [],
-                len, i;
-
-              while (missingRects > 0) {
-
-                len = missingRects <= this.template.rects.length ? missingRects : this.template.rects.length;
-
-                for (i = 0; i < len; i++) {
-                  copyRects.push(this.template.rects[i].copy());
-                }
-
-                missingRects -= len;
-
-                this.template.append(
-                  new Tiles.Template(copyRects, this.template.numCols, this.template.numRows)
-                );
-              }
-
-              this.isDirty = true;
-            }
-
-          }
         }
       });
 
       // Pass the post tiles into Tiles.js
-      var posts = $('.wp-tiles-tile',$el);
-      grid.updateTiles(posts);
+      var $posts = $('.wp-tiles-tile',$el);
+      grid.updateTiles($posts);
 
       // Maybe do some work with bylies
       var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
@@ -182,7 +202,7 @@
       // when the window resizes, redraw the grid
       $(window).resize($.wptiles.debounce(function() {
           // @todo Only resize if template is the same?
-          grid.template = choose_template();
+          grid.template = get_template();
 
           grid.isDirty = true;
           grid.resize();
@@ -205,13 +225,17 @@
         var rows = opts.grids[$(this).data('grid')];
 
         // set the new template and resize the grid
-        grid.template = Tiles.Template.fromJSON(rows);
+        //grid.template = Tiles.Template.fromJSON(rows);
+        set_template(rows);
+
         grid.isDirty  = true;
         grid.resize();
 
         grid.redraw(opts.animate_template, onresize);
 
       });
+
+      opts.grid = grid;
     }
   });
 
