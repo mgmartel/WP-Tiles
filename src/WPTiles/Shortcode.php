@@ -32,13 +32,12 @@ class Shortcode
             'color' => false,
             'background_opacity' => $defaults['background_opacity'],
 
-            'breakpoint'        => $defaults['small_screen_breakpoint'],
+            'breakpoint'        => $defaults['breakpoint'],
             'small_screen_grid' => $defaults['small_screen_grid'],
 
             'byline_template' => $defaults['byline_template'],
             'byline_template_textonly' => $defaults['byline_template_textonly'],
 
-            'border_radius'   => $defaults['border_radius'],
             'byline_opacity'  => $defaults['byline_opacity'],
             'byline_color'    => $defaults['byline_color'],
             'byline_height'   => $defaults['byline_height'],
@@ -71,7 +70,7 @@ class Shortcode
             'grids' => $grids,
 
             'small_screen_grid' => '',
-            'small_screen_breakpoint' => false,
+            'breakpoint' => (int) $atts['breakpoint'],
 
             'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
             'background_opacity' => (float) $atts['background_opacity'],

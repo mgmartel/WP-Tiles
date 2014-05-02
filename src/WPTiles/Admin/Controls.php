@@ -82,10 +82,10 @@ class Controls
 
         $controls[] = array(
             'type'        => 'textbox',
-            'name'        => 'small_screen_breakpoint',
+            'name'        => 'breakpoint',
             'label'       => __( 'Small Screen Breakpoint', 'wp-tiles' ),
             'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'wp-tiles' ),
-            'default'     => wp_tiles()->get_option_defaults( 'small_screen_breakpoint' ),
+            'default'     => wp_tiles()->get_option_defaults( 'breakpoint' ),
             'validation'  => 'numeric',
             'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                 'field'    => 'small_screen_enabled',

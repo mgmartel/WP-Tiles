@@ -105,7 +105,7 @@ class WPTiles
             'grids' => false,
             'default_grid' => false,
             'small_screen_grid' => false,
-            'small_screen_breakpoint' => 800,
+            'breakpoint' => 800,
 
             'colors' => array(
                 "#009999",
