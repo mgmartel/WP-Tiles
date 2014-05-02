@@ -60,6 +60,8 @@ class Shortcode
             'animate_resize'   => $defaults['animate_resize'],
             'animate_template' => $defaults['animate_template'],
 
+            'pagination'       => $defaults['pagination'],
+
 
         ), $original_atts );
 
@@ -98,6 +100,8 @@ class Shortcode
             'animate_init'     => ( $atts['animated'] && $atts['animate_init'] ),
             'animate_resize'   => ( $atts['animated'] && $atts['animate_resize'] ),
             'animate_template' => ( $atts['animated'] && $atts['animate_template'] ),
+
+            'pagination'       => $atts['pagination'],
         );
 
         if ( $atts['breakpoint'] ) {
@@ -157,6 +161,7 @@ class Shortcode
             'post_status'         => 'publish',
             'post_type'           => 'post',
             'posts_per_page'      => '10',
+            'paged'               => 1,
             'tag'                 => '',
             'tax_operator'        => 'IN',
             'tax_term'            => false,
@@ -180,6 +185,12 @@ class Shortcode
         $tax_term = sanitize_text_field( $atts['tax_term'] );
         $taxonomy = sanitize_key( $atts['taxonomy'] );
 
+        // Set paged to auto to use pagination parameters
+        if ( 'auto' === $atts['paged'] )
+            $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+        else
+            $paged = intval( $atts['paged'] );
+
         // Set up initial query for post
         $args = array(
             'category_name'       => $category,
@@ -187,6 +198,7 @@ class Shortcode
             'orderby'             => $orderby,
             'post_type'           => explode( ',', $post_type ),
             'posts_per_page'      => $posts_per_page,
+            'paged'               => $paged,
             'tag'                 => $tag,
         );
 
@@ -294,7 +306,8 @@ class Shortcode
             $args['post_parent'] = intval( $post_parent );
         }
 
-        return get_posts( apply_filters( 'wp_tiles_shortcode_args', $args, $original_atts ) );
+        //return get_posts( apply_filters( 'wp_tiles_shortcode_post_query', $args, $original_atts ) );
+        return apply_filters( 'wp_tiles_shortcode_post_query', $args, $original_atts );
         //return new WP_Query( apply_filters( 'wp_tiles_shortcode_args', $args, $original_atts ) );
     }
 }

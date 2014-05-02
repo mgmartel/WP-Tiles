@@ -53,6 +53,7 @@ class WPTiles
 
     public function init() {
         Admin\Admin::setup();
+        new Ajax();
         add_action( 'init', array( &$this, 'register_post_type' ) );
 
         // The Shortcode
@@ -137,7 +138,9 @@ class WPTiles
 
             'byline_effect' => 'none',
             'byline_align'  => 'bottom',
-            'image_effect'  => 'none'
+            'image_effect'  => 'none',
+
+            'pagination' => 'ajax'
         );
 
         if ( $key )
@@ -253,10 +256,21 @@ class WPTiles
         return $this->render_tiles( $posts, $opts );
     }
 
+    public function get_query_nonce( $query ) {
+        return wp_create_nonce( md5( build_query( $query ) ) );
+    }
+
     public function render_tiles( $posts, $opts = false ) {
 
         if ( empty( $posts ) )
             return;
+
+        // Is $posts a query?
+        $query = false;
+        if ( is_array( $posts ) && count(array_filter(array_keys( $posts ), 'is_string') ) ) {
+            $query = $posts;
+            $posts = get_posts( apply_filters( 'wp_tiles_get_posts_query', $query ) );
+        }
 
         if ( !$opts )
             $opts = $this->get_defaults();
@@ -288,6 +302,19 @@ class WPTiles
         if ( 'carousel' == $opts['link']
             && ( !doing_filter( 'post_gallery' ) ||  !class_exists( 'No_Jetpack_Carousel' ) && !class_exists( 'Jetpack_Carousel' ) ) ) {
             $opts['link'] = 'thickbox';
+        }
+
+        // Only allow pagination when the query has been passed directly into WP Tiles
+        if ( 'ajax' == $opts['pagination'] && $query ) {
+            $next_query = $query;
+            $next_query['paged'] = ( isset( $query['paged'] ) && $query['paged'] > 0 ) ? $query['paged'] + 1 : 2;
+
+            $opts['next_query'] = array(
+                'query' => $next_query,
+                'action' => Ajax::ACTION_GET_POSTS,
+                '_ajax_nonce' => $this->get_query_nonce( $next_query )
+            );
+            $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
         }
 
         /**
@@ -348,7 +375,7 @@ class WPTiles
 
                 <?php endif; ?>
 
-                <?php $this->_render_tile_html( $posts, $opts ) ?>
+                <?php $this->render_tile_html( $posts, $opts ) ?>
             </div>
 
         </div>
@@ -360,7 +387,7 @@ class WPTiles
         return $out;
     }
 
-    private function _render_tile_html( $posts, $opts ) {
+    public function render_tile_html( $posts, $opts ) {
 
         foreach( $posts as $post ) :
 
@@ -391,8 +418,7 @@ class WPTiles
 
             $tile_classes = apply_filters( 'wp_tiles_tile_classes', $tile_classes );
 
-            ?>
-            <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
+            ?><div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
 
                 <?php if ( 'post' == $opts['link'] ) : ?>
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
@@ -474,6 +500,9 @@ class WPTiles
         return !empty( $ret ) ? $ret : false;
     }
 
+    /**
+     * @todo Filter out vars we don't need
+     */
     protected function add_data_for_js( $wptiles_id, $opts ) {
         static $enqueued = false;
 
@@ -592,9 +621,15 @@ class WPTiles
      * @todo invalidate cache
      */
     public function get_first_image( $post, $size = false ) {
+        $allowed_sizes = get_intermediate_image_sizes();
+        $allowed_sizes[] = 'full';
 
-        if ( !$size )
+        if ( !in_array( 'size', $allowed_sizes ) || !$size )
             $size = $this->get_option( 'image_size', true );
+
+        // Also the option *could* in theory be wrong
+        if ( !in_array( 'size', $allowed_sizes ) )
+            $size = $this->get_option_defaults( 'image_size' );
 
         // @todo legacy filter: wp-tiles-image-size
         $size = apply_filters( 'wp_tiles_image_size', $size, $post );

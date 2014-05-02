@@ -176,6 +176,47 @@
           }
 
           return tile;
+        },
+        nextPage: function(){
+          if ( !opts.next_query)
+            return;
+
+          if( !opts.next_query.opts ) {
+            opts.next_query.opts = {};
+            $.each([
+              'hide_title',
+              'link',
+              'byline_template',
+              'byline_template_textonly',
+              'images_only',
+              'image_size',
+              'text_only'
+            ],function(){
+                opts.next_query.opts[this] = opts[this];
+            });
+          }
+
+          $.post(opts.ajaxurl,opts.next_query)
+            .success(function(response){
+              if ( '-1' == response ) { // @todo
+                alert( 'No more posts available.' );
+                return;
+              }
+
+              opts.next_query.query.paged++;
+              opts.next_query._ajax_nonce = response._ajax_nonce;
+
+              var tiles = $('<div />').html(response.tiles).find('.wp-tiles-tile').get();
+
+              /*if (tiles.length < opts.next_query.posts_per_page) {
+                // Not last page if image_only is enabled..
+              }*/
+
+              grid.addTiles(tiles);
+              grid.redraw(opts.animate_template, onresize);
+
+            });
+
         }
       });
 
