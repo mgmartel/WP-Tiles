@@ -27,7 +27,7 @@
         if ( bottom > max )
           max = bottom;
       });
-      
+
       newHeight = max - tileOffsetTop + parseInt(padding) + "px";
 
       $el.parent('.wp-tiles-container').css('height', newHeight );
@@ -97,6 +97,20 @@
             $('.wp-tiles-byline').dotdotdot();
 
             $el.trigger('wp-tiles:resize');
+          },
+
+          style_tiles = function() {
+            var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
+            if ( $image_bylines.get(0) ) {
+
+              // Set color and opacity
+              if ( 'random' !== opts.byline_color ) {
+                $image_bylines.css('background-color', opts.byline_color); // Byline color includes alpha
+              }
+
+              // Set the byline height
+              $image_bylines.css('height',opts.byline_height + '%');
+            }
           };
 
       // Init the grids
@@ -187,6 +201,7 @@
 
           return tile;
         },
+
         nextPage: function(){
           if ( !opts.next_query)
             return;
@@ -224,6 +239,7 @@
 
               grid.addTiles(tiles);
               grid.redraw(opts.animate_template, onresize);
+              style_tiles();
 
             });
 
@@ -234,21 +250,11 @@
       var $posts = $('.wp-tiles-tile',$el);
       grid.updateTiles($posts);
 
-      // Maybe do some work with bylies
-      var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
-      if ( $image_bylines.get(0) ) {
-
-        // Set color and opacity
-        if ( 'random' !== opts.byline_color ) {
-          $image_bylines.css('background-color', opts.byline_color); // Byline color includes alpha
-        }
-
-        // Set the byline height
-        $image_bylines.css('height',opts.byline_height + '%');
-      }
-
       // Draw!
       grid.redraw(opts.animate_init, onresize);
+
+      // Maybe do some work with bylies
+      style_tiles();
 
       // when the window resizes, redraw the grid
       $(window).resize($.wptiles.debounce(function() {
