@@ -128,7 +128,7 @@ class Admin
                 )
             ),
             array(
-                'title' => __( 'Default Settings', 'wp-tiles' ),
+                'title' => __( 'Grids, Animations and Colors', 'wp-tiles' ),
                 'name'  => __( 'Defaults', 'wp-tiles' ),
                 'icon'     => 'font-awesome:fa-tint',
                 'controls' => array(

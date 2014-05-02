@@ -1,3 +1,33 @@
+/* Assistive text */
+/* line 11, ../scss/wp-tiles.scss */
+.screen-reader-text {
+  clip: rect(1px, 1px, 1px, 1px);
+  position: absolute;
+}
+
+/* line 16, ../scss/wp-tiles.scss */
+.screen-reader-text:focus {
+  background-color: #f1f1f1;
+  border-radius: 3px;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+  clip: auto;
+  color: #21759b;
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  height: auto;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  text-decoration: none;
+  text-transform: none;
+  width: auto;
+  z-index: 100000;
+  /* Above WP toolbar */
+}
+
 /**************************************
     Admin
  **************************************/
@@ -86,7 +116,7 @@
 /* ==========================================================================
    Base Styles
    ========================================================================== */
-/* line 24, ../scss/wp-tiles.scss */
+/* line 51, ../scss/wp-tiles.scss */
 .wp-tiles-container {
   width: auto;
   height: auto;
@@ -94,7 +124,7 @@
   overflow: visible;
 }
 
-/* line 31, ../scss/wp-tiles.scss */
+/* line 58, ../scss/wp-tiles.scss */
 .wp-tiles-grid {
   top: 0;
   bottom: 0;
@@ -212,7 +242,7 @@
 /* ==========================================================================
    Animations
    ========================================================================== */
-/* line 49, ../scss/wp-tiles.scss */
+/* line 76, ../scss/wp-tiles.scss */
 .wp-tiles-byline-animated .wp-tiles-byline, .wp-tiles-image-animated .wp-tiles-tile-bg {
   -moz-transition: all 300ms ease-out;
   -o-transition: all 300ms ease-out;
@@ -220,7 +250,7 @@
   transition: all 300ms ease-out;
 }
 
-/* line 52, ../scss/wp-tiles.scss */
+/* line 79, ../scss/wp-tiles.scss */
 .wp-tiles-byline-slide-up .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-down .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-left .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-right .wp-tiles-tile-with-image:hover .wp-tiles-byline {
   -moz-transform: translateX(0%);
   -ms-transform: translateX(0%);
@@ -318,28 +348,28 @@
 /**************************************
     Ajax Load More
  **************************************/
-/* line 12, ../scss/_pagination.scss */
+/* line 9, ../scss/_pagination.scss */
 .wp-tiles-pagination-ajax {
   line-height: 24px;
   text-align: center;
 }
-/* line 16, ../scss/_pagination.scss */
-.wp-tiles-pagination-ajax.loading {
+/* line 13, ../scss/_pagination.scss */
+.wp-tiles-pagination-ajax .loading {
   background: url('../images/loading.gif?1399040924') no-repeat 50%;
   text-indent: -9999px;
 }
 
 /**************************************
-    Paging Navigation
+    Paging Navigation & Prev/Next
     (based on TwentyFourteen)
  **************************************/
-/* line 32, ../scss/_pagination.scss */
-.wp-tiles-paging-navigation .loop-pagination {
+/* line 26, ../scss/_pagination.scss */
+.wp-tiles-pagination-paging .loop-pagination, .wp-tiles-pagination-prev-next .loop-pagination {
   margin-top: -5px;
   text-align: center;
 }
-/* line 37, ../scss/_pagination.scss */
-.wp-tiles-paging-navigation .page-numbers {
+/* line 31, ../scss/_pagination.scss */
+.wp-tiles-pagination-paging .page-numbers, .wp-tiles-pagination-paging .prev-next, .wp-tiles-pagination-prev-next .page-numbers, .wp-tiles-pagination-prev-next .prev-next {
   border-top: 5px solid transparent;
   display: inline-block;
   font-size: 14px;
@@ -348,16 +378,16 @@
   padding: 7px 16px;
   text-transform: uppercase;
 }
-/* line 47, ../scss/_pagination.scss */
-.wp-tiles-paging-navigation a {
+/* line 41, ../scss/_pagination.scss */
+.wp-tiles-pagination-paging a, .wp-tiles-pagination-prev-next a {
   color: #2b2b2b;
 }
-/* line 51, ../scss/_pagination.scss */
-.wp-tiles-paging-navigation .page-numbers.current {
+/* line 45, ../scss/_pagination.scss */
+.wp-tiles-pagination-paging .page-numbers.current, .wp-tiles-pagination-prev-next .page-numbers.current {
   border-top: 5px solid #24890d;
 }
-/* line 55, ../scss/_pagination.scss */
-.wp-tiles-paging-navigation a:hover {
+/* line 49, ../scss/_pagination.scss */
+.wp-tiles-pagination-paging a:hover, .wp-tiles-pagination-prev-next a:hover {
   border-top: 5px solid #41a62a;
   color: #2b2b2b;
 }

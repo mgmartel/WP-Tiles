@@ -140,7 +140,7 @@ class WPTiles
             'byline_align'  => 'bottom',
             'image_effect'  => 'none',
 
-            'pagination' => 'paging'
+            'pagination' => 'ajax'
         );
 
         if ( $key )
@@ -320,23 +320,33 @@ class WPTiles
 
         // Only allow pagination when we have a WP Query
         $opts['next_query'] = false;
-        if ( 'ajax' == $opts['pagination'] && $wp_query ) {
-            $next_query = $wp_query->query;
-
+        $next_page = false;
+        if ( $wp_query ) {
             $max_page  = $wp_query->max_num_pages;
-            $next_page = intval( $wp_query->get( 'paged' ) ) + 1;
+            $next_page = intval( $wp_query->get( 'paged', 1 ) ) + 1;
 
-            if ( $next_page <= $max_page ) {
+            if ( $next_page > $max_page )
+                $next_page = false;
 
-                $next_query['paged'] = $next_page;
+            // Sign the query and pass it to JS
+            if ( $next_page && 'ajax' == $opts['pagination'] ) {
+                $next_query = $wp_query->query;
 
-                $opts['next_query'] = array(
-                    'query' => $next_query,
-                    'action' => Ajax::ACTION_GET_POSTS,
-                    '_ajax_nonce' => $this->get_query_nonce( $next_query )
-                );
-                $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
+                $max_page  = $wp_query->max_num_pages;
+                $next_page = intval( $wp_query->get( 'paged', 1 ) ) + 1;
 
+                if ( $next_page <= $max_page ) {
+
+                    $next_query['paged'] = $next_page;
+
+                    $opts['next_query'] = array(
+                        'query' => $next_query,
+                        'action' => Ajax::ACTION_GET_POSTS,
+                        '_ajax_nonce' => $this->get_query_nonce( $next_query )
+                    );
+                    $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
+
+                }
             }
         }
 
@@ -408,11 +418,16 @@ class WPTiles
         * Pagination
         **/
         ?>
-        <?php if ( 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
-            <div class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wptiles_id; ?>-pagination">
+        <?php if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
+
+            <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wptiles_id; ?>-pagination">
                 <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
-            </div>
+            </nav>
+
+        <?php elseif ( 'prev_next' === $opts['pagination'] ) : ?>
+
+            <?php wp_tiles_prev_next_nav( $wp_query ); ?>
 
         <?php elseif ( 'paging' === $opts['pagination'] ) : ?>
 

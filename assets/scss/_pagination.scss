@@ -2,39 +2,33 @@
    Pagination
    ========================================================================== */
 
-.wp-tiles-pagination {
-
-}
-
 /**************************************
     Ajax Load More
  **************************************/
+
 .wp-tiles-pagination-ajax {
     line-height: 24px;
     text-align: center;
 
-    &.loading {
+    .loading {
         background: image-url('loading.gif') no-repeat 50%;
         text-indent: -9999px;
     }
 }
 
-
 /**************************************
-    Paging Navigation
+    Paging Navigation & Prev/Next
     (based on TwentyFourteen)
  **************************************/
 
-.wp-tiles-paging-navigation {
-	//border-top: 5px solid #000;
-	//margin: 48px 0;
+.wp-tiles-pagination-paging, .wp-tiles-pagination-prev-next  {
 
     .loop-pagination {
         margin-top: -5px;
         text-align: center;
     }
 
-    .page-numbers {
+    .page-numbers, .prev-next {
         border-top: 5px solid transparent;
         display: inline-block;
         font-size: 14px;
