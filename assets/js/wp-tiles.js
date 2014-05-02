@@ -15,10 +15,20 @@
           timeout = setTimeout(later, wait);
         };
     },
+
     resizeParent: function($el, padding) {
-      var lastEl = $el.children().last(),
+      var tiles = $el.children('.wp-tiles-tile'),
           tileOffsetTop = parseInt ( $el.offset().top ),
-          newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + parseInt(padding) + "px";
+          max = 0, newHeight;
+
+      // Iterates over every tile to find the bottom. Is there a faster way?
+      tiles.each(function(){
+        var $e = $(this), bottom = $e.height() + $e.offset().top;
+        if ( bottom > max )
+          max = bottom;
+      });
+      
+      newHeight = max - tileOffsetTop + parseInt(padding) + "px";
 
       $el.parent('.wp-tiles-container').css('height', newHeight );
     }
