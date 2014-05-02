@@ -104,6 +104,32 @@ class Controls
             'default' => wp_tiles()->get_option_defaults( 'padding' ),
         );
 
+        $controls[] = array(
+            'type'        => 'radiobutton',
+            'name'        => 'pagination',
+            'label'       => __( 'Pagination', 'wp-tiles' ),
+            'description' => __( "Should pagination be shown under the tiles?", 'wp-tiles' ),
+            'items'       => array(
+                array(
+                    'value' => 'none',
+                    'label' => __( 'No Pagation', 'wp-tiles' )
+                ),
+                array(
+                    'value' => 'ajax',
+                    'label' => __( 'Load More (without page refresh)', 'wp-tiles' )
+                ),
+                array(
+                    'value' => 'prev_next',
+                    'label' => __( 'Next / Previous (new page)', 'wp-tiles' )
+                ),
+                array(
+                    'value' => 'paging',
+                    'label' => __( 'With Page Numbers', 'wp-tiles' )
+                )
+            ),
+            'default' => wp_tiles()->get_option_defaults( 'pagination' ),
+        );
+
         return $controls;
     }
 
