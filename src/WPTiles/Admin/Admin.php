@@ -92,7 +92,7 @@ class Admin
             'page_slug'             => self::PAGE_SLUG,
             'template'              => array(
                 'title' => __( 'WP Tiles', 'wp-tiles' ),
-                'logo'  => false,
+                'logo'  => WP_TILES_ASSETS_URL . '/images/wp-tiles-logo.png',
                 'menus' => self::_get_menus()
             ),
             //'menu_page'             => 'edit.php?post_type=grid_template',
