@@ -134,6 +134,7 @@ if ( ! function_exists( 'wp_tiles_paging_nav' ) ) :
         if ( $links ) :
 
         ?>
+
         <nav class="navigation wp-tiles-pagination wp-tiles-pagination-paging paging-navigation" role="navigation">
             <h1 class="screen-reader-text"><?php _e( 'Posts navigation', 'wp-tiles' ); ?></h1>
             <div class="pagination loop-pagination">
@@ -177,11 +178,14 @@ if ( ! function_exists( 'wp_tiles_prev_next_nav' ) ) :
             return;
 
         ?>
+
         <nav class="navigation wp-tiles-pagination wp-tiles-pagination-prev-next" role="navigation">
             <h1 class="screen-reader-text"><?php _e( 'Post navigation', 'twentyfourteen' ); ?></h1>
             <div class="pagination loop-pagination">
                 <?php if ( $previous ) : ?><a href='<?php echo previous_posts(false); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='prev prev-next'><?php _e( '&larr; Previous', 'wp-tiles' ) ?></a><?php endif; ?>
+
                 <?php if ( $next ) : ?><a href='<?php echo next_posts( $max_page, false ); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='next prev-next'><?php _e( 'Next &rarr;', 'wp-tiles' ) ?><?php endif; ?>
+                    
             </div><!-- .pagination -->
         </nav><!-- .navigation -->
         <?php
