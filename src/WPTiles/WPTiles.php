@@ -120,7 +120,20 @@ class WPTiles
     }
 
     public function get_query_nonce( $query ) {
-        return wp_create_nonce( md5( build_query( $query ) ) );
+        $hash = $this->get_query_hash( $query );
+        return wp_create_nonce( $hash );
+    }
+
+    public function get_query_hash( $query ) {
+        array_walk( $query, function( &$var ){
+            if ( 'false' === $var )
+                $var = false;
+            elseif( 'true' === $var )
+                $var = true;
+        } );
+
+        $q = build_query( wp_parse_args( $query ) );
+        return md5( $q );
     }
 
     public function render_tiles( $posts, $opts = false ) {

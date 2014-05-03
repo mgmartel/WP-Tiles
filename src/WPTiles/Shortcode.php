@@ -88,9 +88,9 @@ class Shortcode
             'image_effect'    => $atts['image_effect'],
 
             'link'         => $atts['link'],
-            'text_only'    => self::_boolean( $atts['text_only'] ),
-            'images_only'  => self::_boolean( $atts['images_only'] ),
-            'hide_title'   => self::_boolean( $atts['hide_title'] ),
+            'text_only'    => wp_tiles()->options->boolean( $atts['text_only'] ),
+            'images_only'  => wp_tiles()->options->boolean( $atts['images_only'] ),
+            'hide_title'   => wp_tiles()->options->boolean( $atts['hide_title'] ),
 
             'image_source' => $atts['image_source'],
             'image_size'   => $atts['image_size'],
@@ -137,12 +137,12 @@ class Shortcode
             return ( is_string( $options ) ) ? array_map( 'trim', $options ) : $options;
         }
 
-        private static function _boolean( $value ) {
+        /*private static function _boolean( $value ) {
             if ( in_array( $value, array( true, 'true', 'yes', '1', 1 ), true ) )
                 return true;
 
             return false;
-        }
+        }*/
 
 
     public static function get_posts( $original_atts ) {

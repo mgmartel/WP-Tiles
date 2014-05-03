@@ -17,7 +17,9 @@ class Ajax
         $query = $_POST['query'];
 
         // @todo This is not super reliable
-        $hash = md5( build_query( $query ) );
+        //$test = new \WP_Query;
+
+        $hash = wp_tiles()->get_query_hash( $query );
         check_ajax_referer( $hash );
 
         // $query is signed by nonce

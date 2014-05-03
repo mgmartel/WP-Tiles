@@ -120,7 +120,7 @@ class Options
         return $option;
     }
 
-    
+
     //
     // UTILS
     //
@@ -158,5 +158,16 @@ class Options
 
     public function get_allowed_image_effects() {
         return array( 'scale-up', 'scale-down', 'saturate', 'desaturate' );
+    }
+
+    //
+    // UTILS
+    //
+
+    public function boolean( $value ) {
+        if ( in_array( $value, array( true, 'true', 'yes', '1', 1 ), true ) )
+            return true;
+
+        return false;
     }
 }
