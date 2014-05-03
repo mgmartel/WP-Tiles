@@ -22,7 +22,7 @@ class Shortcode
     }
 
     public static function get_options( $original_atts ) {
-        $defaults = wp_tiles()->get_defaults();
+        $defaults = wp_tiles()->options->get_options();
 
         $atts = shortcode_atts( array(
             'grids' => $defaults['grids'],
@@ -149,23 +149,24 @@ class Shortcode
 
         // Pull in shortcode attributes and set defaults
         $atts = shortcode_atts( array(
-            'author'              => '',
-            'category'            => '',
-            'id'                  => false,
-            'ignore_sticky_posts' => false,
-            'meta_key'            => '',
-            'offset'              => 0,
-            'order'               => 'DESC',
-            'orderby'             => 'date',
-            'post_parent'         => false,
-            'post_status'         => 'publish',
-            'post_type'           => 'post',
-            'posts_per_page'      => '10',
-            'paged'               => 1,
-            'tag'                 => '',
-            'tax_operator'        => 'IN',
-            'tax_term'            => false,
-            'taxonomy'            => false,
+            'author'               => '',
+            'category'             => '',
+            'id'                   => false,
+            'ignore_sticky_posts'  => false,
+            'meta_key'             => '',
+            'offset'               => 0,
+            'order'                => 'DESC',
+            'orderby'              => 'date',
+            'post_parent'          => false,
+            'post_status'          => 'publish',
+            'post_type'            => 'post',
+            'posts_per_page'       => '10',
+            'paged'                => 1,
+            'tag'                  => '',
+            'tax_operator'         => 'IN',
+            'tax_term'             => false,
+            'taxonomy'             => false,
+            'exclude_current_post' => true
         ), $original_atts );
 
         $author = sanitize_text_field( $atts['author'] );
@@ -213,11 +214,18 @@ class Shortcode
         // If Post IDs
         if( $id ) {
             $posts_in = array_map( 'intval', explode( ',', $id ) );
+
             $args['post__in'] = $posts_in;
 
             if ( !isset( $original_atts['orderby'] ) || !$original_atts['orderby'] ) {
                 $args['orderby'] = 'post__in';
             }
+        }
+
+        // Only exclude if post IDs are not explicitly given
+        // (post__not_in and post__in at the same time is not supported by WP_Query)
+        if ( $atts['exclude_current_post'] && !$id ) {
+            $args['post__not_in'] = array( get_the_ID() );
         }
 
         // Post Author

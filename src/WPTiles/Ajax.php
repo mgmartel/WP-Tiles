@@ -16,6 +16,7 @@ class Ajax
     public function get_posts() {
         $query = $_POST['query'];
 
+        // @todo This is not super reliable
         $hash = md5( build_query( $query ) );
         check_ajax_referer( $hash );
 
@@ -31,7 +32,7 @@ class Ajax
         $opts = array(
             'hide_title'               => $this->_bool( $posted_opts['hide_title'] ),
             'link'                     => in_array( $posted_opts['link'], array( 'post', 'file', 'thickbox', 'none' ) )
-                                            ? $posted_opts['link'] : wp_tiles()->get_option( 'link', true ),
+                                            ? $posted_opts['link'] : wp_tiles()->options->get_option( 'link' ),
             'byline_template'          => wp_kses_post( $posted_opts['byline_template'] ),
             'byline_template_textonly' => $this->_bool( $posted_opts['byline_template_textonly'] ),
             'images_only'              => $this->_bool( $posted_opts['images_only'] ),

@@ -216,7 +216,7 @@ class Admin
             $byline_height = (int) $byline_height;
 
             if ( 'random' == $byline_color || empty( $byline_color ) ) {
-                $byline_color = wp_tiles()->get_option( 'color_1' );
+                $byline_color = wp_tiles()->options->get_option( 'color_1' );
             }
             $byline_color = Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
 
@@ -224,12 +224,12 @@ class Admin
             $byline_align = 'top' == $byline_align ? 'top' : 'bottom';
 
         } else {
-            $byline_height  = wp_tiles()->get_option( 'byline_height', true );
-            $byline_color   = wp_tiles()->get_option( 'byline_color', true );
-            $byline_opacity = wp_tiles()->get_option( 'byline_opacity', true );
-            $byline_align   = wp_tiles()->get_option( 'byline_align', true );
-            $byline_effect  = wp_tiles()->get_option( 'byline_effect', true );
-            $image_effect   = wp_tiles()->get_option( 'image_effect', true );
+            $byline_height  = wp_tiles()->options->get_option( 'byline_height' );
+            $byline_color   = wp_tiles()->options->get_option( 'byline_color' );
+            $byline_opacity = wp_tiles()->options->get_option( 'byline_opacity' );
+            $byline_align   = wp_tiles()->options->get_option( 'byline_align' );
+            $byline_effect  = wp_tiles()->options->get_option( 'byline_effect' );
+            $image_effect   = wp_tiles()->options->get_option( 'image_effect' );
 
         }
 
