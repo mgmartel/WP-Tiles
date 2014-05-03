@@ -262,64 +262,59 @@ class WPTiles
             ) );
 
         /**
-         * Time to start rendering our template
+         * Render the template
+         *
+         * POLICY: Though the PHP should remain readable at all times, getting clean
+         * HTML output is nice. To strive to get clean HTML output, WP Tiles starts 8
+         * spaces (2 tabs) from the wall, and leaves an empty line between each line
+         * of HTML. Remeber that ?> strips a folliwing newline, so always leave an
+         * empty line after ?>.
          */
         ob_start();
         ?>
-
         <?php if ( count( $grid_names ) > 1 ) : ?>
 
-            <div id="<?php echo $wp_tiles_id; ?>-templates" class="tile-templates">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="tile-templates">
 
-                <ul class="template-selector">
+            <ul class="template-selector">
 
             <?php foreach ( $grid_names as $slug => $name ) : ?>
 
-                        <li class="template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
-
+                <li class="template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
             <?php endforeach; ?>
 
-                </ul>
+            </ul>
 
-            </div>
-
+        </div>
         <?php endif; ?>
 
         <div class="wp-tiles-container">
+        <?php if ( 'carousel' == $opts['link'] ):?>
 
-            <?php //<div class='imagine-me'> ?>
+            <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
+        <?php else : ?>
 
-                <?php if ( 'carousel' == $opts['link'] ):?>
-                    <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
-
-                <?php else : ?>
-                    <div id="<?php echo $wp_tiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
-
-                <?php endif; ?>
-
+            <div id="<?php echo $wp_tiles_id; ?>" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+        <?php endif; ?>
                 <?php $this->render_tile_html( $posts, $opts ) ?>
+
             </div>
 
         </div>
-
         <?php
+
         /**
         * Pagination
         **/
-        ?>
+        if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
-        <?php if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
-
-            <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
-                <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
-            </nav>
-
+        <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
+            <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
+        </nav>
         <?php elseif ( 'prev_next' === $opts['pagination'] ) : ?>
-
             <?php wp_tiles_prev_next_nav( $wp_query, $wp_tiles_id ); ?>
 
         <?php elseif ( 'paging' === $opts['pagination'] ) : ?>
-
             <?php wp_tiles_paging_nav( $wp_query, $wp_tiles_id ); ?>
 
         <?php endif; ?>
@@ -362,52 +357,57 @@ class WPTiles
 
             $tile_classes = apply_filters( 'wp_tiles_tile_classes', $tile_classes );
 
-            ?><div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
+            ?>
 
+                <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
                 <?php if ( 'post' == $opts['link'] ) : ?>
+
                     <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
-
                 <?php elseif ( 'file' == $opts['link'] ) : ?>
+
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
-
                 <?php elseif ( 'thickbox' == $opts['link'] ) : ?>
+
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>">
-
                 <?php elseif ( 'carousel' == $opts['link'] ) : ?>
-                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
 
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
                 <?php endif; ?>
 
-                    <?php //@todo Should this be article (both the tag & the schema)? ?>
-                    <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/CreativeWork">
-
+                        <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/CreativeWork">
                         <?php if ( $img ) : ?>
+
                             <div class='wp-tiles-tile-bg'>
+
                                 <img src='<?php echo $img ?>' class='wp-tiles-img' itemprop="image" />
+
+                            </div>
+                        <?php endif; ?>
+                        <?php if ( $byline || !$opts['hide_title'] ) : ?>
+
+                            <div class='wp-tiles-byline'>
+                            <?php if ( !$opts['hide_title'] ) : ?>
+
+                                <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
+                            <?php endif; ?>
+                            <?php if ( $byline ) : ?>
+
+                                <div class='wp-tiles-byline-content' itemprop="description">
+                                    <?php echo $byline; ?>
+
+                                </div>
+                            <?php endif; ?>
+
                             </div>
                         <?php endif; ?>
 
-                        <?php if ( $byline || !$opts['hide_title'] ) : ?>
-                        <div class='wp-tiles-byline'>
-
-                            <?php if ( !$opts['hide_title'] ) : ?>
-                                <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
-                            <?php endif; ?>
-
-                            <?php if ( $byline ) : ?>
-                                <div class='wp-tiles-byline-content' itemprop="description">
-                                    <?php echo $byline; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <?php endif; ?>
-
-                    </article>
-
+                        </article>
                 <?php if ( $opts['link'] && 'none' != $opts['link'] ) : ?>
+
                     </a>
                 <?php endif; ?>
-            </div>
+
+                </div>
             <?php
         endforeach;
     }
@@ -418,7 +418,7 @@ class WPTiles
 
         $tags = array(
             '%title%'   => apply_filters( 'the_title', $post->post_title ),
-            '%content%' => apply_filters( 'the_content', $post->post_content ),
+            '%content%' => apply_filters( 'the_content', strip_shortcodes( $post->post_content ) ),
             '%excerpt%' => $this->get_the_excerpt( $post ),
             '%date%'    => $this->get_the_date( $post ),
             '%link%'    => get_permalink( $post ),

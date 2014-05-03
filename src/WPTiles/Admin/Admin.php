@@ -147,18 +147,18 @@ class Admin
                     ),
                     array(
                         'type'       => 'section',
+                        'title'       => __( 'Colors', 'vp_textdomain' ),
+                        'name'        => 'colors_section',
+                        'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
+                        'fields'      => Controls::colors()
+                    ),
+                    array(
+                        'type'       => 'section',
                         'title'       => __( 'Animations', 'vp_textdomain' ),
                         'name'        => 'animations_section',
                         //'description' => __( '', 'vp_textdomain' ),
                         'fields'      => Controls::animation()
                     ),
-                    array(
-                        'type'       => 'section',
-                        'title'       => __( 'Colors', 'vp_textdomain' ),
-                        'name'        => 'colors_section',
-                        'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
-                        'fields'      => Controls::colors()
-                    )
                 )
             ),
             array(

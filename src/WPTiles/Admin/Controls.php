@@ -691,7 +691,7 @@ class Controls
             array(
                 'type' => 'slider',
                 'name' => 'byline_height',
-                'label' => __('Byline Height (px)', 'wp-tiles'),
+                'label' => __('Byline Height (%)', 'wp-tiles'),
                 'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles'),
                 'default' => wp_tiles()->options->get_option_defaults( 'byline_height' ),
                 'min' => '0',
