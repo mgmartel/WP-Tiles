@@ -4,7 +4,7 @@
 if ( !defined ( 'ABSPATH' ) )
     exit;
 
-class WPTiles
+class WPTiles extends Abstracts\WPSingleton
 {
 
     const GRID_POST_TYPE = 'grid_template';
@@ -43,37 +43,16 @@ class WPTiles
      */
     public $ajax;
 
-    /**
-     * Creates an instance of the WP_Tiles class
-     *
-     * @return WP_Tiles object
-     * @since 0.1
-     * @static
-     */
-    public static function get_instance() {
-        static $instance = false;
-
-        if ( !$instance ) {
-            load_plugin_textdomain( 'wp-tiles', false, WPTILES_DIR . '/languages/' );
-
-            $class = get_called_class();
-            $instance = new $class;
-            $instance->init();
-        }
-
-        return $instance;
-    }
-
-    protected function __construct() {}
-
     public function init() {
+        load_plugin_textdomain( 'wp-tiles', false, WPTILES_DIR . '/languages/' );
+
         $this->post_query = new PostQuery();
         $this->options    = new Options();
         $this->ajax       = new Ajax();
 
         Admin\Admin::setup(); // Static class
 
-        add_action( 'init', array( &$this, 'register_post_type' ) );
+        $this->add_action( 'init', 'register_post_type' );
 
         // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
@@ -484,7 +463,7 @@ class WPTiles
 
             wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs", "jquery-dotdotdot" ), WP_TILES_VERSION, true );
 
-            add_action( 'wp_footer', array( &$this, "add_data" ), 1 );
+            $this->add_action( 'wp_footer', 'add_data', 1 );
         //}
     }
 

@@ -4,13 +4,13 @@
 if ( !defined ( 'ABSPATH' ) )
     exit;
 
-class Ajax
+class Ajax extends Abstracts\WPSingleton
 {
     const ACTION_GET_POSTS = 'wp-tiles-get-posts';
 
-    public function __construct() {
-        add_action( 'wp_ajax_nopriv_' . self::ACTION_GET_POSTS, array( &$this, 'get_posts' ) );
-        add_action( 'wp_ajax_' . self::ACTION_GET_POSTS, array( &$this, 'get_posts' ) );
+    public function init() {
+        $this->add_action( 'wp_ajax_nopriv_' . self::ACTION_GET_POSTS, 'get_posts' );
+        $this->add_action( 'wp_ajax_' . self::ACTION_GET_POSTS, 'get_posts' );
     }
 
     public function get_posts() {

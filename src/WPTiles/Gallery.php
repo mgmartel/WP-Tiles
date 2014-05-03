@@ -4,8 +4,13 @@
 if ( !defined ( 'ABSPATH' ) )
     exit;
 
-class Gallery
+class Gallery extends Abstracts\WPSingleton
 {
+    public function init() {
+        //add_action( 'wp_enqueue_media', array( &$this, 'wp_enqueue_media' ) );
+        //add_action( 'print_media_templates', array( &$this, 'print_media_templates' ) );
+    }
+
     public static function maybe_do_gallery( $ret, $atts ) {
         if ( isset( $atts['tiles'] ) )
             return self::do_gallery( $atts );
