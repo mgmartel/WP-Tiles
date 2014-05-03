@@ -35,6 +35,15 @@ class WPTiles
     public $options;
 
     /**
+     * Only made available so other plugins can interact with the AJAX class (for
+     * example to remove the action).
+     *
+     * @var Ajax
+     * @since 1.0
+     */
+    public $ajax;
+
+    /**
      * Creates an instance of the WP_Tiles class
      *
      * @return WP_Tiles object
@@ -59,10 +68,11 @@ class WPTiles
 
     public function init() {
         $this->post_query = new PostQuery();
-        $this->options = new Options();
+        $this->options    = new Options();
+        $this->ajax       = new Ajax();
 
-        Admin\Admin::setup();
-        new Ajax();
+        Admin\Admin::setup(); // Static class
+
         add_action( 'init', array( &$this, 'register_post_type' ) );
 
         // The Shortcode
@@ -77,14 +87,14 @@ class WPTiles
             'labels'             => array(
                 'name'               => _x( 'Grids', 'post type general name', 'wp-tiles' ),
                 'singular_name'      => _x( 'Grid', 'post type singular name', 'wp-tiles' ),
-                'menu_name'          => _x( 'WP Tiles', 'admin menu', 'wp-tiles' ),
+                'menu_name'          => _x( 'WP Tiles Grids', 'admin menu', 'wp-tiles' ),
                 'name_admin_bar'     => _x( 'Grid', 'add new on admin bar', 'wp-tiles' ),
                 'add_new'            => _x( 'Add New Grid', 'book', 'wp-tiles' ),
                 'add_new_item'       => __( 'Add New Grid', 'wp-tiles' ),
                 'new_item'           => __( 'New Grid', 'wp-tiles' ),
                 'edit_item'          => __( 'Edit Grid', 'wp-tiles' ),
                 'view_item'          => __( 'View Grid', 'wp-tiles' ),
-                'all_items'          => __( 'All Grids', 'wp-tiles' ),
+                'all_items'          => __( 'Grids', 'wp-tiles' ),
                 'search_items'       => __( 'Search Grids', 'wp-tiles' ),
                 'parent_item_colon'  => __( 'Parent Grids:', 'wp-tiles' ),
                 'not_found'          => __( 'No grids found.', 'wp-tiles' ),
@@ -93,7 +103,8 @@ class WPTiles
             'public'             => false,
             'publicly_queryable' => false,
             'show_ui'            => true,
-            'show_in_menu'       => true,
+            //'show_in_menu'       => true,
+            'show_in_menu'       => 'wp-tiles',
             'query_var'          => false,
             'rewrite'            => false,
             'capability_type'    => 'post',

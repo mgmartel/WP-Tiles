@@ -24,14 +24,8 @@ class GridTemplates
     }
 
     protected function __construct() {
-        add_action('admin_menu', array( &$this, 'add_admin_menu' ) );
-
         add_action( 'add_meta_boxes_' . self::POST_TYPE, array( &$this, 'setup_admin_page' ) );
         add_action( 'save_post_' . self::POST_TYPE, array( &$this, 'maybe_save_post' ) );
-    }
-
-    public function add_admin_menu() {
-        add_submenu_page('admin.php?page=wp-tiles', 'Genre', 'Genre', 'manage_options', 'edit.php?post_type=' . self::POST_TYPE );
     }
 
     public function maybe_save_post( $post_id ) {

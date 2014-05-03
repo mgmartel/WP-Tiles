@@ -11,7 +11,17 @@ class Admin
     const CONTEXT_SHORTCODE = 'shortcode';
     const CONTEXT_OPTIONS   = 'options';
 
+    const PAGE_SLUG = 'wp-tiles';
+
     public static $context = self::CONTEXT_OPTIONS;
+
+    public static function setup() {
+        \VP_Security::instance()->whitelist_function( 'wp_tiles_preview_tile');
+
+        self::setup_options();
+        self::setup_shortcode_generator();
+        GridTemplates::get_instance();
+    }
 
     public static function is_shortcode() {
         return self::CONTEXT_SHORTCODE === self::$context;
@@ -67,14 +77,6 @@ class Admin
             );
         }
 
-    public static function setup() {
-        \VP_Security::instance()->whitelist_function( 'wp_tiles_preview_tile');
-
-        self::setup_options();
-        self::setup_shortcode_generator();
-        GridTemplates::get_instance();
-    }
-
     private static function setup_options() {
         self::$context = self::CONTEXT_OPTIONS;
 
@@ -85,22 +87,26 @@ class Admin
         });
 
         return new \VP_Option( array(
-            'is_dev_mode'           => false, // dev mode, default to false
-            'option_key'            => 'wp_tiles', // options key in db, required
-            'page_slug'             => 'wp-tiles', // options page slug, required
+            'is_dev_mode'           => false,
+            'option_key'            => 'wp_tiles',
+            'page_slug'             => self::PAGE_SLUG,
             'template'              => array(
                 'title' => __( 'WP Tiles', 'wp-tiles' ),
                 'logo'  => false,
                 'menus' => self::_get_menus()
-            ), // template file path or array, required
-            //'menu_page'             => array(), // parent menu slug or supply `array` (can contains 'icon_url' & 'position') for top level menu
-            'menu_page'             => 'edit.php?post_type=grid_template', // parent menu slug or supply `array` (can contains 'icon_url' & 'position') for top level menu
-            'use_auto_group_naming' => true, // default to true
-            'use_util_menu'         => true, // default to true, shows utility menu
-            'minimum_role'          => 'manage_options', // default to 'edit_theme_options'
-            'layout'                => 'fixed', // fluid or fixed, default to fixed
-            'page_title'            => __( 'WP Tiles', 'wp-tiles' ), // page title
-            'menu_label'            => __( 'Settings', 'wp-tiles' ), // menu label
+            ),
+            //'menu_page'             => 'edit.php?post_type=grid_template',
+            'menu_page'             => array(
+                'icon_url' => 'dashicons-screenoptions',
+                'position' => 100
+            ),
+            'priority'              => 9, // Before register_post_type sets the submenu
+            'use_auto_group_naming' => true,
+            'use_util_menu'         => true,
+            'minimum_role'          => apply_filters( 'wp_tiles_capability', 'manage_options' ),
+            'layout'                => 'fixed',
+            'page_title'            => __( 'WP Tiles', 'wp-tiles' ),
+            'menu_label'            => __( 'WP Tiles', 'wp-tiles' ),
         ) );
     }
 
