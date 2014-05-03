@@ -417,13 +417,12 @@ class WPTiles
         $template = apply_filters( 'wp_tiles_byline_template_post', $template, $post );
 
         $tags = array(
-            '%title%'   => $post->post_title,
-            '%content%' => $post->post_content,
+            '%title%'   => apply_filters( 'the_title', $post->post_title ),
+            '%content%' => apply_filters( 'the_content', $post->post_content ),
             '%excerpt%' => $this->get_the_excerpt( $post ),
             '%date%'    => $this->get_the_date( $post ),
             '%link%'    => get_permalink( $post ),
         );
-
         // Only do the more expensive tags if needed
         if ( strpos( $template, '%categories%' ) !== false ) {
             $tags['%categories%'] = implode( ', ', wp_get_post_categories( $post->ID, array( "fields" => "names" ) ) );
@@ -433,6 +432,10 @@ class WPTiles
         }
         if ( strpos( $template, '%featured_image%' ) !== false ) {
             $tags['%featured_image%'] = get_the_post_thumbnail( $post->ID );
+        }
+        if ( strpos( $template, '%author%' ) !== false ) {
+            $authordata = get_userdata( $post->post_author );
+            $tags['%author%'] = apply_filters('the_author', is_object($authordata) ? $authordata->display_name : null);
         }
 
         $tags = apply_filters( 'wp_tiles_byline_tags', $tags, $post, $template );
