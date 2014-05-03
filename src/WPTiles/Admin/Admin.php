@@ -81,7 +81,7 @@ class Admin
         self::$context = self::CONTEXT_OPTIONS;
 
         add_action( 'admin_enqueue_scripts', function( $hook_suffix ){
-            if ( $hook_suffix === 'grid_template_page_wp-tiles' ) {
+            if ( $hook_suffix === 'toplevel_page_' . self::PAGE_SLUG ) {
                 wp_tiles()->enqueue_styles();
             }
         });
@@ -244,13 +244,13 @@ class Admin
          */
         $classes = array( 'wp-tiles-byline-align-' . $byline_align );
 
-        if ( !empty( $byline_effect ) && in_array( $byline_effect, wp_tiles()->get_allowed_byline_effects() )  )
+        if ( !empty( $byline_effect ) && in_array( $byline_effect, wp_tiles()->options->get_allowed_byline_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-byline-animated',
                 'wp-tiles-byline-' . $byline_effect
             ) );
 
-        if ( !empty( $image_effect ) && in_array( $image_effect, wp_tiles()->get_allowed_image_effects() )  )
+        if ( !empty( $image_effect ) && in_array( $image_effect, wp_tiles()->options->get_allowed_image_effects() )  )
             $classes = array_merge( $classes, array(
                 'wp-tiles-image-animated',
                 'wp-tiles-image-' . $image_effect
