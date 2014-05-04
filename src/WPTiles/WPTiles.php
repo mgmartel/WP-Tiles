@@ -103,13 +103,20 @@ class WPTiles extends Abstracts\WPSingleton
     /**
      * @deprecated since version 1.0
      */
-    /*public function show_tiles( $atts_arg ) {
-        echo $this->shortcode( $atts_arg );
-    }*/
+    public function show_tiles( $atts_array ) {
+        // if $opts is empty, $posts is probably the old $atts_array
+        $this->display_tiles($posts);
+        //echo $this->shortcode( $atts_arg );
+        //echo $this->get_titles( $posts, $opts );
+    }
+
+    public function display_tiles( $posts, $opts = array() ) {
+        echo $this->get_tiles( $posts, $opts );
+    }
 
     public function get_tiles( $posts, $opts = array() ) {
-        $defaults = $this->options->get_options();
-        $opts = wp_parse_args( $opts, $defaults );
+        //$defaults = $this->options->get_options();
+        //$opts = wp_parse_args( $opts, $defaults );
 
         return $this->render_tiles( $posts, $opts );
     }
@@ -131,10 +138,14 @@ class WPTiles extends Abstracts\WPSingleton
         return md5( $q );
     }
 
-    public function render_tiles( $posts, $opts = false ) {
+    public function render_tiles( $posts, $opts ) {
 
         if ( empty( $posts ) )
             return;
+
+        // This is a double-up when called from the shortcode, but makes the
+        // method more reliable.
+        $opts = shortcode_atts( $this->options->get_options(), $opts );
 
         // Is $posts a query?
         if ( is_array( $posts ) && count(array_filter(array_keys( $posts ), 'is_string') ) ) {
@@ -153,9 +164,6 @@ class WPTiles extends Abstracts\WPSingleton
             $posts = $wp_query->posts;
         }
 
-        if ( !$opts )
-            $opts = $this->options->get_options();
-
         /**
          * Set the variables in the instance
          */
@@ -165,12 +173,11 @@ class WPTiles extends Abstracts\WPSingleton
         /**
          *  Cleanup grids and set names
          */
-        if ( !$opts['grids'] )
-            $opts['grids'] = $this->get_grids();
+        $opts['grids'] = $this->get_grids( $opts['grids'] );
 
-        $grid__pretty_names = array_keys( $opts['grids'] );
+        $grid_pretty_names = array_keys( $opts['grids'] );
         $opts['grids'] = $this->format_grids( $opts['grids'] );
-        $grid_names = array_combine( array_keys( $opts['grids'] ), $grid__pretty_names );
+        $grid_names = array_combine( array_keys( $opts['grids'] ), $grid_pretty_names );
 
         $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
 
@@ -246,9 +253,22 @@ class WPTiles extends Abstracts\WPSingleton
             ) );
 
         /**
-         * Legacy styles?
+         * Set extra container classes for major CSS changes
          */
-        $legacy_class = apply_filters( 'wp_tiles_use_legacy_styles', $this->options->get_option( 'legacy_styles' ) ) ? ' wp-tiles-legacy' : '';
+        $extra_classes = array();
+
+        //Legacy styles?
+        if ( apply_filters( 'wp_tiles_use_legacy_styles', $this->options->get_option( 'legacy_styles' ) ) )
+            $extra_classes[] = 'wp-tiles-legacy';
+
+        // Full width experiment
+        if ( $opts['full_width'] )
+            $extra_classes[] = 'wp-tiles-full-width';
+
+        $extra_classes = implode( ' ', apply_filters( 'wp_tiles_container_classes', $extra_classes ) );
+
+        if ( !empty( $extra_classes ) )
+            $extra_classes = ' ' . $extra_classes;
 
         /**
          * Render the template
@@ -256,14 +276,14 @@ class WPTiles extends Abstracts\WPSingleton
          * POLICY: Though the PHP should remain readable at all times, getting clean
          * HTML output is nice. To strive to get clean HTML output, WP Tiles starts 8
          * spaces (2 tabs) from the wall, and leaves an empty line between each line
-         * of HTML. Remeber that ?> strips a folliwing newline, so always leave an
+         * of HTML. Remeber that ?> strips a following newline, so always leave an
          * empty line after ?>.
          */
         ob_start();
         ?>
         <?php if ( count( $grid_names ) > 1 ) : ?>
 
-        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $legacy_class ?>">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $extra_classes ?>">
 
             <ul class="wp-tiles-template-selector">
 
@@ -277,7 +297,7 @@ class WPTiles extends Abstracts\WPSingleton
         </div>
         <?php endif; ?>
 
-        <div class="wp-tiles-container<?php echo $legacy_class ?>">
+        <div class="wp-tiles-container<?php echo $extra_classes ?>">
         <?php if ( 'carousel' == $opts['link'] ):?>
 
             <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>
@@ -560,12 +580,12 @@ class WPTiles extends Abstracts\WPSingleton
         $allowed_sizes = get_intermediate_image_sizes();
         $allowed_sizes[] = 'full';
 
-        if ( !in_array( 'size', $allowed_sizes ) || !$size )
+        if ( !in_array( $size, $allowed_sizes ) || !$size )
             $size = $this->options->get_option( 'image_size' );
 
         // Also the option *could* in theory be wrong
-        if ( !in_array( 'size', $allowed_sizes ) )
-            $size = $this->options->get_option_defaults( 'image_size' );
+        if ( !in_array( $size, $allowed_sizes ) )
+            $size = $this->options->get_defaults( 'image_size' );
 
         // @todo legacy filter: wp-tiles-image-size
         $size = apply_filters( 'wp_tiles_image_size', $size, $post );

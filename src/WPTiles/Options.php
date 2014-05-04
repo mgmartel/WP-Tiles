@@ -45,9 +45,12 @@ class Options
         'byline_align'  => 'bottom',
         'image_effect'  => 'none',
 
-        'pagination' => 'ajax',
+        'pagination'    => 'ajax',
 
         'legacy_styles' => false,
+
+        // Experimental options, only available in shortcode or PHP
+        'full_width'    => false
     );
 
     /**
@@ -55,7 +58,7 @@ class Options
      *
      * @return array
      */
-    public function get_option_defaults( $key = false ) {
+    public function get_defaults( $key = false ) {
         if ( $key )
             return isset( self::$defaults[$key] ) ? self::$defaults[$key] : null;
 
@@ -68,7 +71,7 @@ class Options
         if ( !$options ) {
 
             $options = array();
-            $defaults = $this->get_option_defaults();
+            $defaults = $this->get_defaults();
 
             foreach( $defaults as $option => $default ) {
                 $value = $this->get_option( $option );
@@ -115,7 +118,7 @@ class Options
         $option = vp_option( "wp_tiles." . $name );
 
         if ( $get_default && is_null( $option ) )
-            $option = $this->get_option_defaults( $name );
+            $option = $this->get_defaults( $name );
 
         return apply_filters( 'wp_tiles_option_' . $name, $option, $get_default );
     }

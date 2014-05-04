@@ -85,7 +85,7 @@ class Controls
             'name'        => 'breakpoint',
             'label'       => __( 'Small Screen Breakpoint', 'wp-tiles' ),
             'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'wp-tiles' ),
-            'default'     => wp_tiles()->options->get_option_defaults( 'breakpoint' ),
+            'default'     => wp_tiles()->options->get_defaults( 'breakpoint' ),
             'validation'  => 'numeric',
             'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                 'field'    => 'small_screen_enabled',
@@ -101,7 +101,7 @@ class Controls
             'min' => '0',
             'max' => '100',
             'step' => '1',
-            'default' => wp_tiles()->options->get_option_defaults( 'padding' ),
+            'default' => wp_tiles()->options->get_defaults( 'padding' ),
         );
 
         $controls[] = array(
@@ -127,7 +127,7 @@ class Controls
                     'label' => __( 'With Page Numbers', 'wp-tiles' )
                 )
             ),
-            'default' => wp_tiles()->options->get_option_defaults( 'pagination' ),
+            'default' => wp_tiles()->options->get_defaults( 'pagination' ),
         );
 
         $controls[] = array(
@@ -135,7 +135,7 @@ class Controls
             'name' => 'template_selector_color',
             'label' => __( 'Template Selector Color', 'wp-tiles' ),
             'description' => __( 'Select the color for the template selector.', 'wp-tiles' ),
-            'default' => wp_tiles()->options->get_option_defaults( 'template_selector_color' ),
+            'default' => wp_tiles()->options->get_defaults( 'template_selector_color' ),
             'format' => 'hex',
         );
 
@@ -156,7 +156,7 @@ class Controls
                 'name' => 'animate_init',
                 'label' => __('Animation on load', 'wp-tiles'),
                 'description' => __( 'Show animation when tiles are first loaded', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'animate_init' ),
+                'default' => wp_tiles()->options->get_defaults( 'animate_init' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
                     'function' => 'vp_dep_boolean',
@@ -167,7 +167,7 @@ class Controls
                 'name' => 'animate_resize',
                 'label' => __('Animation on window resize', 'wp-tiles'),
                 'description' => __( 'Animate the tiles when the window is resized?', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'animate_resize' ),
+                'default' => wp_tiles()->options->get_defaults( 'animate_resize' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
                     'function' => 'vp_dep_boolean',
@@ -178,7 +178,7 @@ class Controls
                 'name' => 'animate_template',
                 'label' => __('Animation on grid change', 'wp-tiles'),
                 'description' => __( 'Show animation when grid template changes', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'animate_template' ),
+                'default' => wp_tiles()->options->get_defaults( 'animate_template' ),
                 'dependency'  => ( Admin::is_shortcode() ) ? false : array(
                     'field'    => 'animated',
                     'function' => 'vp_dep_boolean',
@@ -188,7 +188,7 @@ class Controls
     }
 
     public static function colors() {
-        $default_colors = wp_tiles()->options->get_option_defaults( 'colors' );
+        $default_colors = wp_tiles()->options->get_defaults( 'colors' );
 
         // @todo Make color field repeatable
         $i = 1;
@@ -210,7 +210,7 @@ class Controls
             'name' => 'background_opacity',
             'label' => __('Background Opacity (0 to 1)', 'wp-tiles'),
             'description' => __('Set the background opacity for tiles without background image.', 'wp-tiles'),
-            'default' => wp_tiles()->options->get_option_defaults( 'background_opacity' ),
+            'default' => wp_tiles()->options->get_defaults( 'background_opacity' ),
             'min' => '0',
             'max' => '1',
             'step' => '0.01',
@@ -226,21 +226,21 @@ class Controls
                 'name' => 'text_only',
                 'label' => __('Text-only tiles', 'wp-tiles'),
                 'description' => __( "Don't add the background image to Tiles", 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'text_only' )
+                'default' => wp_tiles()->options->get_defaults( 'text_only' )
             ),
             array(
                 'type' => 'toggle',
                 'name' => 'images_only',
                 'label' => __('Hide tiles with no images', 'wp-tiles'),
                 'description' => __( "Hide tiles that don't have an image. Please note that setting this option is incompatible with pagination!", 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'images_only' )
+                'default' => wp_tiles()->options->get_defaults( 'images_only' )
             ),
             array(
                 'type' => 'radiobutton',
                 'name' => 'link',
                 'label' => __( 'Link To', 'wp-tiles' ),
                 'description' => __( "Where should people go when they click on a tile (if anywhere?)", 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'link' ),
+                'default' => wp_tiles()->options->get_defaults( 'link' ),
                 'items' => array(
                     array(
                         'value' => 'post',
@@ -276,7 +276,7 @@ class Controls
                 'mode'        => 'html',
                 'label'       => __( 'Byline Template (HTML)', 'wp-tiles' ),
                 'description' => __( '@todo: Explain tags.', 'wp-tiles' ),
-                'default'     => wp_tiles()->options->get_option_defaults( 'byline_template' ),
+                'default'     => wp_tiles()->options->get_defaults( 'byline_template' ),
             ),
 
             array(
@@ -294,7 +294,7 @@ class Controls
                 'mode'        => 'html',
                 'label'       => __( 'Text-Only Byline Template', 'wp-tiles' ),
                 'description' => __( '', 'wp-tiles' ),
-                'default'     => wp_tiles()->options->get_option_defaults( 'byline_template' ),
+                'default'     => wp_tiles()->options->get_defaults( 'byline_template' ),
                 'dependency' => array(
                     'field'    => 'byline_for_text_only',
                     'function' => 'vp_dep_boolean',
@@ -306,7 +306,7 @@ class Controls
                 'name' => 'hide_title',
                 'label' => __('Hide title on byline', 'wp-tiles'),
                 'description' => __( "By default, WP Tiles add the title of the post to the byline as a H4 tag. To add the title in the template above manually, select this option.", 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'hide_title' )
+                'default' => wp_tiles()->options->get_defaults( 'hide_title' )
             ),
 
         );
@@ -631,7 +631,7 @@ class Controls
                 'name' => 'image_size',
                 'label' => __( 'Use image size', 'wp-tiles' ),
                 'description' => __( 'Define the image size WP Tiles should use for tile background. Set to a larger size if Tile backgrounds come out too pixelated.', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'image_size' ),
+                'default' => wp_tiles()->options->get_defaults( 'image_size' ),
                 'items'       => array(
                     'data' => array(
                         array(
@@ -646,7 +646,7 @@ class Controls
                 'name'  => 'image_source',
                 'label' => __( 'Image Source', 'wp-tiles' ),
                 'description' => __( 'Where should WP Tiles look for the images for the background of tiles?', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'image_source' ),
+                'default' => wp_tiles()->options->get_defaults( 'image_source' ),
                 'items'   => array(
                     array(
                         'label' => __( 'Any', 'wp-tiles' ),
@@ -691,7 +691,7 @@ class Controls
                 'name' => 'byline_opacity',
                 'label' => __('Byline Opacity (0 to 1)', 'wp-tiles'),
                 'description' => __('Set the byline opacity.', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_opacity' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_opacity' ),
                 'min' => '0',
                 'max' => '1',
                 'step' => '0.01',
@@ -702,7 +702,7 @@ class Controls
                 'name' => 'byline_height',
                 'label' => __('Byline Height (%)', 'wp-tiles'),
                 'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_height' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_height' ),
                 'min' => '0',
                 'max' => '100',
                 'step' => '1',
@@ -712,7 +712,7 @@ class Controls
                 'name' => 'byline_color',
                 'label' => __( 'Byline Color', 'wp-tiles' ),
                 'description' => __('Color for the byline. Leave empty to use the tile colors', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_color' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_color' ),
                 'format' => 'hex',
             ),
             array(
@@ -720,7 +720,7 @@ class Controls
                 'name' => 'byline_effect',
                 'label' => __( 'Byline Effect', 'wp-tiles' ),
                 'description' => __( '', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_effect' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
                 'items' => array(
                     array(
                         'label' => __( 'None', 'wp-tiles' ),
@@ -753,7 +753,7 @@ class Controls
                 'name' => 'byline_align',
                 'label' => __( 'Byline Vertical Alignment', 'wp-tiles' ),
                 'description' => __( 'Align the byline to the top or bottom of the tile. Has no effect if slide effect is up or down, or if tile is 100% high.', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_align' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_align' ),
                 'items' => array(
                     array(
                         'label' => __( 'Top', 'wp-tiles' ),
@@ -770,7 +770,7 @@ class Controls
                 'name' => 'image_effect',
                 'label' => __( 'Image Effect', 'wp-tiles' ),
                 'description' => __( '', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_option_defaults( 'byline_effect' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
                 'items' => array(
                     array(
                         'label' => __( 'None', 'wp-tiles' ),
@@ -799,7 +799,7 @@ class Controls
                 'name'        => 'legacy_styles',
                 'label'       => __( 'Use legacy (pre-1.0) styles', 'wp-tiles' ),
                 'description' => __( 'Check this box to enable the old styles for WP Tiles. Not recommended, unless you need to ensure compatibility with your own custom styles from the pre-1.0 era.', 'wp-tiles' ),
-                'default'     => wp_tiles()->options->get_option_defaults( 'legacy_styles' )
+                'default'     => wp_tiles()->options->get_defaults( 'legacy_styles' )
             )
         );
     }

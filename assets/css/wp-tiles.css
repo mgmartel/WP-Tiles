@@ -154,13 +154,17 @@
 
 /* line 58, ../scss/wp-tiles.scss */
 .wp-tiles-grid {
-  top: 0;
-  bottom: 0;
   width: 100%;
   position: relative;
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+}
+/* line 63, ../scss/wp-tiles.scss */
+.wp-tiles-full-width .wp-tiles-grid {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
 /**************************************
@@ -272,7 +276,7 @@
 /* ==========================================================================
    Animations
    ========================================================================== */
-/* line 76, ../scss/wp-tiles.scss */
+/* line 79, ../scss/wp-tiles.scss */
 .wp-tiles-byline-animated .wp-tiles-byline, .wp-tiles-image-animated .wp-tiles-tile-bg {
   -moz-transition: all 300ms ease-out;
   -o-transition: all 300ms ease-out;
@@ -280,7 +284,7 @@
   transition: all 300ms ease-out;
 }
 
-/* line 79, ../scss/wp-tiles.scss */
+/* line 82, ../scss/wp-tiles.scss */
 .wp-tiles-byline-slide-up .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-down .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-left .wp-tiles-tile-with-image:hover .wp-tiles-byline, .wp-tiles-byline-slide-right .wp-tiles-tile-with-image:hover .wp-tiles-byline {
   -moz-transform: translateX(0%);
   -ms-transform: translateX(0%);

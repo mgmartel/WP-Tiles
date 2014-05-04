@@ -63,14 +63,15 @@ class Shortcode
 
             'pagination'       => $defaults['pagination'],
 
+            'full_width'       => $defaults['full_width']
 
         ), $original_atts );
 
         $grid_names = self::_get_options_array( $atts['grids'],  $atts['grid'] );
-        $grids = wp_tiles()->get_grids( $grid_names );
+        //$grids = wp_tiles()->get_grids( $grid_names );
 
         $options = array(
-            'grids' => $grids,
+            'grids' => $grid_names, // Will be converted into grid templates in render_tiles
 
             'small_screen_grid' => '',
             'breakpoint' => (int) $atts['breakpoint'],
@@ -104,6 +105,8 @@ class Shortcode
             'animate_template' => ( $atts['animated'] && $atts['animate_template'] ),
 
             'pagination'       => $atts['pagination'],
+
+            'full_width'       => $atts['full_width']
         );
 
         if ( $atts['breakpoint'] ) {
@@ -123,14 +126,6 @@ class Shortcode
             return $rgba;
         }
 
-
-        /*private static function _get_byline_color( $byline_color, $byline_opacity ) {
-            if ( 'random' === $byline_color )
-                return $byline_color;
-
-            return Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
-        }*/
-
         private static function _get_options_array( $plural, $singular = false ) {
             if ( $singular )
                 return array( $singular );
@@ -138,14 +133,6 @@ class Shortcode
             $options = ( !is_array( $plural ) ) ? explode( ',', $plural ) : $plural;
             return ( is_string( $options ) ) ? array_map( 'trim', $options ) : $options;
         }
-
-        /*private static function _boolean( $value ) {
-            if ( in_array( $value, array( true, 'true', 'yes', '1', 1 ), true ) )
-                return true;
-
-            return false;
-        }*/
-
 
     public static function get_posts( $original_atts ) {
 
