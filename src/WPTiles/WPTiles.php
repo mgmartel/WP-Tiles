@@ -43,12 +43,19 @@ class WPTiles extends Abstracts\WPSingleton
      */
     public $ajax;
 
+    /**
+     * @var Gallery
+     * @since 1.0
+     */
+    public $gallery;
+
     public function init() {
         load_plugin_textdomain( 'wp-tiles', false, WPTILES_DIR . '/languages/' );
 
         $this->post_query = new PostQuery();
         $this->options    = new Options();
-        $this->ajax       = new Ajax();
+        $this->ajax       = Ajax::get_instance();
+        $this->gallery    = Gallery::get_instance();
 
         Admin\Admin::setup(); // Static class
 
@@ -57,8 +64,6 @@ class WPTiles extends Abstracts\WPSingleton
         // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
 
-        // The Gallery
-        add_filter( 'post_gallery', array( '\WPTiles\Gallery', 'maybe_do_gallery' ), 1001, 2 );
     }
 
     public function register_post_type() {
