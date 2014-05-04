@@ -21,12 +21,21 @@ class Controls
                 'status' => 'normal',
             );
 
+            $default_grid_option = wp_tiles()->options->get_option( 'default_grid' );
+            $grid = get_posts( array(
+                'post__in' => array( $default_grid_option ),
+                'post_type' => \WPTiles\WPTiles::GRID_POST_TYPE,
+                'post_status' => 'publish'
+            ) );
+
+            $default_grid = !empty( $grid ) ? reset( $grid )->post_title : '{{last}}';
+
             $controls[] = array(
                 'type'        => 'sorter',
                 'name'        => 'grids',
                 'label'       => __( 'Grids', 'wp-tiles' ),
                 'description' => __( 'Select which Grids to use', 'wp-tiles' ),
-                'default'     => get_the_title( wp_tiles()->options->get_option( 'default_grid' ) ),
+                'default'     => $default_grid,
                 'items'       => array(
                     'data' => array(
                         array(
