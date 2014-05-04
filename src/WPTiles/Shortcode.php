@@ -303,8 +303,6 @@ class Shortcode
             $args['post_parent'] = intval( $post_parent );
         }
 
-        //return get_posts( apply_filters( 'wp_tiles_shortcode_post_query', $args, $original_atts ) );
         return apply_filters( 'wp_tiles_shortcode_post_query', $args, $original_atts );
-        //return new WP_Query( apply_filters( 'wp_tiles_shortcode_args', $args, $original_atts ) );
     }
 }
