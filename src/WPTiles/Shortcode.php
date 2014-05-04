@@ -18,7 +18,7 @@ class Shortcode
         $posts   = self::get_posts( $atts );
         $options = self::get_options( $atts );
 
-        return wp_tiles()->render_tiles( $posts, $options );
+        return wp_tiles()->get_tiles( $posts, $options );
     }
 
     public static function get_options( $original_atts ) {
