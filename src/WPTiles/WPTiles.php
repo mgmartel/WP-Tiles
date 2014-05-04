@@ -60,6 +60,7 @@ class WPTiles extends Abstracts\WPSingleton
         Admin\Admin::setup(); // Everything in this class is static
 
         $this->add_action( 'init', 'register_post_type' );
+        $this->add_action( 'init', 'register_scripts' );
 
         // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
@@ -522,46 +523,57 @@ class WPTiles extends Abstracts\WPSingleton
 
     }
 
-    public function enqueue_scripts() {
-        //if ( !is_admin() ) {
-            wp_enqueue_script( "jquery" );
+    public function register_scripts() {
 
-            $script_path = WP_TILES_ASSETS_URL . '/js/';
-            $ext = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '.js' : '.min.js';
+        $script_path = WP_TILES_ASSETS_URL . '/js/';
+        $in_footer   = apply_filters( 'wp_tiles_js_in_footer', true );
 
-            wp_enqueue_script( 'tilesjs',  $script_path . 'tiles' . $ext, array( "jquery" ), "2013-05-18", true );
-            wp_enqueue_script( 'jquery-dotdotdot',  $script_path . 'jquery.dotdotdot' . $ext, array( "jquery" ),  "1.6.14", true );
+        if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+            wp_register_script( 'tilesjs',  $script_path . 'tiles.js', array( "jquery" ), "2013-05-18", $in_footer );
+            wp_register_script( 'jquery-dotdotdot',  $script_path . 'jquery.dotdotdot.js', array( "jquery" ),  "1.6.14", $in_footer );
 
-            wp_enqueue_script( 'wp-tiles', $script_path . 'wp-tiles' . $ext, array( "tilesjs", "jquery-dotdotdot" ), WP_TILES_VERSION, true );
+            wp_register_script( 'wp-tiles', $script_path . 'wp-tiles.js', array( "jquery", "tilesjs", "jquery-dotdotdot" ), WP_TILES_VERSION, $in_footer );
 
-            $this->add_action( 'wp_footer', 'add_data', 1 );
-        //}
+        } else {
+            wp_register_script( 'wp-tiles', $script_path . 'wp-tiles.min.js', array( "jquery" ), WP_TILES_VERSION, $in_footer );
+
+        }
+
     }
 
-    /**
-     * Look for the stylesheet in a million places
-     */
-    public function enqueue_styles() {
-        $stylesheet_name = "wp-tiles.css";
+    public function enqueue_scripts() {
+        wp_enqueue_script( 'wp-tiles' );
+        $this->add_action( 'wp_footer', 'add_data', 1 );
+    }
 
-        if ( file_exists( STYLESHEETPATH . '/' . $stylesheet_name ) ) {
-            $located = get_stylesheet_directory_uri() . '/' . $stylesheet_name;
-        } else if ( file_exists( STYLESHEETPATH . '/inc/css/' . $stylesheet_name ) ) {
-            $located = get_stylesheet_directory_uri() . '/inc/css/' . $stylesheet_name;
-        } else if ( file_exists( STYLESHEETPATH . '/inc/' . $stylesheet_name ) ) {
-            $located = get_stylesheet_directory_uri() . '/inc/' . $stylesheet_name;
-        } else if ( file_exists( STYLESHEETPATH . '/css/' . $stylesheet_name ) ) {
-            $located = get_stylesheet_directory_uri() . '/css/' . $stylesheet_name;
-        } else if ( file_exists( TEMPLATEPATH . '/' . $stylesheet_name ) ) {
-            $located = get_template_directory_uri() . '/' . $stylesheet_name;
-        } else if ( file_exists( TEMPLATEPATH . '/inc/css/' . $stylesheet_name ) ) {
-            $located = get_template_directory_uri() . '/inc/css/' . $stylesheet_name;
-        } else if ( file_exists( TEMPLATEPATH . '/inc/' . $stylesheet_name ) ) {
-            $located = get_template_directory_uri() . '/inc/' . $stylesheet_name;
-        } else if ( file_exists( TEMPLATEPATH . '/css/' . $stylesheet_name ) ) {
-            $located = get_template_directory_uri() . '/css/' . $stylesheet_name;
-        } else {
-            $located = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
+    public function enqueue_styles() {
+        /**
+         * Get the WP Tiles stylesheet
+         *
+         * @since 1.0
+         * @param string Stylesheet location or false to disable separate css
+         */
+        $located = apply_filters( 'wp_tiles_stylesheet', null );
+
+        if ( false === $located )
+            return;
+
+        if ( is_null( $located )  ) {
+
+            $stylesheet_name = "wp-tiles.css";
+
+            if ( file_exists( STYLESHEETPATH . '/' . $stylesheet_name ) ) {
+                $located = get_stylesheet_directory_uri() . '/' . $stylesheet_name;
+            } else if ( file_exists( STYLESHEETPATH . '/css/' . $stylesheet_name ) ) {
+                $located = get_stylesheet_directory_uri() . '/css/' . $stylesheet_name;
+            } else if ( file_exists( TEMPLATEPATH . '/' . $stylesheet_name ) ) {
+                $located = get_template_directory_uri() . '/' . $stylesheet_name;
+            } else if ( file_exists( TEMPLATEPATH . '/css/' . $stylesheet_name ) ) {
+                $located = get_template_directory_uri() . '/css/' . $stylesheet_name;
+            } else {
+                $located = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
+            }
+
         }
         wp_enqueue_style( 'wp-tiles', $located, false, WP_TILES_VERSION );
     }
