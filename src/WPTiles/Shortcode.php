@@ -148,7 +148,7 @@ class Shortcode
             'orderby'              => 'date',
             'post_parent'          => false,
             'post_status'          => 'publish',
-            'post_type'            => 'post',
+            'post_type'            => 'current', // 'post',
             'posts_per_page'       => '10',
             'paged'                => 1,
             'tag'                  => '',
