@@ -87,6 +87,8 @@ class DataSources
             $result[] = array( 'value' => $size, 'label' => "$name ({$atts['width']}x{$atts['height']})" );
         }
 
+        $result[] = array( 'value' => 'full', 'label' => __( 'Orgininal Size (Full)', 'wp-tiles' ) );
+
         return $result;
     }
 }
