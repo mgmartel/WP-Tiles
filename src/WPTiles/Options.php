@@ -74,7 +74,7 @@ class Options
             $defaults = $this->get_defaults();
 
             foreach( $defaults as $option => $default ) {
-                $value = $this->get_option( $option );
+                $value = $this->get_option( $option, false );
                 $options[$option] = is_null( $value ) ? $default : $value;
             }
 
