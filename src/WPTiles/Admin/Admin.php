@@ -214,7 +214,7 @@ class Admin
     }
 
     public static function preview_tile() {
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) ) {
 
             list( $byline_height, $byline_color, $byline_opacity, $byline_align, $byline_effect, $image_effect ) = $_POST['params'];
 
@@ -224,7 +224,6 @@ class Admin
             if ( 'random' == $byline_color || empty( $byline_color ) ) {
                 $byline_color = wp_tiles()->options->get_option( 'color_1' );
             }
-            $byline_color = Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
 
             $byline_opacity = (float) $byline_opacity;
             $byline_align = 'top' == $byline_align ? 'top' : 'bottom';
@@ -238,6 +237,8 @@ class Admin
             $image_effect   = wp_tiles()->options->get_option( 'image_effect' );
 
         }
+
+        $byline_color = Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
 
         /**
          * ANIMATION CLASSES

@@ -680,6 +680,7 @@ class Controls
                      'function' => 'wp_tiles_preview_tile',
                      'field' => 'byline_height,byline_color,byline_opacity,byline_align,byline_effect,image_effect',
                  ),
+                'default' => wp_tiles_preview_tile()
              )
         );
     }

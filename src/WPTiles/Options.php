@@ -26,7 +26,7 @@ class Options
         'byline_template' => "%categories%",
         'byline_template_textonly' => false,
         'byline_opacity'  => '0.8',
-        'byline_color'    => '#fff',
+        'byline_color'    => '#000000',
         'byline_height'   => 40,
 
         'text_only'    => false,
