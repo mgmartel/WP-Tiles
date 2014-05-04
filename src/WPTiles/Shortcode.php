@@ -155,7 +155,10 @@ class Shortcode
             'tax_operator'         => 'IN',
             'tax_term'             => false,
             'taxonomy'             => false,
-            'exclude_current_post' => true
+
+            // Contextual args, only supported in the loop:
+            'exclude_current_post' => true,
+            'related_in_taxonomy'  => false
         ), $original_atts );
 
         $author = sanitize_text_field( $atts['author'] );
@@ -175,12 +178,6 @@ class Shortcode
         $tax_term = sanitize_text_field( $atts['tax_term'] );
         $taxonomy = sanitize_key( $atts['taxonomy'] );
 
-        // Set paged to 'paged' to use pagination parameters
-        if ( 'paged' === $atts['paged'] )
-            $paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
-        else
-            $paged = intval( $atts['paged'] );
-
         // Set up initial query for post
         $args = array(
             'category_name'       => $category,
@@ -188,9 +185,14 @@ class Shortcode
             'orderby'             => $orderby,
             'post_type'           => explode( ',', $post_type ),
             'posts_per_page'      => $posts_per_page,
-            'paged'               => $paged,
             'tag'                 => $tag,
         );
+
+        // Set paged to 'paged' to use pagination parameters
+        if ( 'paged' === $atts['paged'] )
+            $args['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+        else
+            $args['paged'] = intval( $atts['paged'] );
 
         // Ignore Sticky Posts
         if( $ignore_sticky_posts )
@@ -209,12 +211,6 @@ class Shortcode
             if ( !isset( $original_atts['orderby'] ) || !$original_atts['orderby'] ) {
                 $args['orderby'] = 'post__in';
             }
-        }
-
-        // Only exclude if post IDs are not explicitly given
-        // (post__not_in and post__in at the same time is not supported by WP_Query)
-        if ( $atts['exclude_current_post'] && !$id ) {
-            $args['post__not_in'] = array( get_the_ID() );
         }
 
         // Post Author
@@ -293,6 +289,46 @@ class Shortcode
 
             $args = array_merge( $args, $tax_args );
         }
+
+        // Contextual queries
+        if ( in_the_loop() ) {
+
+            // Only exclude if post IDs are not explicitly given
+            // (post__not_in and post__in at the same time is not supported by WP_Query)
+            if ( $atts['exclude_current_post'] && !$id ) {
+                $args['post__not_in'] = array( get_the_ID() );
+            }
+
+            if ( !empty( $atts['related_in_taxonomy'] ) ) {
+
+                $taxonomy = sanitize_key( $atts['related_in_taxonomy'] );
+                $terms = get_the_terms( get_post(), $taxonomy );
+
+                if ( is_array( $terms ) ) {
+
+                    // Maybe set up the tax query still
+                    if ( !isset( $args['tax_query'] ) ) {
+                        $args['tax_query'] = array();
+
+                    // Or the tax relation
+                    } elseif ( !isset( $args['tax_query']['tax_relation'] ) ) {
+                        $args['tax_query']['tax_relation'] = 'AND';
+
+                    }
+
+                    $args['tax_query'][] = array(
+                        'taxonomy' => $taxonomy,
+                        'field' => 'term_id',
+                        'terms' => wp_list_pluck( $terms, 'term_id' ),
+                        'operator' => 'IN'
+                    );
+
+                }
+
+            }
+
+        }
+
 
         // If post parent attribute, set up parent
         if( $post_parent ) {

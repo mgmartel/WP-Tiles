@@ -24,7 +24,8 @@ class PostQuery
         'tax_operator'         => 'IN',
         'tax_term'             => false,
         'taxonomy'             => false,
-        'exclude_current_post' => true
+        'exclude_current_post' => true,
+        'related_in_taxonomy'  => null
     );
 
     /**

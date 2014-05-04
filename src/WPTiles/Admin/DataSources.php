@@ -61,8 +61,8 @@ class DataSources
 
     public static function get_taxonomies() {
         $result = array();
-        foreach( get_taxonomies( array( 'public' => true ), 'objects' ) as $post_type => $post_type_obj ) {
-            $result[] = array( 'value' => $post_type, 'label' => $post_type_obj->labels->name );
+        foreach( get_taxonomies( array( 'public' => true ), 'objects' ) as $taxonomy => $tax_object ) {
+            $result[] = array( 'value' => $taxonomy, 'label' => $tax_object->labels->name );
         }
 
         return $result;

@@ -746,6 +746,20 @@ class Controls
                 'default'     => self::get_query_option( 'exclude_current_post' ),
                 'label' => __('Exclude Current Post from Tiles?', 'wp-tiles')
             ),
+            array(
+                'type' => 'select',
+                'name' => 'related_in_taxonomy',
+                'default' => self::get_query_option( 'related_in_taxonomy' ),
+                'label' => __("Only display posts with the same terms in this taxonomy", 'wp-tiles'),
+                'items' =>  array(
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_taxonomies' ),
+                        ),
+                    ),
+                )
+            ),
         );
     }
 
