@@ -9,18 +9,27 @@
             // Append the custom template
             this.$el.append( media.template( 'wp-tiles-gallery-settings' ) );
 
-            var $settings = this.$el.find('.wp-tiles-settings');
+            var $settings = this.$el.find('.wp-tiles-settings'),
+                //$to_hide = $('.columns', this.$el).parent('.setting'),
+                enable_tiles = function(){
+                  //$to_hide.hide();
+                  $settings.show();
+                },
+                disable_tiles = function() {
+                  //$to_hide.show();
+                  $settings.hide();
+                },
+                toggle_tiles = function(display) {
+                  if ( display )
+                    enable_tiles();
+                  else
+                    disable_tiles();
+                };
 
-            if ( this.model.attributes.tiles )
-              $settings.show();
-            else
-              $settings.hide();
+            toggle_tiles(this.model.attributes.tiles);
 
             this.$el.find('.wp-tiles-enabled').on('change',function(){
-              if ( this.checked )
-                $settings.show();
-              else
-                $settings.hide();
+              toggle_tiles(this.checked);
             });
 
             // Save the setting
