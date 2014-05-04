@@ -101,4 +101,49 @@ class GridTemplates
     public function render_template_preview() {
         echo "<div class='wp-tiles-container'><div id='grid-template-demo' class='wp-tiles-grid'></div></div>";
     }
+
+
+    public static function install_default_templates( $force = false ) {
+        if ( !$force ) {
+            $current = get_posts( array( 'post_type' => WPTiles::GRID_POST_TYPE, 'posts_per_page' => 1 ) );
+
+            if ( !empty( $current ) )
+                return;
+        }
+
+        $default_templates = array (
+            "News"       =>   "AABB.\n"
+                            . "AA.CC\n"
+                            . ".DDEE\n"
+                            . "FF.EE",
+
+            "Simple" =>      "AA...\n"
+                            . "AABB.\n"
+                            . "..BB.",
+
+            "Fancy" =>        "JJ..EE\n"
+                            . ".AA.EE\n"
+                            . "BAAFF.\n"
+                            . "B.DD.H\n"
+                            . "CCDDGH\n"
+                            . "CC..G.",
+
+            "Featured"   =>   ".AAA.\n"
+                            . ".AAA.\n"
+                            . ".AAA.",
+
+            "Plain"      =>   ".....",
+
+        );
+
+        foreach( $default_templates as $title => $template ) {
+            wp_insert_post( array(
+                'post_type'    => WPTiles::GRID_POST_TYPE,
+                'post_title'   => $title,
+                'post_content' => $template,
+                'post_status'  => 'publish'
+            ) );
+        }
+
+    }
 }
