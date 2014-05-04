@@ -171,12 +171,15 @@ class Shortcode
         $orderby = sanitize_key( $atts['orderby'] );
         $post_parent = $atts['post_parent']; // Validated later, after check for 'current'
         $post_status = $atts['post_status']; // Validated later as one of a few values
-        $post_type = sanitize_text_field( $atts['post_type'] );
+        $post_type =  sanitize_text_field( $atts['post_type'] );
         $posts_per_page = intval( $atts['posts_per_page'] );
         $tag = sanitize_text_field( $atts['tag'] );
         $tax_operator = $atts['tax_operator']; // Validated later as one of a few values
         $tax_term = sanitize_text_field( $atts['tax_term'] );
         $taxonomy = sanitize_key( $atts['taxonomy'] );
+
+        if ( 'current' === $post_type )
+            $post_type = in_the_loop() ? get_post_type() : 'any';
 
         // Set up initial query for post
         $args = array(

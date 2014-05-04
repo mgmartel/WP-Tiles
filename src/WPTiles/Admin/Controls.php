@@ -469,6 +469,14 @@ class Controls
                 'label' => __( 'Post Type', 'wp-tiles' ),
                 'default' => self::get_query_option( 'post_type' ),
                 'items' => array(
+                    array(
+                        'label' => __( 'Any', 'wp-tiles'),
+                        'value' => 'any'
+                    ),
+                    array(
+                        'label' => __( 'Same as current post', 'wp-tiles'),
+                        'value' => 'current'
+                    ),
                     'data' => array(
                         array(
                             'source' => 'function',
