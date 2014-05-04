@@ -13,12 +13,20 @@ class Controls
         $controls   = array();
 
         if ( Admin::is_shortcode() ) {
+            $controls[] =  array(
+                'type' => 'notebox',
+                'name' => 'notice_shortcode_grid',
+                'label' => __('Custom Layout Options', 'wp-tiles'),
+                'description' => __('Use the options below to change the layout settings of this instance. Once inserted as a shortcode, you can still edit them manually.', 'wp-tiles' ),
+                'status' => 'normal',
+            );
+
             $controls[] = array(
                 'type'        => 'sorter',
                 'name'        => 'grids',
                 'label'       => __( 'Grids', 'wp-tiles' ),
                 'description' => __( 'Select which Grids to use', 'wp-tiles' ),
-                'default'     => '{{last}}',
+                'default'     => get_the_title( wp_tiles()->options->get_option( 'default_grid' ) ),
                 'items'       => array(
                     'data' => array(
                         array(
@@ -29,6 +37,17 @@ class Controls
                 ),
             );
         } else {
+            $controls[] = array(
+                'type' => 'notebox',
+                'name' => 'notice_girds',
+                'label' => __('Creating Grids', 'wp-tiles'),
+                'description' => sprintf(
+                    __('In this panel you can set the default options for your tile grids. Go to the <a href="%s">Grids</a> page to create and edit grids.', 'wp-tiles' ),
+                    admin_url( 'edit.php?post_type=' . \WPTiles\WPTiles::GRID_POST_TYPE )
+                ),
+                'status' => 'info',
+            );
+
             $controls[] = array(
                 'type'        => 'select',
                 'name'        => 'default_grid',
@@ -142,7 +161,7 @@ class Controls
         return $controls;
     }
 
-    public static function animation() {
+    public static function animations() {
         return array(
             array(
                 'type' => 'toggle',
@@ -189,6 +208,17 @@ class Controls
 
     public static function colors() {
         $default_colors = wp_tiles()->options->get_defaults( 'colors' );
+        $controls = array();
+
+        $controls[] = array(
+            'type' => 'notebox',
+            'name' => 'notice_girds',
+            'label' => __('Tile background colors', 'wp-tiles'),
+            'description' => __( 'Tiles without images automatically get a background '
+                . 'color from the set of colors below. Select the default colors '
+                . 'to use for tiles without images.', 'wp-tiles' ),
+            'status' => 'normal',
+        );
 
         // @todo Make color field repeatable
         $i = 1;
@@ -196,8 +226,7 @@ class Controls
             $controls[] = array(
                 'type' => 'color',
                 'name' => 'color_' . $i,
-                'label' => sprintf( __('Color %d', 'wp-tiles'), $i ),
-                'description' => __('Another color', 'wp-tiles'),
+                'label' => sprintf( __( 'Color %d', 'wp-tiles' ), $i ),
                 'default' => $color,
                 'format' => 'hex',
             );
@@ -208,11 +237,13 @@ class Controls
         $controls[] = array(
             'type' => 'slider',
             'name' => 'background_opacity',
-            'label' => __('Background Opacity (0 to 1)', 'wp-tiles'),
-            'description' => __('Set the background opacity for tiles without background image.', 'wp-tiles'),
+            'label' => __( 'Background Opacity (0 to 1)', 'wp-tiles' ),
+            'description' => __( 'If you have your own background behind your posts, '
+                . 'you can set the background opacity for tiles without background '
+                . 'image here. Set to 0 to make tile completely transparent.', 'wp-tiles'),
             'default' => wp_tiles()->options->get_defaults( 'background_opacity' ),
-            'min' => '0',
-            'max' => '1',
+            'min'  => '0',
+            'max'  => '1',
             'step' => '0.01',
         );
 
@@ -688,39 +719,38 @@ class Controls
     public static function tile_designer() {
         return array(
             array(
+                'type' => 'color',
+                'name' => 'byline_color',
+                'label' => __( 'Byline Background Color', 'wp-tiles' ),
+                'description' => __('To use the same set of colors as the tiles without text, leave this option empty.', 'wp-tiles'),
+                'default' => wp_tiles()->options->get_defaults( 'byline_color' ),
+                'format' => 'hex',
+            ),
+            array(
                 'type' => 'slider',
                 'name' => 'byline_opacity',
                 'label' => __('Byline Opacity (0 to 1)', 'wp-tiles'),
-                'description' => __('Set the byline opacity.', 'wp-tiles'),
+                'description' => __( 'Set the opacity for the background of the byline on top of the image. 0 is completely transparent, 1 fully opaque.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_opacity' ),
-                'min' => '0',
-                'max' => '1',
+                'min'  => '0',
+                'max'  => '1',
                 'step' => '0.01',
-                //'validation' => 'numeric'
             ),
             array(
                 'type' => 'slider',
                 'name' => 'byline_height',
                 'label' => __('Byline Height (%)', 'wp-tiles'),
-                'description' => __('Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles'),
+                'description' => __( 'Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_height' ),
                 'min' => '0',
                 'max' => '100',
                 'step' => '1',
             ),
             array(
-                'type' => 'color',
-                'name' => 'byline_color',
-                'label' => __( 'Byline Color', 'wp-tiles' ),
-                'description' => __('Color for the byline. Leave empty to use the tile colors', 'wp-tiles'),
-                'default' => wp_tiles()->options->get_defaults( 'byline_color' ),
-                'format' => 'hex',
-            ),
-            array(
                 'type' => 'radiobutton',
                 'name' => 'byline_effect',
                 'label' => __( 'Byline Effect', 'wp-tiles' ),
-                'description' => __( '', 'wp-tiles' ),
+                'description' => __( 'Select the effect you want to use for the byline to appear when you hover over the tile.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
                 'items' => array(
                     array(
@@ -753,7 +783,7 @@ class Controls
                 'type' => 'radiobutton',
                 'name' => 'byline_align',
                 'label' => __( 'Byline Vertical Alignment', 'wp-tiles' ),
-                'description' => __( 'Align the byline to the top or bottom of the tile. Has no effect if slide effect is up or down, or if tile is 100% high.', 'wp-tiles' ),
+                'description' => __( 'Align the byline to the top or bottom of the tile. Nb. This option has no effect if slide effect is up or down, or if tile is 100% high.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_align' ),
                 'items' => array(
                     array(
@@ -770,7 +800,7 @@ class Controls
                 'type' => 'radiobutton',
                 'name' => 'image_effect',
                 'label' => __( 'Image Effect', 'wp-tiles' ),
-                'description' => __( '', 'wp-tiles' ),
+                'description' => __( 'Select the effect you want to use for the image when you hover over the tile.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
                 'items' => array(
                     array(

@@ -37,8 +37,8 @@ class Admin
         $tmpl_sg = array(
             'name'           => 'wp_tiles_shortcode',
             'template'       => self::get_shortcode_options(),
-            'modal_title'    => __( 'WP Tiles Shortcodes', 'vp_textdomain' ),
-            'button_title'   => __( 'WP Tiles', 'vp_textdomain' ),
+            'modal_title'    => __( 'WP Tiles Shortcodes', 'wp-tiles' ),
+            'button_title'   => __( 'WP Tiles', 'wp-tiles' ),
             'types'          => array( '*' ),
             'main_image'     => VP_IMAGE_URL . '/vp_shortcode_icon.png',
             'sprite_image'   => VP_IMAGE_URL . '/vp_shortcode_icon_sprite.png',
@@ -118,66 +118,73 @@ class Admin
                 'icon'     => 'font-awesome:fa-pencil-square-o',
                 'controls' => array(
                     array(
+                        'type' => 'notebox',
+                        'name' => 'notice_tile_designer',
+                        'label' => __('Using the Tile Designer', 'wp-tiles'),
+                        'description' => __( 'In this panel you can change the look-and-feel of tiles with an image background. '
+                            . 'You can directly preview your changes in the tile preview below (remember to hover your mouse over '
+                            . 'the preview if you want to see the effects).', 'wp-tiles' ),
+                        'status' => 'normal',
+                    ),
+                    array(
                         'type'       => 'section',
-                        'title'       => __( 'Tile Preview', 'vp_textdomain' ),
+                        'title'       => __( 'Tile Preview', 'wp-tiles' ),
                         'name'        => 'tile_preview_section',
-                        'description' => __( "Hover over the image to preview the hover effects you set below.", 'vp_textdomain' ),
+                        //'description' => __( "Hover over the image to preview the hover effects you set below.", 'wp-tiles' ),
                         'fields'      => Controls::tile_preview()
                     ),
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Options', 'vp_textdomain' ),
+                        'title'       => __( 'Options', 'wp-tiles' ),
                         'name'        => 'tile_designer_section',
-                        'description' => __( "", 'vp_textdomain' ),
+                        'description' => __( "", 'wp-tiles' ),
                         'fields'      => Controls::tile_designer()
                     ),
                 )
             ),
             array(
                 'title' => __( 'Grids, Animations and Colors', 'wp-tiles' ),
-                'name'  => __( 'Defaults', 'wp-tiles' ),
+                'name'  => __( 'Grids', 'wp-tiles' ),
                 'icon'     => 'font-awesome:fa-tint',
                 'controls' => array(
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Grid Templates', 'vp_textdomain' ),
+                        'title'       => __( 'Grid Templates', 'wp-tiles' ),
                         'name'        => 'grid_templates_section',
-                        'description' => __( 'Select your default layout options', 'vp_textdomain' ),
+                        'description' => __( 'Select your default layout options', 'wp-tiles' ),
                         'fields'      => Controls::grids()
                     ),
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Colors', 'vp_textdomain' ),
+                        'title'       => __( 'Colors', 'wp-tiles' ),
                         'name'        => 'colors_section',
-                        'description' => __( 'Select the default colors to use for tiles without images.', 'vp_textdomain' ),
                         'fields'      => Controls::colors()
                     ),
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Animations', 'vp_textdomain' ),
+                        'title'       => __( 'Tile Animations', 'wp-tiles' ),
                         'name'        => 'animations_section',
-                        //'description' => __( '', 'vp_textdomain' ),
-                        'fields'      => Controls::animation()
+                        'fields'      => Controls::animations()
                     ),
                 )
             ),
             array(
-                'title' => __( 'Byline Editor', 'wp-tiles' ),
+                'title' => __( 'Byline Content', 'wp-tiles' ),
                 'name'  => __( 'Byline', 'wp-tiles' ),
                 'icon'     => 'font-awesome:fa-list-alt',
                 'controls' => array(
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Tile Byline', 'vp_textdomain' ),
+                        'title'       => __( 'Tile Byline', 'wp-tiles' ),
                         'name'        => 'byline_layout_section',
-                        'description' => __( "The byline is all text that is displayed on the tile.", 'vp_textdomain' ),
+                        'description' => __( "The byline is all text that is displayed on the tile.", 'wp-tiles' ),
                         'fields'      => Controls::byline_layout()
                     ),
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Byline Template', 'vp_textdomain' ),
+                        'title'       => __( 'Byline Template', 'wp-tiles' ),
                         'name'        => 'byline_template_section',
-                        'description' => __( "", 'vp_textdomain' ),
+                        'description' => __( "", 'wp-tiles' ),
                         'fields'      => Controls::byline_template()
                     ),
                 )
@@ -189,9 +196,9 @@ class Admin
                 'controls' => array(
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Tile Images', 'vp_textdomain' ),
+                        'title'       => __( 'Tile Images', 'wp-tiles' ),
                         'name'        => 'images_section',
-                        'description' => __( "If an image is found, it will be displayed as the tile background.", 'vp_textdomain' ),
+                        'description' => __( "If an image is found, it will be displayed as the tile background.", 'wp-tiles' ),
                         'fields'      => Controls::images()
                     ),
                 )
@@ -203,9 +210,9 @@ class Admin
                 'controls' => array(
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Query', 'vp_textdomain' ),
+                        'title'       => __( 'Query', 'wp-tiles' ),
                         'name'        => 'query_section',
-                        'description' => __( '', 'vp_textdomain' ),
+                        'description' => __( '', 'wp-tiles' ),
                         'fields'      => Controls::query()
                     ),
                 )

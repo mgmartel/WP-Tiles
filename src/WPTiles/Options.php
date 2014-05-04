@@ -34,8 +34,8 @@ class Options
         'images_only'  => false,
         'hide_title'   => false,
 
-        'animate_init'     => true,
-        'animate_resize'   => true,
+        'animate_init'     => false,
+        'animate_resize'   => false,
         'animate_template' => true,
 
         'image_size'       => 'medium',
