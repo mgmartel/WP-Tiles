@@ -760,7 +760,8 @@ class WPTiles extends Abstracts\WPSingleton
                     $query = array(
                         'post_type' => self::GRID_POST_TYPE,
                         'posts_per_page' => -1,
-                        'post__in' => $query
+                        'post__in' => $query,
+                        'orderby' => 'post__in'
                     );
                     $posts = get_posts( $query );
 
@@ -772,7 +773,8 @@ class WPTiles extends Abstracts\WPSingleton
             // If no posts are found, return all of them
             return get_posts( array(
                 'post_type' => self::GRID_POST_TYPE,
-                'posts_per_page' => -1
+                'posts_per_page' => -1,
+                'orderby' => 'menu_order'
             ) );
         }
 
@@ -793,6 +795,7 @@ class WPTiles extends Abstracts\WPSingleton
                 FROM $wpdb->posts
                 WHERE post_title IN ($post_title_in_string)
                 AND post_type = %s
+                ORDER BY FIELD( {$wpdb->posts}.post_title, $post_title_in_string )
             ", self::GRID_POST_TYPE );
 
             $ids = $wpdb->get_col( $sql );
@@ -834,5 +837,10 @@ class WPTiles extends Abstracts\WPSingleton
         $grid = array_map( 'trim', $grid );
 
         return $grid;
+    }
+
+
+    public static function on_plugin_activation() {
+        Admin\GridTemplates::install_default_templates();
     }
 }
