@@ -41,12 +41,46 @@ class Gallery extends Abstracts\WPSingleton
         if ( ! isset( get_current_screen()->id ) || get_current_screen()->base != 'post' )
             return;
 
+        $grids = wp_tiles()->get_grids();
+        $default = get_the_title( wp_tiles()->options->get_option( 'default_grid' ) );
+
         ?>
         <script type="text/html" id="tmpl-wp-tiles-gallery-settings">
             <label class="setting">
-                <span><?php _e( 'Tiled Gallery', 'wp-tiles' ) ?></span>
-                <input type="checkbox" data-setting="tiles" value="yes" />
+                <span><?php _e( 'Tiled Gallery', 'wp-tiles' ); ?></span>
+                <input type="checkbox" class="wp-tiles-enabled" data-setting="tiles" value="yes" />
             </label>
+
+            <div class="wp-tiles-settings">
+
+                <label class="setting">
+                    <span><?php _e( 'Grid', 'wp-tiles' ); ?></span>
+                    <select name="wp-tiles-grids" data-setting="grid">
+                        <?php foreach ( array_keys( $grids ) as $grid ) : ?>
+                            <option value="<?php echo esc_attr( $grid ); ?>" <?php selected( $grid, $default ); ?>>
+                                <?php echo esc_html( $grid ); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+
+                <label class="setting">
+                    <span><?php _e('Image Size', 'wp-tiles' ) ?></span>
+                    <select class="type" name="image_size" data-setting="image_size">
+                        <?php
+
+                        $sizes = Admin\DataSources::get_image_sizes();
+
+                        foreach ( $sizes as $size ) { ?>
+                            <option value="<?php echo esc_attr( $size['value'] ); ?>" <?php selected( $size['value'], 'large' ); ?>>
+                                <?php echo esc_html( $size['label'] ); ?>
+                            </option>
+                        <?php } ?>
+                    </select>
+                </label>
+
+
+            </div>
         </script>
         <?php
     }
