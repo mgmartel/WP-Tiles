@@ -47,34 +47,82 @@ class Admin
     }
 
         private static function get_shortcode_options() {
-            return array(
-                'Custom Tiles' => array(
-                    'elements' => array(
-                        'custom_layout'    => array(
-                            'title' => __( 'Custom Layout', 'wp-tiles' ),
-                            'code'  => '[wp-tiles]',
-                            'attributes' => Controls::grids()
-                        ),
-                        'custom_query'    => array(
-                            'title' => __( 'Custom Query', 'wp-tiles' ),
-                            'code'  => '[wp-tiles]',
-                            'attributes' => Controls::query()
-                        ),
+
+            $controls = array();
+            $controls[__( 'Basic Tiles', 'wp-tiles' )] = array(
+                'elements' => array(
+                    'wp_tiles'    => array(
+                        'title' => __( '[wp-tiles] Default options', 'wp-tiles' ),
+                        'code'  => '[wp-tiles]',
                     ),
-                ),
-                'Basic Tiles' => array(
-                    'elements' => array(
-                        'wp_tiles'    => array(
-                            'title' => __( 'WP Tiles - Default options', 'wp-tiles' ),
-                            'code'  => '[wp-tiles]',
-                        ),
-                        'wp_tiles_last_20_posts'    => array(
-                            'title' => __( 'WP Tiles - Last 20 Blog Posts', 'wp-tiles' ),
-                            'code'  => "[wp-tiles post_type=post posts_per_page=20 orderby=date order=DESC]",
-                        ),
+                    'wp_tiles_last_20_posts'    => array(
+                        'title' => __( 'Last 20 Blog Posts', 'wp-tiles' ),
+                        'code'  => "[wp-tiles post_type='post' posts_per_page=20 orderby='date' order='DESC']",
+                    ),
+                    'wp_tiles_related_tag'    => array(
+                        'title' => __( 'Posts with same tags', 'wp-tiles' ),
+                        'code'  => "[wp-tiles related_in_taxonomy='tag']",
+                    ),
+                    'wp_tiles_related_category'    => array(
+                        'title' => __( 'Posts with same categories', 'wp-tiles' ),
+                        'code'  => "[wp-tiles related_in_taxonomy='category']",
                     ),
                 ),
             );
+
+            $grids = wp_tiles()->get_grids();
+            if ( !empty( $grids ) ) {
+
+                $grid_controls = array();
+                foreach( array_keys( $grids ) as $grid ) {
+
+                    $grid_controls['wp_tiles_grid_' . sanitize_key( $grid )] = array(
+                        'title' => $grid,
+                        'code' => "[wp-tiles grid='" .$grid . "']"
+                    );
+
+                }
+
+                $controls[__( 'Grids', 'wp-tiles' )] = array(
+                    'elements' => $grid_controls
+                );
+            }
+
+            $controls[__( 'Custom Tiles', 'wp-tiles' )] = array(
+                'elements' => array(
+                    'custom_layout'    => array(
+                        'title' => __( 'Custom Layout', 'wp-tiles' ),
+                        'code'  => '[wp-tiles]',
+                        'attributes' => Controls::grids()
+                    ),
+                    'custom_query'    => array(
+                        'title' => __( 'Custom Query', 'wp-tiles' ),
+                        'code'  => '[wp-tiles]',
+                        'attributes' => Controls::query()
+                    ),
+                ),
+            );
+            $controls[__( 'Galleries', 'wp-tiles')] = array(
+                'elements' => array(
+                    'gallery' => array(
+                        'title' => __( 'Tiled Gallery - display images attached to current post', 'wp-tiles'),
+                        'code'  => '[gallery tiles=yes]',
+                        'attributes' => Controls::gallery_current()
+                    ),
+                    'gallery_other' => array(
+                        'title' => __( 'Tiled Gallery other post - display images attached to another post', 'wp-tiles' ),
+                        'code'  => '[gallery tiles=yes]',
+                        'attributes' => Controls::gallery_select_post()
+                    ),
+                    'gallery_grid' => array(
+                        'title' => __( 'Tiled Gallery with specific grid', 'wp-tiles' ),
+                        'code'  => '[gallery tiles=yes]',
+                        'attributes' => Controls::gallery_grid()
+                    )
+                )
+            );
+
+            return $controls;
         }
 
     private static function setup_options() {
