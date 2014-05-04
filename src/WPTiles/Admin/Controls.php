@@ -785,6 +785,13 @@ class Controls
                     ),
                 )
             ),
+            array(
+                'type'        => 'toggle',
+                'name'        => 'legacy_styles',
+                'label'       => __( 'Use legacy (pre-1.0) styles', 'wp-tiles' ),
+                'description' => __( 'Check this box to enable the old styles for WP Tiles. Not recommended, unless you need to ensure compatibility with your own custom styles from the pre-1.0 era.', 'wp-tiles' ),
+                'default'     => wp_tiles()->options->get_option_defaults( 'legacy_styles' )
+            )
         );
     }
 }

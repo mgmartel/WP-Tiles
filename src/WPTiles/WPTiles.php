@@ -246,6 +246,11 @@ class WPTiles extends Abstracts\WPSingleton
             ) );
 
         /**
+         * Legacy styles?
+         */
+        $legacy_class = apply_filters( 'wp_tiles_use_legacy_styles', $this->options->get_option( 'legacy_styles' ) ) ? ' wp-tiles-legacy' : '';
+
+        /**
          * Render the template
          *
          * POLICY: Though the PHP should remain readable at all times, getting clean
@@ -258,7 +263,7 @@ class WPTiles extends Abstracts\WPSingleton
         ?>
         <?php if ( count( $grid_names ) > 1 ) : ?>
 
-        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $legacy_class ?>">
 
             <ul class="wp-tiles-template-selector">
 
@@ -272,7 +277,7 @@ class WPTiles extends Abstracts\WPSingleton
         </div>
         <?php endif; ?>
 
-        <div class="wp-tiles-container">
+        <div class="wp-tiles-container<?php echo $legacy_class ?>">
         <?php if ( 'carousel' == $opts['link'] ):?>
 
             <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>

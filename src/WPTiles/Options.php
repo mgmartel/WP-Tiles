@@ -46,7 +46,7 @@ class Options
 
         'pagination' => 'ajax',
 
-        'legacy_styles' => true,
+        'legacy_styles' => false,
     );
 
     /**
