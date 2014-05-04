@@ -16,10 +16,7 @@ class Ajax extends Abstracts\WPSingleton
     public function get_posts() {
         $query = $_POST['query'];
 
-        // @todo This is not super reliable
-        //$test = new \WP_Query;
-
-        $hash = wp_tiles()->get_query_hash( $query );
+        $hash = $this->get_query_hash( $query );
         check_ajax_referer( $hash );
 
         // $query is signed by nonce
@@ -56,7 +53,7 @@ class Ajax extends Abstracts\WPSingleton
         if ( $next_page <= $max_page ) {
             $ret['has_more'] = true;
             $query['paged'] = $next_page;
-            $ret['_ajax_nonce'] = wp_tiles()->get_query_nonce( $query );
+            $ret['_ajax_nonce'] = $this->get_query_nonce( $query );
 
         } else {
             $ret['has_more'] = false;
@@ -81,4 +78,21 @@ class Ajax extends Abstracts\WPSingleton
 
         exit();
     }
+
+    public function get_query_nonce( $query ) {
+        $hash = $this->get_query_hash( $query );
+        return wp_create_nonce( $hash );
+    }
+
+        private function get_query_hash( $query ) {
+            array_walk( $query, function( &$var ){
+                if ( 'false' === $var )
+                    $var = false;
+                elseif( 'true' === $var )
+                    $var = true;
+            } );
+
+            $q = build_query( wp_parse_args( $query ) );
+            return md5( $q );
+        }
 }
