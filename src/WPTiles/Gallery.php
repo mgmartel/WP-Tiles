@@ -7,18 +7,58 @@ if ( !defined ( 'ABSPATH' ) )
 class Gallery extends Abstracts\WPSingleton
 {
     public function init() {
-        //add_action( 'wp_enqueue_media', array( &$this, 'wp_enqueue_media' ) );
-        //add_action( 'print_media_templates', array( &$this, 'print_media_templates' ) );
+        $this->add_filter( 'post_gallery', 'maybe_do_gallery', 1001, 2 );
+
+        /**
+         * Add WP Tiles Gallery to media modal
+         */
+        $this->add_action( 'init', 'register_scripts' );
+        $this->add_action( 'wp_enqueue_media',      'enqueue_media_script' );
+        $this->add_action( 'print_media_templates', 'print_media_templates' );
+
     }
 
-    public static function maybe_do_gallery( $ret, $atts ) {
-        if ( isset( $atts['tiles'] ) )
-            return self::do_gallery( $atts );
+    public function register_scripts() {
+        // Add WP Tiles gallery to media modal
+        wp_register_script(
+            'wp-tiles-gallery-settings',
+            WP_TILES_ASSETS_URL . 'js/wp-tiles-gallery-settings.js',
+            array( 'media-views' )
+        );
+    }
+
+    public function enqueue_media_script() {
+
+        if ( ! isset( get_current_screen()->id ) || get_current_screen()->base != 'post' )
+            return;
+
+        wp_enqueue_script( 'wp-tiles-gallery-settings' );
+
+    }
+
+    public function print_media_templates() {
+
+        if ( ! isset( get_current_screen()->id ) || get_current_screen()->base != 'post' )
+            return;
+
+        ?>
+        <script type="text/html" id="tmpl-wp-tiles-gallery-settings">
+            <label class="setting">
+                <span><?php _e( 'Tiled Gallery', 'wp-tiles' ) ?></span>
+                <input type="checkbox" data-setting="wp_tiles" value="yes" />
+            </label>
+        </script>
+        <?php
+    }
+
+    public function maybe_do_gallery( $ret, $atts ) {
+        if ( isset( $atts['wp_tiles'] ) )
+            return $this->do_gallery( $atts );
 
         return $ret;
     }
 
-    public static function do_gallery( $atts ) {
+    public function do_gallery( $atts ) {
         $post = get_post();
 
         $gallery_atts = shortcode_atts(array(
