@@ -141,4 +141,30 @@
   $('.meta-box-sortables').on('sortupdate',draw);
   $(window).resize(debounce(draw, 200));
 
+  // (Maybe) Walkthrough
+  if ( typeof wpTilesPointers !== 'undefined' ) {
+    wp_tiles_next_pointer();
+  }
+
+  function wp_tiles_next_pointer() {
+      var pointer = wpTilesPointers.pop();
+
+      if ( !pointer )
+        return;
+
+      $.extend( pointer.options, {
+          close: function() {
+            wp_tiles_next_pointer();
+              $.post( ajaxurl, {
+                  pointer: pointer.pointer_id,
+                  action: 'dismiss-wp-pointer'
+              });
+          }
+      });
+
+      $(pointer.target).pointer( pointer.options ).pointer('open');
+  }
+
+
+
 })(jQuery);
