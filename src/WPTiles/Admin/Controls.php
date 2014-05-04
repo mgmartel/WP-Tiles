@@ -130,6 +130,15 @@ class Controls
             'default' => wp_tiles()->options->get_option_defaults( 'pagination' ),
         );
 
+        $controls[] = array(
+            'type' => 'color',
+            'name' => 'template_selector_color',
+            'label' => __( 'Template Selector Color', 'wp-tiles' ),
+            'description' => __( 'Select the color for the template selector.', 'wp-tiles' ),
+            'default' => wp_tiles()->options->get_option_defaults( 'template_selector_color' ),
+            'format' => 'hex',
+        );
+
         return $controls;
     }
 
