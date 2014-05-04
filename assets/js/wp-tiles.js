@@ -335,16 +335,18 @@
   });
 
   // Init using vars from wp_localize_script
-  $(function(){
-    $.each (wptilesdata, function() {
-      var tiledata = this,
-          $el = $('#' + tiledata.id);
+  if ( typeof wptilesdata === 'object' ) {
+    $(function(){
+      $.each (wptilesdata, function() {
+        var tiledata = this,
+            $el = $('#' + tiledata.id);
 
-      $el.wptiles(tiledata);
+        $el.wptiles(tiledata);
+      });
+
+      // @todo Is this really needed?
+      $(window).trigger('resize');
     });
-
-    // @todo Is this really needed?
-    $(window).trigger('resize');
-  });
+  }
 
 })(jQuery);
