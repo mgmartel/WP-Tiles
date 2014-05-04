@@ -44,7 +44,9 @@ class Options
         'byline_align'  => 'bottom',
         'image_effect'  => 'none',
 
-        'pagination' => 'ajax'
+        'pagination' => 'ajax',
+
+        'legacy_styles' => true,
     );
 
     /**
@@ -108,16 +110,13 @@ class Options
 
     }
 
-    /**
-     * @todo Make default true by default
-     */
-    public function get_option( $name, $get_default = false ) {
+    public function get_option( $name, $get_default = true ) {
         $option = vp_option( "wp_tiles." . $name );
 
         if ( $get_default && is_null( $option ) )
             $option = $this->get_option_defaults( $name );
 
-        return $option;
+        return apply_filters( 'wp_tiles_option_' . $name, $option, $get_default );
     }
 
 
