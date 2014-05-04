@@ -57,8 +57,7 @@ class WPTiles extends Abstracts\WPSingleton
         $this->ajax       = Ajax::get_instance();
         $this->gallery    = Gallery::get_instance();
 
-        if ( is_admin() )
-            Admin\Admin::setup(); // Everything in this class is static
+        Admin\Admin::setup(); // Everything in this class is static
 
         $this->add_action( 'init', 'register_post_type' );
 
@@ -433,19 +432,60 @@ class WPTiles extends Abstracts\WPSingleton
             '%date%'    => $this->get_the_date( $post ),
             '%link%'    => get_permalink( $post ),
         );
+
         // Only do the more expensive tags if needed
-        if ( strpos( $template, '%categories%' ) !== false ) {
-            $tags['%categories%'] = implode( ', ', wp_get_post_categories( $post->ID, array( "fields" => "names" ) ) );
-        }
-        if ( strpos( $template, '%tags%' ) !== false ) {
-            $tags['%tags%'] = implode( ', ', wp_get_post_tags( $post->ID, array( "fields" => "names" ) ) );
-        }
         if ( strpos( $template, '%featured_image%' ) !== false ) {
             $tags['%featured_image%'] = get_the_post_thumbnail( $post->ID );
         }
+
         if ( strpos( $template, '%author%' ) !== false ) {
             $authordata = get_userdata( $post->post_author );
             $tags['%author%'] = apply_filters('the_author', is_object($authordata) ? $authordata->display_name : null);
+        }
+
+        // Default Taxonomies
+        if ( strpos( $template, '%categories%' ) !== false ) {
+            $categories = get_the_category( $post->ID );
+            $tags['%categories%'] = implode( ', ', wp_list_pluck( $categories, 'name' ) );
+        }
+
+        if ( strpos( $template, '%category_links%' ) !== false ) {
+            $tags['%category_links%'] = get_the_category_list( ', ', '', $post->ID );
+        }
+
+        if ( strpos( $template, '%tags%' ) !== false ) {
+            $tags['%tags%'] = implode( ', ', wp_get_post_tags( $post->ID, array( "fields" => "names" ) ) );
+        }
+
+        if ( strpos( $template, '%tag_links%' ) !== false ) {
+            $tags['%tag_links%'] = get_the_tag_list( '', ', ', '', $post->ID );
+        }
+
+        // Meta keys: %meta:META_KEY%
+        // Tax list: %tax:TAXONOMY%
+        // Tax list with links: %tax_links:TAXONOMY%
+        $matches = array();
+        if ( preg_match_all( '/%([a-z_]+):([A-Za-z0-9_-]+)%/', $template, $matches, PREG_SET_ORDER ) ) {
+
+            foreach( $matches as $match ) {
+                if ( 'meta' === $match[1]) {
+                    $key = sanitize_key( $match[2] );
+                    $tags["%meta:$match[2]%"] = implode( ', ', get_post_meta( $post->ID, $key ) );
+
+                } elseif ( 'tax' === $match[1] || 'tax_links' === $match[1] ) {
+                    $taxonomy = apply_filters( 'pre_term_name', $match[2] );
+                    if ( 'tax' === $match[1] ) {
+                        $terms = get_the_terms( $post->ID, $taxonomy );
+                        $tags["%tax:$match[2]%"] = is_array( $terms ) ? implode( ', ', wp_list_pluck( $terms, 'name' ) ) : '';
+
+                    } else {
+                        $tags["%tax_links:$match[2]%"] = get_the_term_list( $post->ID, $taxonomy, '', ', ', '' );
+
+                    }
+
+                }
+
+            }
         }
 
         $tags = apply_filters( 'wp_tiles_byline_tags', $tags, $post, $template );
