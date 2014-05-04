@@ -8,15 +8,21 @@ if ( !defined ( 'ABSPATH' ) )
  * Parses the shortcode for WP Tiles
  *
  * Parses the Tiles arguments in a tile array and sets a post query that is
- * largely based on Display Posts Shortcode by ....
+ * largely based on Display Posts Shortcode by Bill Erickson
  * @since 1.0
  */
 class Shortcode
 {
     public static function do_shortcode( $atts ) {
 
-        $posts   = self::get_posts( $atts );
-        $options = self::get_options( $atts );
+        // Legacy
+        if ( Legacy::maybe_process_shortcode( $atts ) ) {
+            $posts   = Legacy::get_posts( $atts );
+            $options = Legacy::get_options( $atts );
+        } else {
+            $posts   = self::get_posts( $atts );
+            $options = self::get_options( $atts );
+        }
 
         return wp_tiles()->get_tiles( $posts, $options );
     }

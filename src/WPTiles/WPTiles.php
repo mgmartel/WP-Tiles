@@ -50,7 +50,7 @@ class WPTiles extends Abstracts\WPSingleton
     public $gallery;
 
     public function init() {
-        load_plugin_textdomain( 'wp-tiles', false, WPTILES_DIR . '/languages/' );
+        load_plugin_textdomain( 'wp-tiles', false, WP_TILES_DIR . '/languages/' );
 
         $this->post_query = new PostQuery();
         $this->options    = new Options();
@@ -103,47 +103,14 @@ class WPTiles extends Abstracts\WPSingleton
     }
 
     /**
-     * @deprecated since version 1.0 use display tiles instead
-     * @todo Make compat
+     * @deprecated since version 1.0 Use display tiles instead
      */
     public function show_tiles( $atts_array ) {
-        // if $opts is empty, $posts is probably the old $atts_array
-        $this->display_tiles($posts);
-        //echo $this->shortcode( $atts_arg );
-        //echo $this->get_titles( $posts, $opts );
+        $query = Legacy::get_atts_array_query( $atts_array );
+        $opts  = Legacy::convert_option_array( $atts_array );
+
+        $this->display_tiles( $query, $opts );
     }
-
-    /**
-     * Allow $atts to be just the post_query as a string or object
-     *
-     * @param string|array $atts
-     * @return array Properly formatted $atts
-     * @since 0.4.2
-     * @deprecated
-     * @todo Make compatible with 1.0
-     */
-    public function parse_post_query_string( $atts ) {
-        if ( is_array( $atts ) ) {
-            if ( !isset( $atts['posts_query'] ) )
-                $atts['posts_query'] = array( );
-        } else {
-
-            $posts_query = array( );
-            wp_parse_str( $atts, $posts_query );
-            $atts        = array( 'posts_query' => $posts_query );
-        }
-
-        /**
-         * Backward compatibility
-         */
-        if ( isset( $atts['posts_query']['numberposts'] ) ) {
-            $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
-            _doing_it_wrong( 'the_wp_tiles', "WP Tiles doesn't use numberposts anymore. Use posts_per_page instead.", '0.4.2' );
-        }
-
-        return $atts;
-    }
-
 
     public function display_tiles( $posts, $opts = array() ) {
         echo $this->get_tiles( $posts, $opts );
