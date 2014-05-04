@@ -128,10 +128,17 @@ class Gallery extends Abstracts\WPSingleton
         }
 
         // Set Gallery specific defaults
+        $link = wp_tiles()->options->get_option( 'link' );
+
+        if ( class_exists( 'No_Jetpack_Carousel' ) || class_exists( 'Jetpack_Carousel' )
+            && !apply_filters( 'jp_carousel_maybe_disable', false ) ) {
+            $link = 'carousel';
+        }
+
         $atts = wp_parse_args( $atts, array(
             'byline_template' => '<h4 class="wp-tiles-byline-title">%excerpt%</h4>',
             'hide_title' => 'true',
-            'link' => wp_tiles()->options->get_option( 'link' ) == 'thickbox' ? 'thickbox' : 'file'
+            'link' => $link
         ) );
 
         if ( 'attachment' == $atts['link'] )
