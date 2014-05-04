@@ -45,14 +45,14 @@ class Gallery extends Abstracts\WPSingleton
         <script type="text/html" id="tmpl-wp-tiles-gallery-settings">
             <label class="setting">
                 <span><?php _e( 'Tiled Gallery', 'wp-tiles' ) ?></span>
-                <input type="checkbox" data-setting="wp_tiles" value="yes" />
+                <input type="checkbox" data-setting="tiles" value="yes" />
             </label>
         </script>
         <?php
     }
 
     public function maybe_do_gallery( $ret, $atts ) {
-        if ( isset( $atts['wp_tiles'] ) )
+        if ( isset( $atts['tiles'] ) )
             return $this->do_gallery( $atts );
 
         return $ret;

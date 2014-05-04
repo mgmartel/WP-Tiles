@@ -10,8 +10,8 @@
             this.$el.append( media.template( 'wp-tiles-gallery-settings' ) );
 
             // Save the setting
-            media.gallery.defaults.wp_tiles = false;
-            this.update.apply( this, ['wp_tiles'] );
+            media.gallery.defaults['tiles'] = false;
+            this.update.apply( this, ['tiles'] );
             return this;
         }
     } );
