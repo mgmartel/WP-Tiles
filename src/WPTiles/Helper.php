@@ -68,4 +68,23 @@ class Helper
         return "rgba( {$rgba['r']},{$rgba['g']},{$rgba['b']},{$rgba['a']} )";
     }
 
+
+    /**
+    * Allow $atts to be just the post_query as a string or object
+    *
+    * @param string|array $qs
+    * @return array Properly formatted $atts
+    * @since 0.4.2
+    */
+    public static function parse_query( $qs ) {
+        if ( is_string( $qs ) ) {
+            $query = array();
+            wp_parse_str( $qs, $query );
+        } else {
+            $query = $qs;
+        }
+
+        return $query;
+    }
+
 }
