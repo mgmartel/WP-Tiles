@@ -258,13 +258,13 @@ class WPTiles extends Abstracts\WPSingleton
         ?>
         <?php if ( count( $grid_names ) > 1 ) : ?>
 
-        <div id="<?php echo $wp_tiles_id; ?>-templates" class="tile-templates">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates">
 
-            <ul class="template-selector">
+            <ul class="wp-tiles-template-selector">
 
             <?php foreach ( $grid_names as $slug => $name ) : ?>
 
-                <li class="template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
+                <li class="wp-tiles-template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
             <?php endforeach; ?>
 
             </ul>

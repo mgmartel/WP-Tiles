@@ -2,7 +2,7 @@
     Tile Base Styles
  **************************************/
 .wp-tiles-tile {
-    &.wp-tiles-legacy & {
+    .wp-tiles-legacy & {
         @include box-shadow ( 6px 6px 10px );
         &:hover {
             outline: 1px solid #ccc;
@@ -13,6 +13,10 @@
     background-color: #EEE;
     padding: 0;
     overflow: hidden;
+
+    a {
+        text-decoration: none;
+    }
 }
 
 .wp-tiles-byline {

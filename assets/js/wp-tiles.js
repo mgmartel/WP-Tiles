@@ -292,7 +292,7 @@
        * Template Buttons
        */
       if ( $templates.get(0) ) {
-        var $templateButtons = $('.template', $templates);
+        var $templateButtons = $('.wp-tiles-template', $templates);
 
         $templateButtons.on('click', function(e) {
           e.preventDefault();
