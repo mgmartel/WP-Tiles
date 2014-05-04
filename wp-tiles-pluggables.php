@@ -13,23 +13,16 @@ if ( !function_exists( 'the_wp_tiles' ) ) :
      * @param string|array $atts
      * @since 0.3.3
      */
-    function the_wp_tiles( $atts = array( ) ) {
+    function the_wp_tiles( $query = array(), $opts = null ) {
+        if ( is_null( $opts ) ) {
+            $opts  = WPTiles\Legacy::get_options( $query );
+            $query = WPTiles\Legacy::get_posts( $query );
 
-        // Allow $atts to be just the post_query as a string or object
-        $atts = wp_tiles()->parse_post_query_string( $atts );
-
-        // Backward compatibility - this is going out! Use the_category_wp_tiles instead
-        if ( ( is_category() || is_single() ) && !isset( $atts['posts_query']['category'] ) ) {
-            $categories = get_the_category();
-            $cats       = array( );
-            foreach ( $categories as $category ) {
-                $cats[] = $category->term_id;
-            }
-
-            $atts['posts_query']['category'] = implode( ', ', $cats );
+        } else {
+            $query = WPTiles\Helper::parse_query( $query );
         }
 
-        wp_tiles()->show_tiles( $atts );
+        wp_tiles()->display_tiles( $query, $opts );
     }
 
 endif;
@@ -41,25 +34,27 @@ if ( !function_exists( 'the_category_wp_tiles' ) ) :
      *
      * @since 0.4.2
      */
-    function the_category_wp_tiles( $atts ) {
-        $atts = wp_tiles()->parse_post_query_string( $atts );
+    function the_category_wp_tiles( $query = array(), $opts = null ) {
+        if ( is_null( $opts ) ) {
+            $opts  = WPTiles\Legacy::get_options( $query );
+            $query = WPTiles\Legacy::get_posts( $query );
 
-        // If is single and no cat is given, use posts from current categories
-        if ( !is_category() && !is_single() )
-            _doing_it_wrong( 'the_wp_tiles', "Only use the_category_wp_tiles on category pages or single posts/pages", '0.4.2' );
-        else if ( isset( $atts['posts_query']['category'] ) && !empty( $atts['posts_query']['category'] ) ) {
-            _doing_it_wrong( 'the_wp_tiles', "Don't pass a category into the_category_wp_tiles(), use the_wp_tiles() instead.", '0.4.2' );
         } else {
-            $categories = get_the_category();
-            $cats       = array( );
-            foreach ( $categories as $category ) {
-                $cats[] = $category->term_id;
-            }
+            $query = WPTiles\Helper::parse_query( $query );
 
-            $atts['posts_query']['category'] = implode( ', ', $cats );
         }
 
-        wp_tiles()->show_tiles( $atts );
+        // If is single and no cat is given, use posts from current categories
+        if ( !is_category() && !is_single() ) {
+            _doing_it_wrong( 'the_wp_tiles', "Only use the_category_wp_tiles on category pages or single posts/pages", '0.4.2' );
+        } else {
+            $categories = get_the_category();
+            $cats       = wp_list_pluck( $categories, 'term_id' );
+
+            $query['cat'] = implode( ', ', $cats );
+        }
+
+        wp_tiles()->display_tiles( $query, $opts );
     }
 
 endif;
@@ -73,12 +68,11 @@ if ( !function_exists( 'the_loop_wp_tiles' ) ) :
      *
      * @since 0.4.2
      */
-    function the_loop_wp_tiles() {
+    function the_loop_wp_tiles( $opts = array() ) {
 
         global $wp_query;
-        $posts = $wp_query->get_posts();
+        wp_tiles()->display_tiles( $wp_query, $opts );
 
-        wp_tiles()->show_tiles( $posts );
     }
 
 
@@ -185,7 +179,7 @@ if ( ! function_exists( 'wp_tiles_prev_next_nav' ) ) :
                 <?php if ( $previous ) : ?><a href='<?php echo previous_posts(false); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='prev prev-next'><?php _e( '&larr; Previous', 'wp-tiles' ) ?></a><?php endif; ?>
 
                 <?php if ( $next ) : ?><a href='<?php echo next_posts( $max_page, false ); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='next prev-next'><?php _e( 'Next &rarr;', 'wp-tiles' ) ?><?php endif; ?>
-                    
+
             </div><!-- .pagination -->
         </nav><!-- .navigation -->
         <?php
