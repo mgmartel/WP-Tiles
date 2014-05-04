@@ -214,7 +214,7 @@ class Admin
     }
 
     public static function preview_tile() {
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) ) {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) && count( $_POST['params'] ) === 6 ) {
 
             list( $byline_height, $byline_color, $byline_opacity, $byline_align, $byline_effect, $image_effect ) = $_POST['params'];
 
