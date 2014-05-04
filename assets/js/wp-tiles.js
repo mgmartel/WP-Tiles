@@ -112,7 +112,6 @@
               $image_bylines.css('height',opts.byline_height + '%');
             }
 
-            //if ( 'ajax' == opts.pagination &&  )
           };
 
       // Init the grids
