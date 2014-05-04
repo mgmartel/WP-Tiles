@@ -306,8 +306,27 @@ class Controls
                 'name'        => 'byline_template',
                 'mode'        => 'html',
                 'label'       => __( 'Byline Template (HTML)', 'wp-tiles' ),
-                'description' => __( '@todo: Explain tags.', 'wp-tiles' ),
+                'description' => __( "Edit the content that appears on tile bylines "
+                    . "here. This field takes HTML with special merge tags to display "
+                    . "information from the posts. See the info box below for all "
+                    . "available tags.", 'wp-tiles' ),
                 'default'     => wp_tiles()->options->get_defaults( 'byline_template' ),
+            ),
+
+            array(
+                'type' => 'notebox',
+                'name' => 'notice_byline_template',
+                'label' => __('Byline Tags', 'wp-tiles'),
+                'description' => __( "You can use the following tags anywhere in your byline templates:\n"
+                    . "* `%title%`, `%content%`, `%date%`, `%excerpt%`, `%link%`, "
+                    . "`%author%`, `%featured_image%` - All taken from the post\n"
+                    . "* `%categories%` - Comma separated list of categories\n"
+                    . "* `%category_links%` - Like above, but with links\n"
+                    . "* `%tags`, `%tag_links%` - Same as categories\n"
+                    . "* `%meta:META_KEY%` - Replace META_KEY by the meta key you want to display\n"
+                    . "* `%tax:TAXONOMY%`, `%tax_links:TAXONOMY%`"
+                    . "" ),
+                'status' => 'info',
             ),
 
             array(
@@ -325,7 +344,7 @@ class Controls
                 'mode'        => 'html',
                 'label'       => __( 'Text-Only Byline Template', 'wp-tiles' ),
                 'description' => __( '', 'wp-tiles' ),
-                'default'     => wp_tiles()->options->get_defaults( 'byline_template' ),
+                'default'     => wp_tiles()->options->get_defaults( 'byline_template_textonly' ),
                 'dependency' => array(
                     'field'    => 'byline_for_text_only',
                     'function' => 'vp_dep_boolean',
