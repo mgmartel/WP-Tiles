@@ -114,7 +114,7 @@ class Admin
         return array(
             array(
                 'title' => __( 'Tile Designer', 'wp-tiles' ),
-                'name'  => __( 'Tiles', 'wp-tiles' ),
+                'name'  => 'Tiles',
                 'icon'     => 'font-awesome:fa-pencil-square-o',
                 'controls' => array(
                     array(
@@ -130,7 +130,6 @@ class Admin
                         'type'       => 'section',
                         'title'       => __( 'Tile Preview', 'wp-tiles' ),
                         'name'        => 'tile_preview_section',
-                        //'description' => __( "Hover over the image to preview the hover effects you set below.", 'wp-tiles' ),
                         'fields'      => Controls::tile_preview()
                     ),
                     array(
@@ -143,9 +142,9 @@ class Admin
                 )
             ),
             array(
-                'title' => __( 'Grids, Animations and Colors', 'wp-tiles' ),
-                'name'  => __( 'Grids', 'wp-tiles' ),
-                'icon'     => 'font-awesome:fa-tint',
+                'title' => __( 'Grids', 'wp-tiles' ),
+                'name'  => 'Grids',
+                'icon'     => 'font-awesome:fa-th-large',
                 'controls' => array(
                     array(
                         'type'       => 'section',
@@ -153,7 +152,14 @@ class Admin
                         'name'        => 'grid_templates_section',
                         'description' => __( 'Select your default layout options', 'wp-tiles' ),
                         'fields'      => Controls::grids()
-                    ),
+                    )
+                )
+            ),
+            array(
+                'title' => __( 'Animations and Colors', 'wp-tiles' ),
+                'name'  => 'Animations-Colors',
+                'icon'     => 'font-awesome:fa-tint',
+                'controls' => array(
                     array(
                         'type'       => 'section',
                         'title'       => __( 'Colors', 'wp-tiles' ),
@@ -167,17 +173,18 @@ class Admin
                         'fields'      => Controls::animations()
                     ),
                 )
+
             ),
             array(
                 'title' => __( 'Byline Content', 'wp-tiles' ),
-                'name'  => __( 'Byline', 'wp-tiles' ),
+                'name'  => 'Byline',
                 'icon'     => 'font-awesome:fa-list-alt',
                 'controls' => array(
                     array(
                         'type'       => 'section',
-                        'title'       => __( 'Tile Byline', 'wp-tiles' ),
+                        'title'       => __( 'Byline Links and Content', 'wp-tiles' ),
                         'name'        => 'byline_layout_section',
-                        'description' => __( "The byline is all text that is displayed on the tile.", 'wp-tiles' ),
+                        'description' => __( "The byline the text block that is displayed on the tile.", 'wp-tiles' ),
                         'fields'      => Controls::byline_layout()
                     ),
                     array(
@@ -191,7 +198,7 @@ class Admin
             ),
             array(
                 'title' => __( 'Image Settings', 'wp-tiles' ),
-                'name'  => __( 'Images', 'wp-tiles' ),
+                'name'  => 'Images',
                 'icon'     => 'font-awesome:fa-camera-retro',
                 'controls' => array(
                     array(
@@ -203,7 +210,7 @@ class Admin
                     ),
                 )
             ),
-            array(
+            /*array(
                 'title' => 'Default Query',
                 'name'  => 'Query',
                 'icon'     => 'font-awesome:fa-cog',
@@ -216,7 +223,7 @@ class Admin
                         'fields'      => Controls::query()
                     ),
                 )
-            )
+            )*/
         );
     }
 

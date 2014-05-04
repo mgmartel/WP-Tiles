@@ -39,7 +39,7 @@ class Controls
         } else {
             $controls[] = array(
                 'type' => 'notebox',
-                'name' => 'notice_girds',
+                'name' => 'notice_grids',
                 'label' => __('Creating Grids', 'wp-tiles'),
                 'description' => sprintf(
                     __('In this panel you can set the default options for your tile grids. Go to the <a href="%s">Grids</a> page to create and edit grids.', 'wp-tiles' ),
@@ -255,22 +255,22 @@ class Controls
             array(
                 'type' => 'toggle',
                 'name' => 'text_only',
-                'label' => __('Text-only tiles', 'wp-tiles'),
-                'description' => __( "Don't add the background image to Tiles", 'wp-tiles' ),
+                'label' => __('Text-Only Tiles', 'wp-tiles'),
+                'description' => __( "Don't add the background image to Tiles, even if it is available.", 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'text_only' )
             ),
             array(
                 'type' => 'toggle',
                 'name' => 'images_only',
-                'label' => __('Hide tiles with no images', 'wp-tiles'),
-                'description' => __( "Hide tiles that don't have an image. Please note that setting this option is incompatible with pagination!", 'wp-tiles' ),
+                'label' => __('Image Tiles Only', 'wp-tiles'),
+                'description' => __( "Hide tiles that don't have an image. Please note: setting this option is incompatible with pagination!", 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'images_only' )
             ),
             array(
                 'type' => 'radiobutton',
                 'name' => 'link',
                 'label' => __( 'Link To', 'wp-tiles' ),
-                'description' => __( "Where should people go when they click on a tile (if anywhere?)", 'wp-tiles' ),
+                'description' => __( "By default the whole tile is linked to a post. Change this option to send your visitors elsewhere when they click on a tile.", 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'link' ),
                 'items' => array(
                     array(
@@ -694,8 +694,8 @@ class Controls
             array(
                 'type'  => 'select',
                 'name'  => 'image_source',
-                'label' => __( 'Image Source', 'wp-tiles' ),
-                'description' => __( 'Where should WP Tiles look for the images for the background of tiles?', 'wp-tiles' ),
+                'label' => __( 'Image Selection', 'wp-tiles' ),
+                'description' => __( "Where should WP Tiles look for the images for the background of tiles?", 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'image_source' ),
                 'items'   => array(
                     array(
@@ -715,7 +715,18 @@ class Controls
                         'value' => 'attachment_only'
                     ),
                 ),
-            )
+            ),
+            array(
+                'type' => 'notebox',
+                'name' => 'notice_image_source',
+                'label' => __('Image Source', 'wp-tiles'),
+                'description' => __( "The plugin can look for images in the following places:\n"
+                    . "* `Any` - Will look for 1. Featured Image, 2. First attached image, 3. First image in post itself\n"
+                    . "* `Attached Only` - Don't look inside post content for image\n"
+                    . "* `Featured Image Only` - *Only* use Featured Image\n"
+                    . "* `Only show image for Media Posts` - Don't show image, unless the post itself *is* a media post", 'wp-tiles' ),
+                'status' => 'info',
+            ),
         );
     }
 
