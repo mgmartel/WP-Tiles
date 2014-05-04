@@ -8,10 +8,10 @@ class WPTiles extends Abstracts\WPSingleton
 {
 
     const GRID_POST_TYPE = 'grid_template';
+    const CACHEGROUP = 'wptiles';
 
     /**
      * Store the current tiles id, in case we add more to one page
-     *
      * @var int
      */
     protected $tiles_id = 1;
@@ -65,10 +65,11 @@ class WPTiles extends Abstracts\WPSingleton
         // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
 
+        $this->add_action( 'save_post_' . self::GRID_POST_TYPE, 'invalidate_grid_cache' );
     }
 
     public function register_post_type() {
-        register_post_type( self::GRID_POST_TYPE, apply_filters( 'wp_tiles/grid_template_post_type', array(
+        register_post_type( self::GRID_POST_TYPE, apply_filters( 'wp_tiles_grid_template_post_type', array(
             'labels'             => array(
                 'name'               => _x( 'Grids', 'post type general name', 'wp-tiles' ),
                 'singular_name'      => _x( 'Grid', 'post type singular name', 'wp-tiles' ),
@@ -102,7 +103,8 @@ class WPTiles extends Abstracts\WPSingleton
     }
 
     /**
-     * @deprecated since version 1.0
+     * @deprecated since version 1.0 use display tiles instead
+     * @todo Make compat
      */
     public function show_tiles( $atts_array ) {
         // if $opts is empty, $posts is probably the old $atts_array
@@ -111,35 +113,43 @@ class WPTiles extends Abstracts\WPSingleton
         //echo $this->get_titles( $posts, $opts );
     }
 
+    /**
+     * Allow $atts to be just the post_query as a string or object
+     *
+     * @param string|array $atts
+     * @return array Properly formatted $atts
+     * @since 0.4.2
+     * @deprecated
+     * @todo Make compatible with 1.0
+     */
+    public function parse_post_query_string( $atts ) {
+        if ( is_array( $atts ) ) {
+            if ( !isset( $atts['posts_query'] ) )
+                $atts['posts_query'] = array( );
+        } else {
+
+            $posts_query = array( );
+            wp_parse_str( $atts, $posts_query );
+            $atts        = array( 'posts_query' => $posts_query );
+        }
+
+        /**
+         * Backward compatibility
+         */
+        if ( isset( $atts['posts_query']['numberposts'] ) ) {
+            $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
+            _doing_it_wrong( 'the_wp_tiles', "WP Tiles doesn't use numberposts anymore. Use posts_per_page instead.", '0.4.2' );
+        }
+
+        return $atts;
+    }
+
+
     public function display_tiles( $posts, $opts = array() ) {
         echo $this->get_tiles( $posts, $opts );
     }
 
-    public function get_tiles( $posts, $opts = array() ) {
-        //$defaults = $this->options->get_options();
-        //$opts = wp_parse_args( $opts, $defaults );
-
-        return $this->render_tiles( $posts, $opts );
-    }
-
-    public function get_query_nonce( $query ) {
-        $hash = $this->get_query_hash( $query );
-        return wp_create_nonce( $hash );
-    }
-
-    public function get_query_hash( $query ) {
-        array_walk( $query, function( &$var ){
-            if ( 'false' === $var )
-                $var = false;
-            elseif( 'true' === $var )
-                $var = true;
-        } );
-
-        $q = build_query( wp_parse_args( $query ) );
-        return md5( $q );
-    }
-
-    public function render_tiles( $posts, $opts ) {
+    public function get_tiles( $posts, $opts ) {
 
         if ( empty( $posts ) )
             return;
@@ -177,7 +187,7 @@ class WPTiles extends Abstracts\WPSingleton
         $opts['grids'] = $this->get_grids( $opts['grids'] );
 
         $grid_pretty_names = array_keys( $opts['grids'] );
-        $opts['grids'] = $this->format_grids( $opts['grids'] );
+        $opts['grids'] = $this->sanitize_grid_keys( $opts['grids'] );
         $grid_names = array_combine( array_keys( $opts['grids'] ), $grid_pretty_names );
 
         $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
@@ -207,7 +217,7 @@ class WPTiles extends Abstracts\WPSingleton
             if ( $next_page > $max_page )
                 $next_page = false;
 
-            // Sign the query and pass it to JS
+            // If AJAX pagination, sign the query and pass it to JS
             if ( $next_page && 'ajax' == $opts['pagination'] ) {
                 $next_query = $wp_query->query;
 
@@ -221,7 +231,7 @@ class WPTiles extends Abstracts\WPSingleton
                     $opts['next_query'] = array(
                         'query' => $next_query,
                         'action' => Ajax::ACTION_GET_POSTS,
-                        '_ajax_nonce' => $this->get_query_nonce( $next_query )
+                        '_ajax_nonce' => $this->ajax->get_query_nonce( $next_query )
                     );
                     $opts['ajaxurl'] = admin_url( 'admin-ajax.php' );
 
@@ -485,7 +495,6 @@ class WPTiles extends Abstracts\WPSingleton
                     }
 
                 }
-
             }
         }
 
@@ -515,12 +524,24 @@ class WPTiles extends Abstracts\WPSingleton
             add_thickbox();
 
         $opts['id'] = $wp_tiles_id;
+
+        // Only pass these on to the JS
+        $js_opts = array(
+            'id', 'grids', 'breakpoint', 'small_screen_grid', 'padding',
+            'byline_color', 'byline_height', 'colors', 'byline_opacity',
+            'next_query', 'ajaxurl', 'animate_template', 'animate_init',
+            'animate_resize', 'template_selector_color'
+        );
+
+        foreach( $js_opts as &$opt ) {
+            $opt = isset( $opts[$opt] ) ? $opts[$opt] : null;
+        }
+
         $this->data[$wp_tiles_id] = $opts;
     }
 
     public function add_data() {
         wp_localize_script( 'wp-tiles', 'wptilesdata', $this->data );
-
     }
 
     public function register_scripts() {
@@ -617,17 +638,12 @@ class WPTiles extends Abstracts\WPSingleton
         return apply_filters( 'wp_trim_excerpt', $text, $excerpt );
     }
 
-    protected function has_excerpt( $post ) {
-        return !empty( $post->post_excerpt );
-    }
-
     /**
      * Returns the first image
      *
-     * Uses cache. Plugins can hijack this method by hooking into 'pre_wp_tiles_image'.
+     * Plugins can hijack this method by hooking into 'pre_wp_tiles_image'.
      * @param WP_Post $post
      * @return string Image url
-     * @todo invalidate cache
      */
     public function get_first_image( $post, $size = false ) {
         $allowed_sizes = get_intermediate_image_sizes();
@@ -648,30 +664,24 @@ class WPTiles extends Abstracts\WPSingleton
         if ( false !== $src )
             return $src;
 
-        if ( !$src = wp_cache_get( 'wp_tiles_image_' . $post->ID . '_' . $size, 'wp-tiles' ) ) {
-            $src = $this->_find_the_image( $post, $size );
-            wp_cache_set( 'wp_tiles_image_' . $post->ID, $src, 'wp-tiles' );
-        }
-
-        return $src;
+        return $this->_find_the_image( $post, $size );
     }
 
         /**
          * Finds the first relevant image to a post
          *
-         * Searches for a featured image, then the first attached image, then the first image in the source.
+         * Searches for a featured image, then the first attached image, then the
+         * first image in the source.
          *
          * @param WP_Post $post
          * @return string Source
          * @sice 0.5.2
-         * @todo Cache?
          */
         private function _find_the_image( $post, $size ) {
-            $tile_image_size = apply_filters( 'wp-tiles-image-size', $size, $post );
             $image_source = $this->options->get_option( 'image_source' );
 
             if ( 'attachment' === get_post_type( $post->ID ) ) {
-                $image = wp_get_attachment_image_src( $post->ID, $tile_image_size, false );
+                $image = wp_get_attachment_image_src( $post->ID, $size, false );
                 return $image[0];
             }
 
@@ -679,7 +689,7 @@ class WPTiles extends Abstracts\WPSingleton
                 return '';
 
             if ( $post_thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-                $image = wp_get_attachment_image_src( $post_thumbnail_id, $tile_image_size, false );
+                $image = wp_get_attachment_image_src( $post_thumbnail_id, $size, false );
                 return $image[0];
             }
 
@@ -694,7 +704,7 @@ class WPTiles extends Abstracts\WPSingleton
 
             if ( !empty( $images ) ) {
                 $images = current( $images );
-                $src    = wp_get_attachment_image_src( $images->ID, $tile_image_size );
+                $src    = wp_get_attachment_image_src( $images->ID, $size );
                 return $src[0];
             }
 
@@ -709,40 +719,9 @@ class WPTiles extends Abstracts\WPSingleton
             return '';
         }
 
-    /**
-     * Allow $atts to be just the post_query as a string or object
-     *
-     * @param string|array $atts
-     * @return array Properly formatted $atts
-     * @since 0.4.2
-     * @deprecated
-     * @todo Make compatible with 1.0
-     */
-    public function parse_post_query_string( $atts ) {
-        if ( is_array( $atts ) ) {
-            if ( !isset( $atts['posts_query'] ) )
-                $atts['posts_query'] = array( );
-        } else {
-
-            $posts_query = array( );
-            wp_parse_str( $atts, $posts_query );
-            $atts        = array( 'posts_query' => $posts_query );
-        }
-
-        /**
-         * Backward compatibility
-         */
-        if ( isset( $atts['posts_query']['numberposts'] ) ) {
-            $atts['posts_query']['posts_per_page'] = $atts['posts_query']['numberposts'];
-            _doing_it_wrong( 'the_wp_tiles', "WP Tiles doesn't use numberposts anymore. Use posts_per_page instead.", '0.4.2' );
-        }
-
-        return $atts;
-    }
-
 
     public function get_grids( $query = false ) {
-        // Is this already a grid?
+        // Check if this is already a grid
         // Happens when default is passed through the shortcode
         if ( is_array( $query ) && is_array( reset( $query ) ) )
             return $query;
@@ -751,7 +730,7 @@ class WPTiles extends Abstracts\WPSingleton
 
         $grids = array();
         foreach( $posts as $post ) {
-            $grids[$post->post_title] = array_map( 'trim', explode( "\n", $post->post_content ) );
+            $grids[$post->post_title] = $this->format_grid( $post->post_content );
         }
 
         return $grids;
@@ -799,36 +778,51 @@ class WPTiles extends Abstracts\WPSingleton
             if ( empty( $titles) )
                 return false;
 
-            $titles = esc_sql( $titles );
-            $post_title_in_string = "'" . implode( "','", $titles ) . "'";
+            $titles = array_map( 'trim', $titles );
 
-            $sql = $wpdb->prepare( "
-                SELECT ID
-                FROM $wpdb->posts
-                WHERE post_title IN ($post_title_in_string)
-                AND post_type = %s
-                ORDER BY FIELD( {$wpdb->posts}.post_title, $post_title_in_string )
-            ", self::GRID_POST_TYPE );
+            $cache_key = md5( json_encode( array_values( $titles ) ) );
+            $cache = wp_cache_get( 'grids_by_titles', self::CACHEGROUP );
 
-            $ids = $wpdb->get_col( $sql );
-            return $ids;
+            if ( !$cache )
+                $cache = array();
 
+            if ( !isset( $cache[$cache_key] ) ) {
+
+                $titles = esc_sql( $titles );
+                $post_title_in_string = "'" . implode( "','", $titles ) . "'";
+
+                $sql = $wpdb->prepare( "
+                    SELECT ID
+                    FROM $wpdb->posts
+                    WHERE post_title IN ($post_title_in_string)
+                    AND post_type = %s
+                    ORDER BY FIELD( {$wpdb->posts}.post_title, $post_title_in_string )
+                ", self::GRID_POST_TYPE );
+
+                $ids = $wpdb->get_col( $sql );
+
+                $cache[$cache_key] = $ids;
+                wp_cache_set( 'grids_by_titles', $cache, self::CACHEGROUP );
+            }
+
+            return $cache[$cache_key];
+       }
+
+       public function invalidate_grid_cache() {
+           wp_cache_delete( 'grids_by_titles', self::CACHEGROUP );
        }
 
     /**
      * Takes an array of grids and returns a sanitized version that can be passed
      * to the JS
      *
-     * Sets a sanitized title for the key and explodes and trims the grid template.
-     *
      * @param array $grids
      * @return array
-     * @see WPTiles::format_grid()
      */
-    public function format_grids( $grids ) {
+    public function sanitize_grid_keys( $grids ) {
         $ret = array();
         foreach( $grids as $name => $grid ) {
-            $ret[sanitize_title($name)] = $this->format_grid( $grid );
+            $ret[sanitize_title($name)] = $grid;
         }
 
         return $ret;
@@ -850,7 +844,6 @@ class WPTiles extends Abstracts\WPSingleton
 
         return $grid;
     }
-
 
     public static function on_plugin_activation() {
         Admin\GridTemplates::install_default_templates();
