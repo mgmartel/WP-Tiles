@@ -378,6 +378,72 @@ class Controls
             return wp_tiles()->post_query->get_query_defaults( $key );
         }
 
+    public static function gallery_current() {
+        return array_merge( self::gallery_grid(), array(
+            array(
+                'type' => 'notebox',
+                'name' => 'notice_gallery_shortcode',
+                'label' => __('Gallery Shortcode', 'wp-tiles'),
+                'description' => __( "Click 'Insert' below to add the current post "
+                    . "gallery. You can also create WordPress galleries through the "
+                    . "media uploader. Turn any gallery into a tiles gallery by "
+                    . "ticking the box 'Tiled Gallery'.<br /><br />"
+                    . "If you switch to the 'Text' editor, you can also add any normal "
+                    . "WP Tiles argument to the gallery shortcode for added control."
+                    . "", 'wp-tiles' ),
+                'status' => 'info',
+            )
+        ) );
+    }
+
+    public static function gallery_select_post() {
+        return array_merge( self::gallery_grid(), array(
+            array(
+                'type'        => 'select',
+                'name'        => 'id',
+                'label'       => __( 'Select Post', 'wp-tiles' ),
+                //'default'     => null,
+                'items'       => array(
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
+                        ),
+                    ),
+                ),
+            )
+        ) );
+    }
+
+    public static function gallery_grid() {
+        $default_grid_option = wp_tiles()->options->get_option( 'default_grid' );
+
+        $grid = get_posts( array(
+            'post__in' => array( $default_grid_option ),
+            'post_type' => \WPTiles\WPTiles::GRID_POST_TYPE,
+            'post_status' => 'publish'
+        ) );
+
+        $default_grid = !empty( $grid ) ? reset( $grid )->post_title : '{{last}}';
+
+        return array(
+            array(
+                'type'        => 'select',
+                'name'        => 'id',
+                'label'       => __( 'Select Grid', 'wp-tiles' ),
+                'default'     => $default_grid,
+                'items'       => array(
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_grids_names' ),
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
+
     public static function query() {
 
         return array(
