@@ -61,6 +61,7 @@ class WPTiles extends Abstracts\WPSingleton
 
         $this->add_action( 'init', 'register_post_type' );
         $this->add_action( 'init', 'register_scripts' );
+        $this->add_action( 'init', 'register_styles' );
 
         // The Shortcode
         add_shortcode( 'wp-tiles', array( '\WPTiles\Shortcode', 'do_shortcode' ) );
@@ -526,27 +527,35 @@ class WPTiles extends Abstracts\WPSingleton
 
     }
 
+    public function register_styles() {
+
+        $stylesheet = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
+
+        // In admin we want vanilla WP Tiles styles
+        if ( !is_admin() ) {
+
+            /**
+             * Get the WP Tiles stylesheet
+             *
+             * @since 1.0
+             * @param string Stylesheet location or false to disable separate css
+             */
+            $stylesheet = apply_filters( 'wp_tiles_stylesheet', $stylesheet );
+
+            if ( false === $stylesheet )
+                return;
+        }
+
+        wp_register_style( 'wp-tiles', $stylesheet, false, WP_TILES_VERSION );
+    }
+
     public function enqueue_scripts() {
         wp_enqueue_script( 'wp-tiles' );
         $this->add_action( 'wp_footer', 'add_data', 1 );
     }
 
     public function enqueue_styles() {
-        /**
-         * Get the WP Tiles stylesheet
-         *
-         * @since 1.0
-         * @param string Stylesheet location or false to disable separate css
-         */
-        $located = apply_filters( 'wp_tiles_stylesheet', null );
-
-        if ( false === $located )
-            return;
-
-        if ( is_null( $located )  ) {
-            $located = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
-        }
-        wp_enqueue_style( 'wp-tiles', $located, false, WP_TILES_VERSION );
+        wp_enqueue_style( 'wp-tiles' );
     }
 
     private function get_the_date( $post, $d = '' ) {

@@ -130,7 +130,7 @@ class Admin
 
         add_action( 'admin_enqueue_scripts', function( $hook_suffix ){
             if ( $hook_suffix === 'toplevel_page_' . self::PAGE_SLUG ) {
-                wp_tiles()->enqueue_styles();
+                wp_enqueue_style( 'wp-tiles' );
             }
         });
 

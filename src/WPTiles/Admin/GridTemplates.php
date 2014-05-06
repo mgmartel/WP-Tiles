@@ -69,10 +69,9 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
                         . "<p>" . __("Periods are special. they're reserved to always mean single cells. All white space is ignored (it turns out that these are a lot easier to read if you pad the characters a little).") . "</p>",
         ) );
 
-        wp_enqueue_script( 'wp-tiles' );
-        wp_enqueue_style( 'wp-tiles', WP_TILES_ASSETS_URL . '/css/wp-tiles.css', false, WP_TILES_VERSION );
+        wp_enqueue_style( 'wp-tiles' );
 
-        $deps = array( 'jquery', 'tilesjs', 'jquery-autosize' );
+        $deps = array( 'jquery', 'wp-tiles', 'jquery-autosize' );
         if ( $pointers = $this->setup_walkthrough() )
             $deps[] = 'wp-pointer';
 
