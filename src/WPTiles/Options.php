@@ -21,11 +21,11 @@ class Options
             "#5CCCCC",
         ),
         'background_opacity' => 1,
-        'padding' => 10,
+        'padding' => 5,
 
         'byline_template' => "%categories%",
         'byline_template_textonly' => false,
-        'byline_opacity'  => '0.8',
+        'byline_opacity'  => '0.7',
         'byline_color'    => '#000000',
         'byline_height'   => 40,
 
