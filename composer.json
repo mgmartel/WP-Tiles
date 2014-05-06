@@ -1,4 +1,20 @@
 {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "vafour/vafpress-framework",
+                "version": "dev-master",
+                "dist": {
+                    "url": "https://github.com/vafour/vafpress-framework/zipball/master",
+                    "type": "zip"
+                }
+            }
+        }
+    ],
+    "require": {
+        "vafour/vafpress-framework" : "dev-master"
+    },
     "autoload": {
         "psr-0": {
             "WPTiles\\": "src/"
