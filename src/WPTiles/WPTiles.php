@@ -75,7 +75,7 @@ class WPTiles extends Abstracts\WPSingleton
                 'singular_name'      => _x( 'Grid', 'post type singular name', 'wp-tiles' ),
                 'menu_name'          => _x( 'WP Tiles Grids', 'admin menu', 'wp-tiles' ),
                 'name_admin_bar'     => _x( 'Grid', 'add new on admin bar', 'wp-tiles' ),
-                'add_new'            => _x( 'Add New Grid', 'book', 'wp-tiles' ),
+                'add_new'            => __( 'Add New Grid', 'wp-tiles' ),
                 'add_new_item'       => __( 'Add New Grid', 'wp-tiles' ),
                 'new_item'           => __( 'New Grid', 'wp-tiles' ),
                 'edit_item'          => __( 'Edit Grid', 'wp-tiles' ),
@@ -112,11 +112,11 @@ class WPTiles extends Abstracts\WPSingleton
         $this->display_tiles( $query, $opts );
     }
 
-    public function display_tiles( $posts, $opts = array() ) {
+    public function display_tiles( $posts = array(), $opts = array() ) {
         echo $this->get_tiles( $posts, $opts );
     }
 
-    public function get_tiles( $posts, $opts ) {
+    public function get_tiles( $posts = array(), $opts = array() ) {
 
         if ( empty( $posts ) )
             return;
@@ -258,13 +258,11 @@ class WPTiles extends Abstracts\WPSingleton
          * empty line after ?>.
          */
         ob_start();
-        ?>
-        <?php if ( count( $grid_names ) > 1 ) : ?>
+        if ( count( $grid_names ) > 1 ) : ?>
 
         <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $extra_classes ?>">
 
             <ul class="wp-tiles-template-selector">
-
             <?php foreach ( $grid_names as $slug => $name ) : ?>
 
                 <li class="wp-tiles-template" data-grid="<?php echo $slug ?>"><?php echo $name; ?></li>
@@ -291,8 +289,8 @@ class WPTiles extends Abstracts\WPSingleton
         <?php
 
         /**
-        * Pagination
-        **/
+         * Pagination
+         **/
         if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
         <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
@@ -304,9 +302,8 @@ class WPTiles extends Abstracts\WPSingleton
         <?php elseif ( 'paging' === $opts['pagination'] ) : ?>
             <?php wp_tiles_paging_nav( $wp_query, $wp_tiles_id ); ?>
 
-        <?php endif; ?>
+        <?php endif;
 
-        <?php
         $out = ob_get_contents();
         ob_end_clean();
 
@@ -327,7 +324,7 @@ class WPTiles extends Abstracts\WPSingleton
                 $tile_class = 'wp-tiles-tile-text-only';
             }
 
-             if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) {
+            if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) {
                 $byline = $this->render_byline( $opts['byline_template_textonly'], $post );
 
             } elseif ( $opts['byline_template'] ) {
@@ -547,21 +544,7 @@ class WPTiles extends Abstracts\WPSingleton
             return;
 
         if ( is_null( $located )  ) {
-
-            $stylesheet_name = "wp-tiles.css";
-
-            if ( file_exists( STYLESHEETPATH . '/' . $stylesheet_name ) ) {
-                $located = get_stylesheet_directory_uri() . '/' . $stylesheet_name;
-            } else if ( file_exists( STYLESHEETPATH . '/css/' . $stylesheet_name ) ) {
-                $located = get_stylesheet_directory_uri() . '/css/' . $stylesheet_name;
-            } else if ( file_exists( TEMPLATEPATH . '/' . $stylesheet_name ) ) {
-                $located = get_template_directory_uri() . '/' . $stylesheet_name;
-            } else if ( file_exists( TEMPLATEPATH . '/css/' . $stylesheet_name ) ) {
-                $located = get_template_directory_uri() . '/css/' . $stylesheet_name;
-            } else {
-                $located = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
-            }
-
+            $located = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
         }
         wp_enqueue_style( 'wp-tiles', $located, false, WP_TILES_VERSION );
     }

@@ -13,8 +13,8 @@ if ( !function_exists( 'the_wp_tiles' ) ) :
      * @param string|array $atts
      * @since 0.3.3
      */
-    function the_wp_tiles( $query = array(), $opts = null ) {
-        if ( is_null( $opts ) ) {
+    function the_wp_tiles( $query = array(), $opts = array() ) {
+        if ( false === $opts ) {
             $opts  = WPTiles\Legacy::get_options( $query );
             $query = WPTiles\Legacy::get_posts( $query );
 
@@ -34,8 +34,8 @@ if ( !function_exists( 'the_category_wp_tiles' ) ) :
      *
      * @since 0.4.2
      */
-    function the_category_wp_tiles( $query = array(), $opts = null ) {
-        if ( is_null( $opts ) ) {
+    function the_category_wp_tiles( $query = array(), $opts = array() ) {
+        if ( false === $opts ) {
             $opts  = WPTiles\Legacy::get_options( $query );
             $query = WPTiles\Legacy::get_posts( $query );
 
@@ -69,6 +69,9 @@ if ( !function_exists( 'the_loop_wp_tiles' ) ) :
      * @since 0.4.2
      */
     function the_loop_wp_tiles( $opts = array() ) {
+        if ( WPTiles\Legacy::maybe_process_shortcode( $opts ) ) {
+            $opts = WPTiles\Legacy::convert_option_array( $opts );
+        }
 
         global $wp_query;
         wp_tiles()->display_tiles( $wp_query, $opts );
