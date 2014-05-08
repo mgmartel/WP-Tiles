@@ -180,7 +180,12 @@ class WPTiles extends Abstracts\WPSingleton
         $next_page = false;
         if ( $wp_query ) {
             $max_page  = $wp_query->max_num_pages;
-            $next_page = intval( $wp_query->get( 'paged', 1 ) ) + 1;
+            $current_page = intval( $wp_query->get( 'paged', 1 ) );
+
+            if ( $current_page < 1 )
+                $current_page = 1;
+
+            $next_page = $current_page + 1;
 
             if ( $next_page > $max_page )
                 $next_page = false;
@@ -190,7 +195,6 @@ class WPTiles extends Abstracts\WPSingleton
                 $next_query = $wp_query->query;
 
                 $max_page  = $wp_query->max_num_pages;
-                $next_page = intval( $wp_query->get( 'paged', 1 ) ) + 1;
 
                 if ( $next_page <= $max_page ) {
 
@@ -510,7 +514,7 @@ class WPTiles extends Abstracts\WPSingleton
             'id', 'grids', 'breakpoint', 'small_screen_grid', 'padding',
             'byline_color', 'byline_height', 'colors', 'byline_opacity',
             'next_query', 'ajaxurl', 'animate_template', 'animate_init',
-            'animate_resize', 'grid_selector_color'
+            'animate_resize', 'grid_selector_color', 'link_new_window'
         );
 
         foreach( $js_opts as &$opt ) {
