@@ -227,7 +227,8 @@
               'byline_template_textonly',
               'images_only',
               'image_size',
-              'text_only'
+              'text_only',
+              'link_new_window'
             ],function(){
                 opts.next_query.opts[this] = opts[this];
             });

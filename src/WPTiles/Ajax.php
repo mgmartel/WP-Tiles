@@ -36,7 +36,8 @@ class Ajax extends Abstracts\WPSingleton
             'byline_template_textonly' => $this->_bool( $posted_opts['byline_template_textonly'] ),
             'images_only'              => $this->_bool( $posted_opts['images_only'] ),
             'image_size'               => $posted_opts['image_size'], // Will be sanitized in WPTiles::get_first_image
-            'text_only'                => $this->_bool( $posted_opts['text_only'] )
+            'text_only'                => $this->_bool( $posted_opts['text_only'] ),
+            'link_new_window'          => $this->_bool( $posted_opts['link_new_window'] ),
         );
 
         ob_start();
