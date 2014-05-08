@@ -2,18 +2,22 @@
    BASE: Tile with BG image
    ========================================================================== */
 .wp-tiles-tile-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-size: cover;
-    background-position: 50% 50%;
+    .wp-tiles-loaded & {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-size: cover;
+        background-position: 50% 50%;
+    }
 }
 
 .wp-tiles-tile-with-image {
 
     .wp-tiles-byline {
-        position: absolute;
-        left: 0;
-        right: 0;
+        .wp-tiles-loaded & {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
 
         .wp-tiles-byline-align-top & {
             top: 0;
@@ -23,14 +27,10 @@
         }
 
         background: rgba(0, 0, 0, 0.8);
-        //padding: 5px;
         max-height: 100%;
     }
 
     .wp-tiles-byline-title {
-    //h1, h2, h3, h4, h5, h6 {
-
-        //font-weight: 600;
         margin: 0;
 
         color: white;
@@ -48,7 +48,5 @@
         width: 90%;
         overflow: hidden;
 
-        //white-space: nowrap;
-        //text-overflow: ellipsis;
     }
 }

@@ -114,6 +114,9 @@
 
           };
 
+      // We're doing JS
+      $el.addClass('wp-tiles-loaded');
+
       // Init the grids
       if ( opts.breakpoint )
         opts.small_screen_grid = Tiles.Template.fromJSON(opts.small_screen_grid);
