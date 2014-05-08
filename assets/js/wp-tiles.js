@@ -110,6 +110,19 @@
 
               // Set the byline (max)height
               $image_bylines.css(opts.byline_height_auto ? 'max-height' : 'height',opts.byline_height + '%');
+
+              if ( opts.image_text_color ) {
+                $image_bylines.css('color',opts.image_text_color);
+              }
+            }
+
+            if ( opts.text_color ) { // Make sure we have to set the option before selecting the elements
+
+              var $text_only_bylines = $('.wp-tiles-tile-text-only .wp-tiles-byline', $el);
+              if ($text_only_bylines.get(0)) {
+                $text_only_bylines.css('color', opts.text_color);
+              }
+
             }
 
           };

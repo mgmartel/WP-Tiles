@@ -13,6 +13,8 @@
 .wp-tiles-tile-with-image {
 
     .wp-tiles-byline {
+        color: #eee;
+
         .wp-tiles-loaded & {
             position: absolute;
             left: 0;
@@ -33,7 +35,6 @@
     .wp-tiles-byline-title {
         margin: 0;
 
-        color: white;
         overflow: hidden;
         padding: 5px;
         padding-top: 2px;
@@ -43,7 +44,6 @@
         padding: 5px;
         font-size: 10px;
         font-weight: 600;
-        color: #EEE;
 
         width: 90%;
         overflow: hidden;

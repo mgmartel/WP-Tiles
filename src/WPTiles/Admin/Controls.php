@@ -843,7 +843,7 @@ class Controls
                  'label' => 'Preview',
                  'binding' => array(
                      'function' => 'wp_tiles_preview_tile',
-                     'field' => 'byline_height_auto,byline_height,byline_color,byline_opacity,byline_align,byline_effect,image_effect',
+                     'field' => 'byline_height_auto,byline_height,byline_color,byline_opacity,byline_align,byline_effect,image_effect,image_text_color',
                  ),
                 'default' => wp_tiles_preview_tile()
              )
@@ -965,6 +965,22 @@ class Controls
                         'value' => 'desaturate'
                     ),
                 )
+            ),
+            array(
+                'type' => 'color',
+                'name' => 'image_text_color',
+                'label' => __( 'Text Color Image Tiles', 'wp-tiles' ),
+                'description' => __( 'Select the color for text on tiles with background image', 'wp-tiles' ),
+                'default' => wp_tiles()->options->get_defaults( 'image_text_color' ),
+                'format' => 'hex',
+            ),
+            array(
+                'type' => 'color',
+                'name' => 'text_color',
+                'label' => __( 'Text Color Text-Only Tiles', 'wp-tiles' ),
+                'description' => __( 'Select the color for text on tiles without background image', 'wp-tiles' ),
+                'default' => wp_tiles()->options->get_defaults( 'text_color' ),
+                'format' => 'hex',
             ),
             array(
                 'type'        => 'toggle',

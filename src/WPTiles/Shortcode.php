@@ -53,6 +53,9 @@ class Shortcode
             'byline_effect'   => $defaults['byline_effect'],
             'image_effect'    => $defaults['image_effect'],
 
+            'text_color'       => $defaults['text_color'],
+            'image_text_color' => $defaults['image_text_color'],
+
             'link'            => $defaults['link'],
             'link_new_window' => $defaults['link_new_window'],
 
@@ -80,7 +83,7 @@ class Shortcode
         //$grids = wp_tiles()->get_grids( $grid_names );
 
         $options = array(
-            'grids' => $grid_names, // Will be converted into grid templates in render_tiles
+            'grids' => $grid_names, // Will be converted into grid templates in get_tiles
 
             'small_screen_grid' => '',
             'breakpoint' => (int) $atts['breakpoint'],
@@ -99,6 +102,9 @@ class Shortcode
             'byline_align'    => $atts['byline_align'],
             'byline_effect'   => $atts['byline_effect'],
             'image_effect'    => $atts['image_effect'],
+
+            'text_color'       => $atts['text_color'],
+            'image_text_color' => $atts['image_text_color'],
 
             'link'            => $atts['link'],
             'link_new_window' => $atts['link_new_window'],

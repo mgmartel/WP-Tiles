@@ -30,6 +30,9 @@ class Options
         'byline_height'   => 40,
         'byline_height_auto' => false,
 
+        'text_color'       => false,
+        'image_text_color' => false,
+
         'link'            => 'post', //post|thickbox|attachment|none
         'link_new_window' => false,
 
