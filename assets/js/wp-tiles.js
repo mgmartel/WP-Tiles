@@ -293,7 +293,7 @@
       if ( $templates.get(0) ) {
         var $templateButtons = $('.wp-tiles-template', $templates);
 
-        $templateButtons.css('background-color',opts.template_selector_color);
+        $templateButtons.css('background-color',opts.grid_selector_color);
 
         $templateButtons.on('click', function(e) {
           e.preventDefault();
