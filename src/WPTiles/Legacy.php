@@ -123,9 +123,9 @@ class Legacy
                             continue;
 
                         wp_insert_post( array(
-                            'post_type' => WPTiles\WPTiles::GRID_POST_TYPE,
-                            'post_status' => 'publish',
-                            'post_tite' => $title,
+                            'post_type'    => WPTiles\WPTiles::GRID_POST_TYPE,
+                            'post_status'  => 'publish',
+                            'post_title'   => $title,
                             'post_content' => wp_kses_post( $template )
                         ) );
                     }
