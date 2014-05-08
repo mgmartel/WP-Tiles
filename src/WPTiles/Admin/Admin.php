@@ -323,7 +323,7 @@ class Admin
 
         ob_start();
         ?>
-        <div class="wp-tiles-container wp-tiles-tile-demo">
+        <div class="wp-tiles-container wp-tiles-tile-demo wp-tiles-loaded">
 
             <div id="wp_tiles_1" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
 
