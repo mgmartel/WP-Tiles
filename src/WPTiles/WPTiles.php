@@ -829,6 +829,22 @@ class WPTiles extends Abstracts\WPSingleton
         return $grid;
     }
 
+    public function get_default_grid_title() {
+        if ( $default_grid = $this->options->get_option( 'default_grid' ) ) {
+            $title = get_the_title( $this->options->get_option( 'default_grid' ) );
+            if ( $title )
+                return $title;
+        }
+
+        $grids = $this->get_grids();
+        if ( empty( $grids ) ) {
+            return '';
+        }
+
+        $names = array_keys( $grids );
+        return reset( $names );
+    }
+
     public static function on_plugin_activation() {
         Admin\GridTemplates::install_default_templates();
     }

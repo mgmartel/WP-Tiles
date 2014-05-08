@@ -42,7 +42,7 @@ class Gallery extends Abstracts\WPSingleton
             return;
 
         $grids = wp_tiles()->get_grids();
-        $default = get_the_title( wp_tiles()->options->get_option( 'default_grid' ) );
+        $default = wp_tiles()->get_default_grid_title();
 
         ?>
         <script type="text/html" id="tmpl-wp-tiles-gallery-settings">
