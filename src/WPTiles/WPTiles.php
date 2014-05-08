@@ -122,26 +122,13 @@ class WPTiles extends Abstracts\WPSingleton
         if ( empty( $posts ) )
             return;
 
+        //
+        // SETUP
+        //
+
         // This is a double-up when called from the shortcode, but makes the
         // method more reliable.
         $opts = shortcode_atts( $this->options->get_options(), $opts );
-
-        // Is $posts a query?
-        if ( is_array( $posts ) && count(array_filter(array_keys( $posts ), 'is_string') ) ) {
-
-            // Automatically set paged var if tile pagination is on
-            if ( $opts['pagination'] )
-                $posts['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
-
-            $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
-        }
-
-        // Is posts a WP_Query? (enables pagination)
-        $wp_query = false;
-        if ( is_a( $posts, 'WP_Query' ) ) {
-            $wp_query = $posts;
-            $posts = $wp_query->posts;
-        }
 
         /**
          * Set the variables in the instance
@@ -159,6 +146,37 @@ class WPTiles extends Abstracts\WPSingleton
         $grid_names = array_combine( array_keys( $opts['grids'] ), $grid_pretty_names );
 
         $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
+
+
+        //
+        // GET POSTS
+        //
+
+        // Is $posts a query?
+        if ( is_array( $posts ) && count( array_filter( array_keys( $posts ), 'is_string') ) ) {
+
+            if ( isset( $posts['posts_per_page'] ) && 'grid' === $posts['posts_per_page'] ) {
+                $posts['posts_per_page'] = $this->get_posts_in_grid( reset( $opts['grids'] ) );
+            }
+
+            // Automatically set paged var if tile pagination is on
+            if ( $opts['pagination'] )
+                $posts['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+
+            $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
+        }
+
+        // Is posts a WP_Query? (enables pagination)
+        $wp_query = false;
+        if ( is_a( $posts, 'WP_Query' ) ) {
+            $wp_query = $posts;
+            $posts = $wp_query->posts;
+        }
+
+
+        //
+        // OPTIONS
+        //
 
         $opts['byline_color'] = $this->options->get_byline_color( $opts );
         $opts['colors'] = $this->options->get_colors( $opts );
@@ -215,6 +233,11 @@ class WPTiles extends Abstracts\WPSingleton
          * Pass the required info to the JS
          */
         $this->add_data_for_js( $wp_tiles_id, $opts );
+
+
+        //
+        // RENDER HTML
+        //
 
         /**
          * Get the classes
@@ -844,6 +867,36 @@ class WPTiles extends Abstracts\WPSingleton
 
         $names = array_keys( $grids );
         return reset( $names );
+    }
+
+    public function get_posts_in_grid( $grid ) {
+        $last_row = false;
+        $letters = array();
+
+        foreach( $grid as $line ) {
+            $matches = array();
+            preg_match_all("/[^ ]/", $line, $matches );
+            $line = reset( $matches );
+
+            foreach( $line as $index => $letter ) {
+                // Letter has occurred
+                if ( '.' !== $letter && in_array( $letter, $letters ) ) {
+
+                    $is_adjacent = $index !== 0 && $line[$index-1] === $letter;
+                    $is_beneath  = $last_row && $last_row[$index] === $letter;
+
+                    if ( !$is_adjacent && !$is_beneath )
+                        $letters[] = $letter;
+
+                } else {
+                    $letters[] = $letter;
+                }
+            }
+
+            $last_row = $line;
+        }
+
+        return count( $letters );
     }
 
     public static function on_plugin_activation() {

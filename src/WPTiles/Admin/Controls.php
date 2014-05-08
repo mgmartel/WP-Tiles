@@ -497,7 +497,7 @@ class Controls
                 'type' => 'textbox',
                 'name' => 'posts_per_page',
                 'label' => __('Posts Per Page', 'wp-tiles'),
-                'validation' => 'numeric',
+                //'validation' => 'numeric',
                 'default' => self::get_query_option( 'posts_per_page' ),
             ),
 
