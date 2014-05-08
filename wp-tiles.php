@@ -68,3 +68,10 @@ function wptiles_load_pluggables() {
 function wp_tiles_preview_tile() {
     return WPTiles\Admin\Admin::preview_tile();
 }
+
+// Add settings link
+$plugin = plugin_basename( __FILE__ );
+add_filter( "plugin_action_links_$plugin", function( $links ){
+    $links[] = '<a href="admin.php?page=wp-tiles">' . __( 'Settings', 'wp-tiles' ) . '</a>';
+    return $links;
+} );
