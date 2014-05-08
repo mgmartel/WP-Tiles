@@ -145,11 +145,11 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
                             . ".DDEE\n"
                             . "FF.EE",
 
-            "Simple" =>      "AA...\n"
+            "Simple"     =>   "AA...\n"
                             . "AABB.\n"
                             . "..BB.",
 
-            "Fancy" =>        "JJ..EE\n"
+            "Fancy"      =>   "JJ..EE\n"
                             . ".AA.EE\n"
                             . "BAAFF.\n"
                             . "B.DD.H\n"
@@ -161,6 +161,8 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
                             . ".AAA.",
 
             "Plain"      =>   ".....",
+            "Mobile"     =>   "AA\n"
+                            . "..",
 
         );
 
