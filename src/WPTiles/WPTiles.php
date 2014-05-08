@@ -342,18 +342,29 @@ class WPTiles extends Abstracts\WPSingleton
 
             $tile_classes = apply_filters( 'wp_tiles_tile_classes', $tile_classes );
 
+            $link_attributes = array();
+
+            if ( $opts['link_new_window'] )
+                $link_attributes['target'] = '_blank';
+
+            $link_attributes = apply_filters( 'wp_tiles_link_attributes', $link_attributes );
+            $link_attributes_string = "";
+            foreach( $link_attributes as $att => $value ) {
+                $link_attributes_string .= " $att='$value'";
+            }
+
             ?>
 
                 <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
                 <?php if ( 'post' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
+                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'file' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>">
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'thickbox' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>">
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'carousel' == $opts['link'] ) : ?>
 
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>

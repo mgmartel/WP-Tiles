@@ -52,10 +52,12 @@ class Shortcode
             'byline_effect'   => $defaults['byline_effect'],
             'image_effect'    => $defaults['image_effect'],
 
-            'text_only'    => $defaults['text_only'],
-            'link'         => $defaults['link'],
-            'images_only'  => $defaults['images_only'],
-            'hide_title'   => $defaults['hide_title'],
+            'link'            => $defaults['link'],
+            'link_new_window' => $defaults['link_new_window'],
+
+            'text_only'   => $defaults['text_only'],
+            'images_only' => $defaults['images_only'],
+            'hide_title'  => $defaults['hide_title'],
 
             'image_size'   => $defaults['image_size'],
             'image_source' => $defaults['image_source'],
@@ -96,7 +98,9 @@ class Shortcode
             'byline_effect'   => $atts['byline_effect'],
             'image_effect'    => $atts['image_effect'],
 
-            'link'         => $atts['link'],
+            'link'            => $atts['link'],
+            'link_new_window' => $atts['link_new_window'],
+
             'text_only'    => wp_tiles()->options->boolean( $atts['text_only'] ),
             'images_only'  => wp_tiles()->options->boolean( $atts['images_only'] ),
             'hide_title'   => wp_tiles()->options->boolean( $atts['hide_title'] ),

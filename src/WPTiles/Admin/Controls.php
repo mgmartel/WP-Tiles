@@ -304,6 +304,13 @@ class Controls
                     ),
                 )
             ),
+            array(
+                'type' => 'toggle',
+                'name' => 'link_new_window',
+                'label' => __( 'Open Links in New Window', 'wp-tiles' ),
+                'description' => __( 'Should clicking on a tile open a new window?', 'wp-tiles' ),
+                'default' => wp_tiles()->options->get_defaults( 'link_new_window' )
+            )
         );
     }
 

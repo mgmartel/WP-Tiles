@@ -29,10 +29,12 @@ class Options
         'byline_color'    => '#000000',
         'byline_height'   => 40,
 
-        'text_only'    => false,
-        'link'         => 'post', //post|thickbox|attachment|none
-        'images_only'  => false,
-        'hide_title'   => false,
+        'link'            => 'post', //post|thickbox|attachment|none
+        'link_new_window' => false,
+
+        'text_only'   => false,
+        'images_only' => false,
+        'hide_title'  => false,
 
         'animate_init'     => false,
         'animate_resize'   => false,
