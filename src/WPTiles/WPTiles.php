@@ -382,7 +382,7 @@ class WPTiles extends Abstracts\WPSingleton
                         <?php if ( $byline || !$opts['hide_title'] ) : ?>
 
                             <div class='wp-tiles-byline'>
-                                
+
                                 <div class='wp-tiles-byline-wrapper'>
                                 <?php if ( !$opts['hide_title'] ) : ?>
 
@@ -702,6 +702,12 @@ class WPTiles extends Abstracts\WPSingleton
 
         $posts = $this->_get_grid_posts( $query );
 
+        // If no posts are found, use fallback grid
+        if ( empty( $posts ) )
+            return array(
+                'Default' => Admin\GridTemplates::get_default_template()
+            );
+
         $grids = array();
         foreach( $posts as $post ) {
             $grids[$post->post_title] = $this->format_grid( $post->post_content );
@@ -735,7 +741,7 @@ class WPTiles extends Abstracts\WPSingleton
                 }
             }
 
-            // If no posts are found, return all of them
+            // If no posts are found, get all of them
             return get_posts( array(
                 'post_type' => self::GRID_POST_TYPE,
                 'posts_per_page' => -1,

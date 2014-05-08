@@ -10,7 +10,7 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
 {
     const POST_TYPE = WPTiles::GRID_POST_TYPE;
 
-    private $_default_template = "AA.B\nAA.B\n.CC.";
+    private static $_default_template = "AA.B\nAA.B\n.CC.";
 
     public function init() {
         $this->add_action( 'add_meta_boxes_' . self::POST_TYPE, 'setup_admin_page' );
@@ -119,7 +119,7 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
     }
 
     public function render_template_editor( $post ) {
-        $template = $post->post_content ? $post->post_content : $this->_default_template;
+        $template = $post->post_content ? $post->post_content : self::$_default_template;
 
         wp_nonce_field( 'save_grid_template', 'save_grid_template' );
         echo "<textarea name='grid_template' id='grid_template' class='grid-template-editor' spellcheck='false'>" . $template . "</textarea>";
@@ -130,6 +130,9 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
         echo "<div class='wp-tiles-container'><div id='grid-template-demo' class='wp-tiles-grid'></div></div>";
     }
 
+    public static function get_default_template() {
+        return wp_tiles()->format_grid( self::$_default_template );
+    }
 
     public static function install_default_templates( $force = false ) {
         if ( !$force ) {
