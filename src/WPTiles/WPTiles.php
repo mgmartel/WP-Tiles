@@ -382,17 +382,21 @@ class WPTiles extends Abstracts\WPSingleton
                         <?php if ( $byline || !$opts['hide_title'] ) : ?>
 
                             <div class='wp-tiles-byline'>
-                            <?php if ( !$opts['hide_title'] ) : ?>
+                                
+                                <div class='wp-tiles-byline-wrapper'>
+                                <?php if ( !$opts['hide_title'] ) : ?>
 
-                                <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
-                            <?php endif; ?>
-                            <?php if ( $byline ) : ?>
+                                    <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
+                                <?php endif; ?>
+                                <?php if ( $byline ) : ?>
 
-                                <div class='wp-tiles-byline-content' itemprop="description">
-                                    <?php echo $byline; ?>
+                                    <div class='wp-tiles-byline-content' itemprop="description">
+                                        <?php echo $byline; ?>
+
+                                    </div>
+                                <?php endif; ?>
 
                                 </div>
-                            <?php endif; ?>
 
                             </div>
                         <?php endif; ?>
