@@ -11,7 +11,7 @@ class Options
         'default_grid' => false,
         'small_screen_grid' => false,
         'breakpoint' => 800,
-        'template_selector_color' => '#444444',
+        'grid_selector_color' => '#444444',
 
         'colors' => array(
             "#009999",

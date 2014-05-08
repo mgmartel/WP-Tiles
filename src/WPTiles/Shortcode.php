@@ -37,7 +37,7 @@ class Shortcode
             'colors' => $defaults['colors'],
             'color' => false,
             'background_opacity' => $defaults['background_opacity'],
-            'template_selector_color' => $defaults['template_selector_color'],
+            'grid_selector_color' => $defaults['grid_selector_color'],
 
             'breakpoint'        => $defaults['breakpoint'],
             'small_screen_grid' => $defaults['small_screen_grid'],
@@ -84,7 +84,7 @@ class Shortcode
 
             'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
             'background_opacity' => (float) $atts['background_opacity'],
-            'template_selector_color' => $atts['template_selector_color'],
+            'grid_selector_color' => $atts['grid_selector_color'],
 
             'byline_template'          => $atts['byline_template'],
             'byline_template_textonly' => $atts['byline_template_textonly'],

@@ -495,7 +495,7 @@ class WPTiles extends Abstracts\WPSingleton
             'id', 'grids', 'breakpoint', 'small_screen_grid', 'padding',
             'byline_color', 'byline_height', 'colors', 'byline_opacity',
             'next_query', 'ajaxurl', 'animate_template', 'animate_init',
-            'animate_resize', 'template_selector_color'
+            'animate_resize', 'grid_selector_color'
         );
 
         foreach( $js_opts as &$opt ) {

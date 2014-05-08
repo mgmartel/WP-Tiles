@@ -160,10 +160,10 @@ class Controls
 
         $controls[] = array(
             'type' => 'color',
-            'name' => 'template_selector_color',
-            'label' => __( 'Template Selector Color', 'wp-tiles' ),
-            'description' => __( 'Select the color for the template selector.', 'wp-tiles' ),
-            'default' => wp_tiles()->options->get_defaults( 'template_selector_color' ),
+            'name' => 'grid_selector_color',
+            'label' => __( 'Grid Selector Color', 'wp-tiles' ),
+            'description' => __( 'If you choose multiple grids, a selector will appear above your tiles. Select the color for the grid selector.', 'wp-tiles' ),
+            'default' => wp_tiles()->options->get_defaults( 'grid_selector_color' ),
             'format' => 'hex',
         );
 
@@ -955,8 +955,8 @@ class Controls
             array(
                 'type'        => 'toggle',
                 'name'        => 'legacy_styles',
-                'label'       => __( 'Use legacy (pre-1.0) styles', 'wp-tiles' ),
-                'description' => __( 'Check this box to enable the old styles for WP Tiles. Not recommended, unless you need to ensure compatibility with your own custom styles from the pre-1.0 era.', 'wp-tiles' ),
+                'label'       => __( 'Use Legacy (pre-1.0) Styles', 'wp-tiles' ),
+                'description' => __( 'Check this box to enable the old CSS styles for WP Tiles. Not recommended, unless you need to ensure compatibility with your own custom styles from the pre-1.0 era.', 'wp-tiles' ),
                 'default'     => wp_tiles()->options->get_defaults( 'legacy_styles' )
             )
         );
