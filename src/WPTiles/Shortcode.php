@@ -190,7 +190,7 @@ class Shortcode
         $post_parent = $atts['post_parent']; // Validated later, after check for 'current'
         $post_status = $atts['post_status']; // Validated later as one of a few values
         $post_type =  sanitize_text_field( $atts['post_type'] );
-        $posts_per_page = 'grid' == $atts['posts_per_page'] ? 'grid' : intval( $atts['posts_per_page'] );
+        $posts_per_page = 'auto' == $atts['posts_per_page'] ? 'auto' : intval( $atts['posts_per_page'] );
         $tag = sanitize_text_field( $atts['tag'] );
         $tax_operator = $atts['tax_operator']; // Validated later as one of a few values
         $tax_term = sanitize_text_field( $atts['tax_term'] );

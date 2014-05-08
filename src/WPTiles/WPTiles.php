@@ -155,8 +155,9 @@ class WPTiles extends Abstracts\WPSingleton
         // Is $posts a query?
         if ( is_array( $posts ) && count( array_filter( array_keys( $posts ), 'is_string') ) ) {
 
-            if ( isset( $posts['posts_per_page'] ) && 'grid' === $posts['posts_per_page'] ) {
-                $posts['posts_per_page'] = $this->get_posts_in_grid( reset( $opts['grids'] ) );
+            if ( isset( $posts['posts_per_page'] ) && 'auto' === $posts['posts_per_page'] ) {
+                $posts_in_grid = $this->get_posts_in_grid( reset( $opts['grids'] ) );
+                $posts['posts_per_page'] = ( $posts_in_grid ) ? $posts_in_grid : 10;
             }
 
             // Automatically set paged var if tile pagination is on
