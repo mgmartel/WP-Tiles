@@ -25,16 +25,35 @@
       },
 
       get_tile_letters = function(g){
-        var u        = '',
+        var letters  = '',
             g        = $("#grid_template").val(),
-            template = g.replace(/\s/g,'');
+            r        = g.split("\n");
 
-        for(var i=0; i<template.length; i++){
-            if(template[i] == '.' || u.indexOf(template[i])==-1){
-                u += template[i];
+        var line_above;
+        $.each(r,function(index){
+          var template = this.match(/[^ ]/g);
+          if (!template) return;
+
+          for(var i=0; i<template.length; i++){
+            // Letter has been used?
+            if ( template[i] !== '.' && letters.indexOf(template[i]) !== -1 ) {
+
+              var is_adjacent = template[i-1] === template[i],
+                  is_beneath  = index !== 0 && line_above[i] === template[i];
+
+              if ( !is_adjacent && !is_beneath )
+                letters += template[i];
+
+            } else {
+              letters += template[i];
+
             }
-        }
-        return u;
+          }
+          line_above = template;
+
+        });
+
+        return letters;
       },
 
       resize_grid_container = function(){
