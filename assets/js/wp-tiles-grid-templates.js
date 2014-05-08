@@ -38,8 +38,8 @@
             // Letter has been used?
             if ( template[i] !== '.' && letters.indexOf(template[i]) !== -1 ) {
 
-              var is_adjacent = template[i-1] === template[i],
-                  is_beneath  = index !== 0 && line_above[i] === template[i];
+              var is_adjacent = i !== 0 && template[i-1] === template[i],
+                  is_beneath  = line_above && line_above[i] === template[i];
 
               if ( !is_adjacent && !is_beneath )
                 letters += template[i];
