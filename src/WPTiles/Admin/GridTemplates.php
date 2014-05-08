@@ -127,7 +127,7 @@ class GridTemplates extends \WPTiles\Abstracts\WPSingleton
     }
 
     public function render_template_preview() {
-        echo "<div class='wp-tiles-container'><div id='grid-template-demo' class='wp-tiles-grid'></div></div>";
+        echo "<div class='wp-tiles-container wp-tiles-loaded'><div id='grid-template-demo' class='wp-tiles-grid'></div></div>";
     }
 
     public static function get_default_template() {
