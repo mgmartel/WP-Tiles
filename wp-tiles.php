@@ -3,7 +3,7 @@
   Plugin Name: WP Tiles
   Plugin URI: http://trenvopress.com/
   Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-  Version: 0.5.9
+  Version: 1.0-beta1
   Author: Mike Martel
   Author URI: http://trenvopress.com
  */
@@ -17,7 +17,7 @@ if ( !defined( 'ABSPATH' ) )
  *
  * @since 0.1
  */
-define( 'WP_TILES_VERSION', '0.5.9' );
+define( 'WP_TILES_VERSION', '1.0-beta1' );
 
 /**
  * PATHs and URLs
@@ -34,7 +34,7 @@ define( 'WP_TILES_ASSETS_URL', WP_TILES_URL . 'assets/' );
 /**
  * Requires and includes
  *
- * @since 0.1
+ * @since 1.0
  */
 if ( !defined( 'VP_VERSION' ) )
     require plugin_dir_path( __FILE__ ) .'vafpress-framework/bootstrap.php';
