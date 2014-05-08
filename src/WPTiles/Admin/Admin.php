@@ -40,8 +40,8 @@ class Admin
             'modal_title'    => __( 'WP Tiles Shortcodes', 'wp-tiles' ),
             'button_title'   => __( 'WP Tiles', 'wp-tiles' ),
             'types'          => array( '*' ),
-            'main_image'     => VP_IMAGE_URL . '/vp_shortcode_icon.png',
-            'sprite_image'   => VP_IMAGE_URL . '/vp_shortcode_icon_sprite.png',
+            'main_image'     => WP_TILES_ASSETS_URL . 'images/editor-button-main.png',
+            'sprite_image'   => WP_TILES_ASSETS_URL . 'images/editor-button.png',
         );
         return new \VP_ShortcodeGenerator( $tmpl_sg );
     }
