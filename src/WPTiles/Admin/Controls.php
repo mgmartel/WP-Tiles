@@ -843,7 +843,7 @@ class Controls
                  'label' => 'Preview',
                  'binding' => array(
                      'function' => 'wp_tiles_preview_tile',
-                     'field' => 'byline_height,byline_color,byline_opacity,byline_align,byline_effect,image_effect',
+                     'field' => 'byline_height_auto,byline_height,byline_color,byline_opacity,byline_align,byline_effect,image_effect',
                  ),
                 'default' => wp_tiles_preview_tile()
              )
@@ -871,10 +871,17 @@ class Controls
                 'step' => '0.01',
             ),
             array(
+                'type' => 'toggle',
+                'name' => 'byline_height_auto',
+                'label' => __('Automatic Byline Height?', 'wp-tiles'),
+                'description' => __( 'Should the height of the byline be determined by its content?', 'wp-tiles' ),
+                'default' => wp_tiles()->options->get_defaults( 'byline_height_auto' ),
+            ),
+            array(
                 'type' => 'slider',
                 'name' => 'byline_height',
                 'label' => __('Byline Height (%)', 'wp-tiles'),
-                'description' => __( 'Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible.', 'wp-tiles' ),
+                'description' => __( 'Set the height of the byline on image tiles. 100% means fully covered, 0% means invisible. If byline height is set to auto, this is the maximum height.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_height' ),
                 'min' => '0',
                 'max' => '100',

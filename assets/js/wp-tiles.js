@@ -108,8 +108,8 @@
                 $image_bylines.css('background-color', opts.byline_color); // Byline color includes alpha
               }
 
-              // Set the byline height
-              $image_bylines.css('height',opts.byline_height + '%');
+              // Set the byline (max)height
+              $image_bylines.css(opts.byline_height_auto ? 'max-height' : 'height',opts.byline_height + '%');
             }
 
           };

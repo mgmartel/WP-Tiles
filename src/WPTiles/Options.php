@@ -28,6 +28,7 @@ class Options
         'byline_opacity'  => '0.7',
         'byline_color'    => '#000000',
         'byline_height'   => 40,
+        'byline_height_auto' => false,
 
         'link'            => 'post', //post|thickbox|attachment|none
         'link_new_window' => false,

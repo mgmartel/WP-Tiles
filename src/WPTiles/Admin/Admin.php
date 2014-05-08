@@ -276,9 +276,9 @@ class Admin
     }
 
     public static function preview_tile() {
-        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) && count( $_POST['params'] ) === 6 ) {
+        if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) && count( $_POST['params'] ) === 7 ) {
 
-            list( $byline_height, $byline_color, $byline_opacity, $byline_align, $byline_effect, $image_effect ) = $_POST['params'];
+            list( $byline_height_auto, $byline_height, $byline_color, $byline_opacity, $byline_align, $byline_effect, $image_effect ) = $_POST['params'];
 
             // Sanitize!
             $byline_height = (int) $byline_height;
@@ -291,6 +291,7 @@ class Admin
             $byline_align = 'top' == $byline_align ? 'top' : 'bottom';
 
         } else {
+            $byline_height_auto = wp_tiles()->options->get_option( 'byline_height_auto' );
             $byline_height  = wp_tiles()->options->get_option( 'byline_height' );
             $byline_color   = wp_tiles()->options->get_option( 'byline_color' );
             $byline_opacity = wp_tiles()->options->get_option( 'byline_opacity' );
@@ -355,7 +356,7 @@ class Admin
         <style>
             .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-byline {
                 background: <?php echo $byline_color ?>;
-                height: <?php echo $byline_height; ?>%;
+                <?php if ( $byline_height_auto ) : ?>max-<?php endif; ?>height: <?php echo $byline_height; ?>%;
             }
         </style>
         <?php
