@@ -32,10 +32,8 @@ class Shortcode
 
         $atts = shortcode_atts( array(
             'grids' => $defaults['grids'],
-            'grid'  => false,
-
             'colors' => $defaults['colors'],
-            'color' => false,
+
             'background_opacity' => $defaults['background_opacity'],
             'grid_selector_color' => $defaults['grid_selector_color'],
 
@@ -79,7 +77,7 @@ class Shortcode
 
         ), $original_atts );
 
-        $grid_names = self::_get_options_array( $atts['grids'],  $atts['grid'] );
+        $grid_names = self::_get_options_array( $atts['grids'] );
         //$grids = wp_tiles()->get_grids( $grid_names );
 
         $options = array(
@@ -88,7 +86,7 @@ class Shortcode
             'small_screen_grid' => '',
             'breakpoint' => (int) $atts['breakpoint'],
 
-            'colors' => self::_get_colors( $atts['colors'], $atts['color'] ),
+            'colors' => self::_get_colors( $atts['colors'] ),
             'background_opacity' => (float) $atts['background_opacity'],
             'grid_selector_color' => $atts['grid_selector_color'],
 
@@ -136,19 +134,16 @@ class Shortcode
 
     }
 
-        private static function _get_colors( $colors, $color ) {
-            $colors = self::_get_options_array( $colors, $color );
+        private static function _get_colors( $colors ) {
+            $colors = self::_get_options_array( $colors );
 
             $rgba = Helper::colors_to_rgba( $colors );
 
             return $rgba;
         }
 
-        private static function _get_options_array( $plural, $singular = false ) {
-            if ( $singular )
-                return array( $singular );
-
-            $options = ( !is_array( $plural ) ) ? explode( ',', $plural ) : $plural;
+        private static function _get_options_array( $array ) {
+            $options = ( !is_array( $array ) ) ? explode( ',', $array ) : $array;
             return ( is_string( $options ) ) ? array_map( 'trim', $options ) : $options;
         }
 
