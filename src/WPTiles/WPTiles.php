@@ -386,10 +386,10 @@ class WPTiles extends Abstracts\WPSingleton
                 <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
                 <?php if ( 'post' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>"<?php echo $link_attributes_string ?>>
+                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title, $post->ID ) ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'file' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title ) ?>"<?php echo $link_attributes_string ?>>
+                    <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo apply_filters( 'the_title', $post->post_title, $post->ID ) ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'thickbox' == $opts['link'] ) : ?>
 
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo strip_tags( $byline ) ?>" class="thickbox" rel="<?php echo $this->tiles_id ?>"<?php echo $link_attributes_string ?>>
@@ -414,7 +414,7 @@ class WPTiles extends Abstracts\WPSingleton
                                 <div class='wp-tiles-byline-wrapper'>
                                 <?php if ( !$opts['hide_title'] ) : ?>
 
-                                    <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title ) ?></h4>
+                                    <h4 itemprop="name" class="wp-tiles-byline-title"><?php echo apply_filters( 'the_title', $post->post_title, $post->ID ) ?></h4>
                                 <?php endif; ?>
                                 <?php if ( $byline ) : ?>
 
@@ -445,7 +445,7 @@ class WPTiles extends Abstracts\WPSingleton
         $template = apply_filters( 'wp_tiles_byline_template_post', $template, $post );
 
         $tags = array(
-            '%title%'   => apply_filters( 'the_title', $post->post_title ),
+            '%title%'   => apply_filters( 'the_title', $post->post_title, $post->ID ),
             '%content%' => apply_filters( 'the_content', strip_shortcodes( $post->post_content ) ),
             '%excerpt%' => $this->get_the_excerpt( $post ),
             '%date%'    => $this->get_the_date( $post ),
