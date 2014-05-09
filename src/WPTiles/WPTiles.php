@@ -555,7 +555,7 @@ class WPTiles extends Abstracts\WPSingleton
 
     public function register_scripts() {
 
-        $script_path = WP_TILES_ASSETS_URL . '/js/';
+        $script_path = WP_TILES_ASSETS_URL . 'js/';
         $in_footer   = apply_filters( 'wp_tiles_js_in_footer', true );
 
         if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
@@ -573,7 +573,7 @@ class WPTiles extends Abstracts\WPSingleton
 
     public function register_styles() {
 
-        $stylesheet = WP_TILES_ASSETS_URL . '/css/wp-tiles.css';
+        $stylesheet = WP_TILES_ASSETS_URL . 'css/wp-tiles.css';
 
         // In admin we want vanilla WP Tiles styles
         if ( !is_admin() ) {
