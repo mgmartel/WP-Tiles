@@ -275,43 +275,56 @@ class Admin
         );
     }
 
-    public static function preview_tile() {
+    public static function preview_tile( $atts = array() ) {
         if ( defined( 'DOING_AJAX' ) && DOING_AJAX && isset( $_POST['params'] ) && count( $_POST['params'] ) === 8 ) {
 
-            list(
-                $byline_height_auto,
-                $byline_height,
-                $byline_color,
-                $byline_opacity,
-                $byline_align,
-                $byline_effect,
-                $image_effect,
-                $image_text_color
-            ) = $_POST['params'];
+            $atts = array_combine( array(
+                'byline_height_auto',
+                'byline_height',
+                'byline_color',
+                'byline_opacity',
+                'byline_align',
+                'byline_effect',
+                'image_effect',
+                'image_text_color'
+            ), $_POST['params'] );
 
             // Sanitize!
-            $byline_height = (int) $byline_height;
+            $atts['byline_height'] = (int) $atts['byline_height'];
 
-            if ( 'random' == $byline_color || empty( $byline_color ) ) {
-                $byline_color = wp_tiles()->options->get_option( 'color_1' );
+            if ( 'random' == $atts['byline_color'] || empty( $atts['byline_color'] ) ) {
+                $atts['byline_color'] = wp_tiles()->options->get_option( 'color_1' );
             }
 
-            $byline_opacity = (float) $byline_opacity;
-            $byline_align = 'top' == $byline_align ? 'top' : 'bottom';
+            $atts['byline_opacity'] = (float) $atts['byline_opacity'];
+            $atts['byline_align'] = 'top' == $atts['byline_align'] ? 'top' : 'bottom';
+
+            $atts['id'] = 'tile-ajax-preview';
 
         } else {
-            $byline_height_auto = wp_tiles()->options->get_option( 'byline_height_auto' );
-            $byline_height      = wp_tiles()->options->get_option( 'byline_height' );
-            $byline_color       = wp_tiles()->options->get_option( 'byline_color' );
-            $byline_opacity     = wp_tiles()->options->get_option( 'byline_opacity' );
-            $byline_align       = wp_tiles()->options->get_option( 'byline_align' );
-            $byline_effect      = wp_tiles()->options->get_option( 'byline_effect' );
-            $image_effect       = wp_tiles()->options->get_option( 'image_effect' );
-            $image_text_color   = wp_tiles()->options->get_option( 'image_text_color' );
+            $atts = shortcode_atts( array(
+                'byline_height_auto' => wp_tiles()->options->get_option( 'byline_height_auto' ),
+                'byline_height'      => wp_tiles()->options->get_option( 'byline_height' ),
+                'byline_color'       => wp_tiles()->options->get_option( 'byline_color' ),
+                'byline_opacity'     => wp_tiles()->options->get_option( 'byline_opacity' ),
+                'byline_align'       => wp_tiles()->options->get_option( 'byline_align' ),
+                'byline_effect'      => wp_tiles()->options->get_option( 'byline_effect' ),
+                'image_effect'       => wp_tiles()->options->get_option( 'image_effect' ),
+                'image_text_color'   => wp_tiles()->options->get_option( 'image_text_color' ),
+                'id'                 => 'tile-preview'
+            ), $atts );
 
         }
 
-        $byline_color = Helper::hex_to_rgba( $byline_color, $byline_opacity, true );
+        $id = $atts['id'];
+
+        $byline_height_auto = wp_tiles()->options->boolean( $atts['byline_height_auto'] );
+        $byline_height      = $atts['byline_height'];
+        $byline_color       = Helper::hex_to_rgba( $atts['byline_color'], $atts['byline_opacity'], true );
+        $byline_align       = $atts['byline_align'];
+        $byline_effect      = $atts['byline_effect'];
+        $image_effect       = $atts['image_effect'];
+        $image_text_color   = $atts['image_text_color'];
 
         /**
          * ANIMATION CLASSES
@@ -333,7 +346,7 @@ class Admin
 
         ob_start();
         ?>
-        <div class="wp-tiles-container wp-tiles-tile-demo wp-tiles-loaded">
+        <div class="wp-tiles-container wp-tiles-tile-demo wp-tiles-loaded" id="<?php echo $id ?>">
 
             <div id="wp_tiles_1" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
 
@@ -364,7 +377,7 @@ class Admin
 
         </div>
         <style>
-            .wp-tiles-container.wp-tiles-tile-demo .wp-tiles-byline {
+            #<?php echo $id ?> .wp-tiles-byline {
                 background: <?php echo $byline_color ?>;
                 <?php if ( $byline_height_auto ) : ?>max-<?php endif; ?>height: <?php echo $byline_height; ?>%;
                 <?php if ( $image_text_color ) : ?>color: <?php echo $image_text_color ?>;<?php endif; ?>
