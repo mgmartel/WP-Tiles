@@ -647,8 +647,14 @@ class WPTiles extends Abstracts\WPSingleton
      * Plugins can hijack this method by hooking into 'pre_wp_tiles_image'.
      * @param WP_Post $post
      * @return string Image url
+     *
+     * @todo Statically caches found images in object to prevent double lookups,
+     *        Maybe we should store this in object cache? The problem is that we
+     *        can't invalidate the cache reliably..
      */
     public function get_first_image( $post, $size = false ) {
+        static $found = array();
+
         $allowed_sizes = get_intermediate_image_sizes();
         $allowed_sizes[] = 'full';
 
@@ -667,7 +673,13 @@ class WPTiles extends Abstracts\WPSingleton
         if ( false !== $src )
             return $src;
 
-        return $this->_find_the_image( $post, $size );
+        if ( !isset( $found[$post->ID] ) )
+            $found[$post->ID] = array();
+
+        if ( !isset( $found[$post->ID][$size] ) )
+            $found[$post->ID][$size] = $this->_find_the_image( $post, $size );
+
+        return $found[$post->ID][$size];
     }
 
         /**
