@@ -80,8 +80,17 @@ class Shortcode
 
         if ( $atts['grid'] ) {
             $atts['grids'] = array(
-                'Custom' => $atts['grid']
+                'Custom' => wp_tiles()->format_grid( $atts['grid'] )
             );
+        }
+
+        // Maybe convert full grid strings into grids so they are not interpreted as names
+        $is_grid_string = function( $string ) {
+            return is_string( $string ) && ( strpos( $string, '|' ) !== 0 || strpos( $string, "\n" ) !== 0 );
+        };
+
+        if ( $atts['small_screen_grid'] && $is_grid_string( $atts['small_screen_grid'] ) ) {
+            $atts['small_screen_grid'] = wp_tiles()->format_grid( $atts['small_screen_grid'] );
         }
 
         $grid_names = self::_get_options_array( $atts['grids'] );
