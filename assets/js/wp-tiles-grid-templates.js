@@ -10,20 +10,6 @@
       grid,
 
       // Private functions
-      debounce = function(func, wait, immediate) { // debounce utility from underscorejs.org
-          var timeout;
-          return function() {
-            var context = this, args = arguments;
-            var later = function() {
-              timeout = null;
-              if (!immediate) func.apply(context, args);
-            };
-            if (immediate && !timeout) func.apply(context, args);
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-          };
-      },
-
       get_tile_letters = function(g){
         var letters  = '',
             g        = $("#grid_template").val(),
@@ -56,14 +42,6 @@
         return letters;
       },
 
-      resize_grid_container = function(){
-          var lastEl = $el.children().last(),
-              tileOffsetTop = parseInt ( $el.offset().top ),
-              newHeight = parseInt(lastEl.css("height"), 10) + parseInt(lastEl.offset().top, 10) - tileOffsetTop + 10 + "px";
-
-          $el.parent('.wp-tiles-container').css('height', newHeight );
-      },
-
       draw = function(callback){
         var g = $("#grid_template").val(),
             f = g.replace(/\r/g, "").split("\n"),
@@ -82,7 +60,7 @@
           if (typeof callback === 'function')
             callback.call();
 
-          resize_grid_container();
+          $.wptiles.resizeParent($el,10);
         });
 
         $('.wp-tiles-show-help').click(function(e){
@@ -158,7 +136,7 @@
 
   // Draw actions
   $('.meta-box-sortables').on('sortupdate',draw);
-  $(window).resize(debounce(draw, 200));
+  $(window).resize($.wptiles.debounce(draw, 200));
 
   // (Maybe) Walkthrough
   if ( typeof wpTilesPointers !== 'undefined' ) {
@@ -183,7 +161,5 @@
 
       $(pointer.target).pointer( pointer.options ).pointer('open');
   }
-
-
 
 })(jQuery);
