@@ -31,7 +31,8 @@ class Shortcode
         $defaults = wp_tiles()->options->get_options();
 
         $atts = shortcode_atts( array(
-            'grids' => $defaults['grids'],
+            'grids'  => $defaults['grids'],
+            'grid'   => false, // Pass grid manually
             'colors' => $defaults['colors'],
 
             'background_opacity' => $defaults['background_opacity'],
@@ -77,8 +78,13 @@ class Shortcode
 
         ), $original_atts );
 
+        if ( $atts['grid'] ) {
+            $atts['grids'] = array(
+                'Custom' => $atts['grid']
+            );
+        }
+
         $grid_names = self::_get_options_array( $atts['grids'] );
-        //$grids = wp_tiles()->get_grids( $grid_names );
 
         $options = array(
             'grids' => $grid_names, // Will be converted into grid templates in get_tiles
