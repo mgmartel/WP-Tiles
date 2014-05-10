@@ -263,20 +263,24 @@ class WPTiles extends Abstracts\WPSingleton
         /**
          * Set extra container classes for major CSS changes
          */
-        $extra_classes = array();
+        $extra_classes = $extra_classes_grid_selector = array();
 
         //Legacy styles?
         if ( apply_filters( 'wp_tiles_use_legacy_styles', $this->options->get_option( 'legacy_styles' ) ) )
-            $extra_classes[] = 'wp-tiles-legacy';
+            $extra_classes[] = $extra_classes_grid_selector[] = 'wp-tiles-legacy';
 
         // Full width experiment
         if ( $opts['full_width'] )
             $extra_classes[] = 'wp-tiles-full-width';
 
         $extra_classes = implode( ' ', apply_filters( 'wp_tiles_container_classes', $extra_classes ) );
+        $extra_classes_grid_selector = implode( ' ', apply_filters( 'wp_tiles_grid_selector_classes', $extra_classes_grid_selector ) );
 
         if ( !empty( $extra_classes ) )
             $extra_classes = ' ' . $extra_classes;
+
+        if ( !empty( $extra_classes_grid_selector ) )
+            $extra_classes_grid_selector = ' ' . $extra_classes_grid_selector;
 
         /**
          * Render the template
@@ -290,7 +294,7 @@ class WPTiles extends Abstracts\WPSingleton
         ob_start();
         if ( count( $grid_names ) > 1 ) : ?>
 
-        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $extra_classes ?>">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $extra_classes_grid_selector ?>">
 
             <ul class="wp-tiles-template-selector">
             <?php foreach ( $grid_names as $slug => $name ) : ?>
