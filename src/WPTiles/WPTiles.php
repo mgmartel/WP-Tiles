@@ -263,24 +263,24 @@ class WPTiles extends Abstracts\WPSingleton
         /**
          * Set extra container classes for major CSS changes
          */
-        $extra_classes = $extra_classes_grid_selector = array();
+        //$opts['extra_classes'] = $opts['extra_classes_grid_selector'] = array();
 
         //Legacy styles?
         if ( apply_filters( 'wp_tiles_use_legacy_styles', $this->options->get_option( 'legacy_styles' ) ) )
-            $extra_classes[] = $extra_classes_grid_selector[] = 'wp-tiles-legacy';
+            $opts['extra_classes'][] = $opts['extra_classes_grid_selector'][] = 'wp-tiles-legacy';
 
         // Full width experiment
         if ( $opts['full_width'] )
-            $extra_classes[] = 'wp-tiles-full-width';
+            $opts['extra_classes'][] = 'wp-tiles-full-width';
 
-        $extra_classes = implode( ' ', apply_filters( 'wp_tiles_container_classes', $extra_classes ) );
-        $extra_classes_grid_selector = implode( ' ', apply_filters( 'wp_tiles_grid_selector_classes', $extra_classes_grid_selector ) );
+        $opts['extra_classes'] = implode( ' ', apply_filters( 'wp_tiles_container_classes', $opts['extra_classes'] ) );
+        $opts['extra_classes_grid_selector'] = implode( ' ', apply_filters( 'wp_tiles_grid_selector_classes', $opts['extra_classes_grid_selector'] ) );
 
-        if ( !empty( $extra_classes ) )
-            $extra_classes = ' ' . $extra_classes;
+        if ( !empty( $opts['extra_classes'] ) )
+            $opts['extra_classes'] = ' ' . $opts['extra_classes'];
 
-        if ( !empty( $extra_classes_grid_selector ) )
-            $extra_classes_grid_selector = ' ' . $extra_classes_grid_selector;
+        if ( !empty( $opts['extra_classes_grid_selector'] ) )
+            $opts['extra_classes_grid_selector'] = ' ' . $opts['extra_classes_grid_selector'];
 
         /**
          * Render the template
@@ -294,7 +294,7 @@ class WPTiles extends Abstracts\WPSingleton
         ob_start();
         if ( count( $grid_names ) > 1 ) : ?>
 
-        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $extra_classes_grid_selector ?>">
+        <div id="<?php echo $wp_tiles_id; ?>-templates" class="wp-tiles-templates<?php echo $opts['extra_classes_grid_selector'] ?>">
 
             <ul class="wp-tiles-template-selector">
             <?php foreach ( $grid_names as $slug => $name ) : ?>
@@ -307,7 +307,7 @@ class WPTiles extends Abstracts\WPSingleton
         </div>
         <?php endif; ?>
 
-        <div class="wp-tiles-container<?php echo $extra_classes ?>">
+        <div class="wp-tiles-container<?php echo $opts['extra_classes'] ?>">
         <?php if ( 'carousel' == $opts['link'] ):?>
 
             <?php echo apply_filters( 'gallery_style', '<div id="' . $wp_tiles_id . '" class="wp-tiles-grid gallery ' . implode( ' ', $classes ) . '">' ); ?>

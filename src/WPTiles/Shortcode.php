@@ -74,6 +74,10 @@ class Shortcode
 
             'pagination'       => $defaults['pagination'],
 
+            'extra_classes'    => $defaults['extra_classes'],
+            'extra_classes_grid_selector'
+                               => $defaults['extra_classes_grid_selector'],
+
             'full_width'       => $defaults['full_width']
 
         ), $original_atts );
@@ -130,6 +134,11 @@ class Shortcode
             'image_size'   => $atts['image_size'],
 
             'padding' => (int) $atts['padding'],
+
+            'extra_classes'    => self::_get_options_array( $atts['extra_classes'] ),
+            
+            'extra_classes_grid_selector'
+                               => self::_get_options_array( $atts['extra_classes_grid_selector'] ),
 
             'animate_init'     => ( $atts['animated'] && $atts['animate_init'] ),
             'animate_resize'   => ( $atts['animated'] && $atts['animate_resize'] ),

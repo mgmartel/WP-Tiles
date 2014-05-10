@@ -55,6 +55,9 @@ class Options
 
         'legacy_styles' => false,
 
+        'extra_classes'               => array(),
+        'extra_classes_grid_selector' => array(),
+
         // Experimental options, only available in shortcode or PHP
         'full_width'    => false
     );
