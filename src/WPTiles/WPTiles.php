@@ -484,7 +484,7 @@ class WPTiles extends Abstracts\WPSingleton
         // Tax list: %tax:TAXONOMY%
         // Tax list with links: %tax_links:TAXONOMY%
         $matches = array();
-        if ( preg_match_all( '/%([a-z_]+):([A-Za-z0-9_-]+)%/', $template, $matches, PREG_SET_ORDER ) ) {
+        if ( preg_match_all( '/%([a-z_-]+):([^%]+)%/', $template, $matches, PREG_SET_ORDER ) ) {
 
             foreach( $matches as $match ) {
                 if ( 'meta' === $match[1]) {
@@ -501,6 +501,11 @@ class WPTiles extends Abstracts\WPSingleton
                         $tags["%tax_links:$match[2]%"] = get_the_term_list( $post->ID, $taxonomy, '', ', ', '' );
 
                     }
+
+                } else {
+                    $tag = apply_filters( 'wp_tiles_byline_tags_dynamic', false, $match[1], $match[2], $post, $template );
+                    if ( false !== $tag )
+                        $tags["%{$match[1]}:{$match[2]}%"] = $tag;
 
                 }
             }
