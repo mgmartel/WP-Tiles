@@ -110,17 +110,23 @@ class WPTiles extends Abstracts\WPSingleton
         $query = Legacy::get_atts_array_query( $atts_array );
         $opts  = Legacy::convert_option_array( $atts_array );
 
-        $this->display_tiles( $query, $opts );
+        return $this->display_tiles( $query, $opts );
     }
 
+    /**
+     * Echos the tiles and return true if output has been generated.
+     *
+     * @return boolean
+     */
     public function display_tiles( $posts = array(), $opts = array() ) {
-        echo $this->get_tiles( $posts, $opts );
+        if ( !$ret = $this->get_tiles( $posts, $opts ) )
+            return false;
+
+        echo $ret;
+        return true;
     }
 
     public function get_tiles( $posts = array(), $opts = array() ) {
-
-        if ( empty( $posts ) )
-            return;
 
         //
         // SETUP
@@ -175,6 +181,8 @@ class WPTiles extends Abstracts\WPSingleton
             $posts = $wp_query->posts;
         }
 
+        if ( empty( $posts ) )
+            return false;
 
         //
         // OPTIONS
