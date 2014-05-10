@@ -145,7 +145,8 @@ class WPTiles extends Abstracts\WPSingleton
         $opts['grids'] = $this->sanitize_grid_keys( $opts['grids'] );
         $grid_names = array_combine( array_keys( $opts['grids'] ), $grid_pretty_names );
 
-        $opts['small_screen_grid'] = $this->format_grid( $opts['small_screen_grid'] );
+        $small_screen_grids = $this->get_grids( $opts['small_screen_grid'] );
+        $opts['small_screen_grid'] = end( $small_screen_grids );
 
 
         //
@@ -744,7 +745,7 @@ class WPTiles extends Abstracts\WPSingleton
         // Check if this is already a grid
         // Happens when default is passed through the shortcode
         if ( is_array( $query ) && is_array( reset( $query ) ) )
-            return $query;
+                return $query;
 
         $posts = $this->_get_grid_posts( $query );
 
@@ -864,7 +865,7 @@ class WPTiles extends Abstracts\WPSingleton
      */
     public function format_grid( $grid ) {
         if ( !is_array( $grid ) )
-            $grid = explode( "\n", $grid );
+            $grid = explode( "\n", str_replace( "|", "\n", $grid ) );
 
         $grid = array_map( 'trim', $grid );
 
