@@ -28,7 +28,7 @@ class Admin
     }
 
     public static function is_options() {
-        return self::CONTEXT_OPTIONS === self::context;
+        return self::CONTEXT_OPTIONS === self::$context;
     }
 
     public static function setup_shortcode_generator() {
