@@ -49,59 +49,43 @@ class Admin
         private static function get_shortcode_options() {
 
             $controls = array();
-            $controls[__( 'Basic Tiles', 'wp-tiles' )] = array(
+            $controls[__( 'Tiles', 'wp-tiles' )] = array(
                 'elements' => array(
                     'wp_tiles'    => array(
-                        'title' => __( '[wp-tiles] Default options', 'wp-tiles' ),
+                        'title' => __( '[wp-tiles] WP Tiles Shortcode', 'wp-tiles' ),
                         'code'  => '[wp-tiles]',
+                        'attributes' => array_merge( Controls::query_basic(), Controls::single_grid() )
                     ),
-                    'wp_tiles_last_20_posts'    => array(
-                        'title' => __( 'Last 20 Blog Posts', 'wp-tiles' ),
+                    'wp_tiles_basic_query' => array(
+                        'title' => __( 'Tiles with custom Grid options', 'wp-tiles' ),
+                        'code' => '[wp-tiles]',
+                        'attributes' => array_merge( Controls::query_basic(), Controls::grids() )
+                    ),
+                    'wp_tiles_select_posts' => array(
+                        'title' => __( 'Select Specific Posts to display', 'wp-tiles' ),
+                        'code' => '[wp-tiles]',
+                        'attributes' => array_merge( Controls::query_manual(), Controls::single_grid() )
+                    ),
+                ),
+            );
+
+            $controls[__('Presets', 'wp-tiles')] = array(
+                'elements' => array(
+                    'wp_tiles_last_20_posts' => array(
+                        'title' => __( '<em>Preset:</em> Last 20 Blog Posts', 'wp-tiles' ),
                         'code'  => "[wp-tiles post_type='post' posts_per_page=20 orderby='date' order='DESC']",
                     ),
-                    'wp_tiles_related_tag'    => array(
-                        'title' => __( 'Posts with same tags', 'wp-tiles' ),
+                    'wp_tiles_related_tag' => array(
+                        'title' => __( '<em>Preset:</em> Display posts with same tags as current post', 'wp-tiles' ),
                         'code'  => "[wp-tiles related_in_taxonomy='tag']",
                     ),
                     'wp_tiles_related_category'    => array(
-                        'title' => __( 'Posts with same categories', 'wp-tiles' ),
+                        'title' => __( '<em>Preset:</em> Display posts with same categories as current post', 'wp-tiles' ),
                         'code'  => "[wp-tiles related_in_taxonomy='category']",
                     ),
-                ),
+                )
             );
 
-            $grids = wp_tiles()->get_grids();
-            if ( !empty( $grids ) ) {
-
-                $grid_controls = array();
-                foreach( array_keys( $grids ) as $grid ) {
-
-                    $grid_controls['wp_tiles_grid_' . sanitize_key( $grid )] = array(
-                        'title' => $grid,
-                        'code' => "[wp-tiles grid='" .$grid . "']"
-                    );
-
-                }
-
-                $controls[__( 'Grids', 'wp-tiles' )] = array(
-                    'elements' => $grid_controls
-                );
-            }
-
-            $controls[__( 'Custom Tiles', 'wp-tiles' )] = array(
-                'elements' => array(
-                    'custom_layout'    => array(
-                        'title' => __( 'Custom Layout', 'wp-tiles' ),
-                        'code'  => '[wp-tiles]',
-                        'attributes' => Controls::grids()
-                    ),
-                    'custom_query'    => array(
-                        'title' => __( 'Custom Query', 'wp-tiles' ),
-                        'code'  => '[wp-tiles]',
-                        'attributes' => Controls::query()
-                    ),
-                ),
-            );
             $controls[__( 'Galleries', 'wp-tiles')] = array(
                 'elements' => array(
                     'gallery' => array(
@@ -114,12 +98,22 @@ class Admin
                         'code'  => '[gallery tiles=yes]',
                         'attributes' => Controls::gallery_select_post()
                     ),
-                    'gallery_grid' => array(
-                        'title' => __( 'Tiled Gallery with specific grid', 'wp-tiles' ),
-                        'code'  => '[gallery tiles=yes]',
-                        'attributes' => Controls::gallery_grid()
-                    )
                 )
+            );
+
+            $controls[__( 'Advanced', 'wp-tiles' )] = array(
+                'elements' => array(
+                    'custom_query'    => array(
+                        'title' => __( 'Custom Query', 'wp-tiles' ),
+                        'code'  => '[wp-tiles]',
+                        'attributes' => array_merge( Controls::query() )
+                    ),
+                    'custom_query_and_display' => array(
+                        'title' => __( 'Custom Query and Grid Options', 'wp-tiles' ),
+                        'code'  => '[wp-tiles]',
+                        'attributes' => array_merge( Controls::query(), Controls::grids() )
+                    ),
+                ),
             );
 
             return $controls;

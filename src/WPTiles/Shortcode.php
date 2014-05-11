@@ -136,7 +136,7 @@ class Shortcode
             'padding' => (int) $atts['padding'],
 
             'extra_classes'    => self::_get_options_array( $atts['extra_classes'] ),
-            
+
             'extra_classes_grid_selector'
                                => self::_get_options_array( $atts['extra_classes_grid_selector'] ),
 
@@ -247,6 +247,10 @@ class Shortcode
             $posts_in = array_map( 'intval', explode( ',', $id ) );
 
             $args['post__in'] = $posts_in;
+
+            if ( !isset( $original_atts['post_type'] ) || !$original_atts['post_type'] ) {
+                $args['post_type'] = 'any';
+            }
 
             if ( !isset( $original_atts['orderby'] ) || !$original_atts['orderby'] ) {
                 $args['orderby'] = 'post__in';
@@ -363,6 +367,11 @@ class Shortcode
                         'operator' => 'IN'
                     );
 
+                }
+
+                // Also set the post type if not explicitly given
+                if ( !isset( $original_atts['post_type'] ) || !$original_atts['post_type'] ) {
+                    $args['post_type'] = in_the_loop() ? get_post_type() : 'any';
                 }
 
             }

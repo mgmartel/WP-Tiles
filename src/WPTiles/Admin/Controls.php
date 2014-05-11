@@ -6,13 +6,43 @@ if ( !defined ( 'ABSPATH' ) )
 
 class Controls
 {
+    public static function single_grid() {
+        $grid_callback = ( Admin::is_shortcode() ) ? array( 'WPTiles\Admin\DataSources', 'get_grids_names' ) : array( 'WPTiles\Admin\DataSources', 'get_grids' );
+
+        $default_grid_option = wp_tiles()->options->get_option( 'default_grid' );
+        $grid = get_posts( array(
+            'post__in' => array( $default_grid_option ),
+            'post_type' => \WPTiles\WPTiles::GRID_POST_TYPE,
+            'post_status' => 'publish'
+        ) );
+
+        $default_grid = !empty( $grid ) ? reset( $grid )->post_title : '{{last}}';
+
+        return array(
+            array(
+                'type'        => 'select',
+                'name'        => 'grid',
+                'label'       => __( 'Grid', 'wp-tiles' ),
+                'description' => __( 'Select which Grid to use', 'wp-tiles' ),
+                'default'     => $default_grid,
+                'items'       => array(
+                    'data' => array(
+                        array(
+                            'source' => 'function',
+                            'value'  => $grid_callback,
+                        ),
+                    ),
+                ),
+            )
+        );
+    }
 
     public static function grids() {
         $grid_callback = ( Admin::is_shortcode() ) ? array( 'WPTiles\Admin\DataSources', 'get_grids_names' ) : array( 'WPTiles\Admin\DataSources', 'get_grids' );
 
         $controls   = array();
 
-        if ( Admin::is_shortcode() ) {
+        if ( !Admin::is_options() ) {
             $controls[] =  array(
                 'type' => 'notebox',
                 'name' => 'notice_shortcode_grid',
@@ -102,7 +132,7 @@ class Controls
                     ),
                 ),
             ),
-            'dependency'  => ( Admin::is_shortcode() ) ? false : array(
+            'dependency'  => ( !Admin::is_options() ) ? null : array(
                 'field'    => 'small_screen_enabled',
                 'function' => 'vp_dep_boolean',
             ),
@@ -115,7 +145,7 @@ class Controls
             'description' => __( 'Select the breakpoint (in px) after which the template should switch to small screen.', 'wp-tiles' ),
             'default'     => wp_tiles()->options->get_defaults( 'breakpoint' ),
             'validation'  => 'numeric',
-            'dependency'  => ( Admin::is_shortcode() ) ? false : array(
+            'dependency'  => ( !Admin::is_options() ) ? null : array(
                 'field'    => 'small_screen_enabled',
                 'function' => 'vp_dep_boolean',
             ),
@@ -140,7 +170,7 @@ class Controls
             'items'       => array(
                 array(
                     'value' => 'none',
-                    'label' => __( 'No Pagation', 'wp-tiles' )
+                    'label' => __( 'No Pagination', 'wp-tiles' )
                 ),
                 array(
                     'value' => 'ajax',
@@ -379,8 +409,9 @@ class Controls
     }
 
         private static function get_query_option( $key ) {
-            if ( false && Admin::is_shortcode() )
-                return wp_tiles()->post_query->get_query_option( 'id', true );
+            // This was relevent when we still stored query defaults
+            //if ( Admin::is_shortcode() )
+            //    return wp_tiles()->post_query->get_query_option( 'id', true );
 
             return wp_tiles()->post_query->get_query_defaults( $key );
         }
@@ -452,331 +483,343 @@ class Controls
     }
 
     public static function query() {
+        return array_merge(
+            self::query_basic(), self::query_basic_more(), self::query_advanced()
+        );
+    }
 
-        return array(
-            array(
-                'type'        => 'sorter',
-                'name'        => 'id',
-                'label'       => __( 'Manual Selection', 'wp-tiles' ),
-                'description' => __( 'Select posts manually', 'wp-tiles' ),
-                'default'     => self::get_query_option( 'id' ),
-                'items'       => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'multiselect',
-                'name' => 'post_type',
-                'label' => __( 'Post Type', 'wp-tiles' ),
-                'default' => self::get_query_option( 'post_type' ),
-                'items' => array(
-                    array(
-                        'label' => __( 'Any', 'wp-tiles'),
-                        'value' => 'any'
-                    ),
-                    array(
-                        'label' => __( 'Same as current post', 'wp-tiles'),
-                        'value' => 'current'
-                    ),
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_post_types' ),
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'textbox',
-                'name' => 'posts_per_page',
-                'label' => __('Posts Per Page', 'wp-tiles'),
-                //'validation' => 'numeric',
-                'default' => self::get_query_option( 'posts_per_page' ),
-            ),
-
-            array(
-                'type' => 'multiselect',
-                'name' => 'category',
-                'label' => __( 'Category', 'wp-tiles' ),
-                'default'     => self::get_query_option( 'category' ),
-                'items'       => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => 'vp_get_categories',
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'multiselect',
-                'name' => 'tag',
-                'label' => __( 'Tags', 'wp-tiles' ),
-                'default'     => self::get_query_option( 'tag' ),
-                'items'       => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => 'vp_get_tags',
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'taxonomy',
-                'label' => __( 'Taxonomy', 'wp-tiles' ),
-                'default'     => self::get_query_option( 'taxonomy' ),
-                'items'       => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_taxonomies' ),
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'tax_operator',
-                'label' => __( 'Taxonomy Operator', 'wp-tiles' ),
-                'default'     => self::get_query_option( 'tax_operator' ),
-                'items'       => array(
-                    array(
-                        'value' => 'IN',
-                        'label' => 'IN',
-                    ),
-                    array(
-                        'value' => 'NOT IN',
-                        'label' => 'NOT IN',
-                    ),
-                    array(
-                        'value' => 'AND',
-                        'label' => 'AND',
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'textbox',
-                'name' => 'tax_term',
-                'default'     => self::get_query_option( 'tax_term' ),
-                'label' => __('Taxonomy Term', 'wp-tiles'),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'order',
-                'default'     => self::get_query_option( 'order' ),
-                'label' => __( 'Order', 'wp-tiles' ),
-                'items'       => array(
-                    array(
-                        'value' => 'ASC',
-                        'label' => __( 'Ascending', 'wp-tiles' ),
-                    ),
-                    array(
-                        'value' => 'DESC',
-                        'label' => __( 'Descending', 'wp-tiles' ),
-                    )
-                ),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'orderby',
-                'default'     => self::get_query_option( 'orderby' ),
-                'label' => __( 'Order By', 'wp-tiles' ),
-                'items'       => array(
-                    array(
-                        'value' => 'name',
-                        'label' => 'Name',
-                    ),
-                    array(
-                        'value' => 'author',
-                        'label' => 'Author',
-                    ),
-                    array(
-                        'value' => 'date',
-                        'label' => 'Date',
-                    ),
-                    array(
-                        'value' => 'title',
-                        'label' => 'Title',
-                    ),
-                    array(
-                        'value' => 'modified',
-                        'label' => 'Modified',
-                    ),
-                    array(
-                        'value' => 'menu_order',
-                        'label' => 'Menu Order',
-                    ),
-                    array(
-                        'value' => 'parent',
-                        'label' => 'Parent',
-                    ),
-                    array(
-                        'value' => 'ID',
-                        'label' => 'ID',
-                    ),
-                    array(
-                        'value' => 'rand',
-                        'label' => 'Rand',
-                    ),
-                    array(
-                        'value' => 'comment_count',
-                        'label' => 'Comment Count',
-                    ),
-                    array(
-                        'value' => 'none',
-                        'label' => 'None',
-                    ),
-                    array(
-                        'value' => 'post__in',
-                        'label' => 'Manual (post__in)',
-                    ),
-                    // @todo Should these be in here?
-                    /*array(
-                        'value' => 'post_parent__in',
-                        'label' => 'Post_parent__in',
-                    )*/
-                ),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'author',
-                'default'     => self::get_query_option( 'author' ),
-                'label' => __( 'Author', 'wp-tiles' ),
-                'items' => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => 'vp_get_users',
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'textbox',
-                'name' => 'meta_key',
-                'default'     => self::get_query_option( 'meta_key' ),
-                'label' => __('Meta Key', 'wp-tiles'),
-            ),
-
-            array(
-                'type' => 'textbox',
-                'name' => 'offset',
-                'default'     => self::get_query_option( 'offset' ),
-                'label' => __('Offset', 'wp-tiles'),
-                'validation' => 'numeric'
-            ),
-
-            array(
-                'type'        => 'select',
-                'name'        => 'post_parent',
-                'default'     => self::get_query_option( 'post_parent' ),
-                'label'       => __( 'Post Parent', 'wp-tiles' ),
-                'description' => __( 'Only show children of selected post', 'wp-tiles' ),
-                'items'       => array(
-                        array(
-                            'label' => '[Use Current Post]',
-                            'value' => 'current'
-                        ),
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
-                        ),
-                    ),
-                ),
-            ),
-
-            array(
-                'type' => 'select',
-                'name' => 'post_status',
-                'default'     => self::get_query_option( 'post_status' ),
-                'label' => __( 'Post Status', 'wp-tiles' ),
-                'items'       => array(
-                    array(
-                        'value' => 'publish',
-                        'label' => 'Publish',
-                    ),
-                    array(
-                        'value' => 'pending',
-                        'label' => 'Pending',
-                    ),
-                    array(
-                        'value' => 'draft',
-                        'label' => 'Draft',
-                    ),
-                    array(
-                        'value' => 'auto-draft',
-                        'label' => 'Auto-draft',
-                    ),
-                    array(
-                        'value' => 'future',
-                        'label' => 'Future',
-                    ),
-                    array(
-                        'value' => 'private',
-                        'label' => 'Private',
-                    ),
-                    array(
-                        'value' => 'inherit',
-                        'label' => 'Inherit',
-                    ),
-                    array(
-                        'value' => 'trash',
-                        'label' => 'Trash',
-                    ),
-                    array(
-                        'value' => 'any',
-                        'label' => 'Any',
-                    )
-                ),
-            ),
-
-            array(
-                'type' => 'toggle',
-                'name' => 'ignore_sticky_posts',
-                'default'     => self::get_query_option( 'ignore_sticky_posts' ),
-                'label' => __('Ignore Sticky Posts', 'wp-tiles'),
-            ),
-
-            array(
-                'type' => 'toggle',
-                'name' => 'exclude_current_post',
-                'default'     => self::get_query_option( 'exclude_current_post' ),
-                'label' => __('Exclude Current Post from Tiles?', 'wp-tiles')
-            ),
-            array(
-                'type' => 'select',
-                'name' => 'related_in_taxonomy',
-                'default' => self::get_query_option( 'related_in_taxonomy' ),
-                'label' => __("Only display posts with the same terms in this taxonomy", 'wp-tiles'),
-                'items' =>  array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_taxonomies' ),
+        public static function query_manual() {
+            return array(
+                array(
+                    'type'        => 'sorter',
+                    'name'        => 'id',
+                    'label'       => __( 'Select Posts', 'wp-tiles' ),
+                    'description' => __( 'Select posts manually', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'id' ),
+                    'items'       => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
+                            ),
                         ),
                     ),
                 )
-            ),
-        );
-    }
+            );
+        }
+
+        public static function query_basic() {
+            return array(
+                array(
+                    'type' => 'multiselect',
+                    'name' => 'post_type',
+                    'label' => __( 'Post Type', 'wp-tiles' ),
+                    'default' => self::get_query_option( 'post_type' ),
+                    'items' => array(
+                        array(
+                            'label' => __( 'Any', 'wp-tiles'),
+                            'value' => 'any'
+                        ),
+                        array(
+                            'label' => __( 'Same as current post', 'wp-tiles'),
+                            'value' => 'current'
+                        ),
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_post_types' ),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'select',
+                    'name' => 'orderby',
+                    'default'     => self::get_query_option( 'orderby' ),
+                    'label' => __( 'Order By', 'wp-tiles' ),
+                    'items'       => array(
+                        array(
+                            'value' => 'name',
+                            'label' => 'Name',
+                        ),
+                        array(
+                            'value' => 'author',
+                            'label' => 'Author',
+                        ),
+                        array(
+                            'value' => 'date',
+                            'label' => 'Date',
+                        ),
+                        array(
+                            'value' => 'title',
+                            'label' => 'Title',
+                        ),
+                        array(
+                            'value' => 'modified',
+                            'label' => 'Modified',
+                        ),
+                        array(
+                            'value' => 'menu_order',
+                            'label' => 'Menu Order',
+                        ),
+                        array(
+                            'value' => 'parent',
+                            'label' => 'Parent',
+                        ),
+                        array(
+                            'value' => 'ID',
+                            'label' => 'ID',
+                        ),
+                        array(
+                            'value' => 'rand',
+                            'label' => 'Rand',
+                        ),
+                        array(
+                            'value' => 'comment_count',
+                            'label' => 'Comment Count',
+                        ),
+                        array(
+                            'value' => 'none',
+                            'label' => 'None',
+                        ),
+                        array(
+                            'value' => 'post__in',
+                            'label' => 'Manual (post__in)',
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'select',
+                    'name' => 'order',
+                    'default'     => self::get_query_option( 'order' ),
+                    'label' => __( 'Order', 'wp-tiles' ),
+                    'items'       => array(
+                        array(
+                            'value' => 'ASC',
+                            'label' => __( 'Ascending', 'wp-tiles' ),
+                        ),
+                        array(
+                            'value' => 'DESC',
+                            'label' => __( 'Descending', 'wp-tiles' ),
+                        )
+                    ),
+                ),
+            );
+        }
+
+        public static function query_basic_more() {
+            return array(
+                array(
+                    'type' => 'textbox',
+                    'name' => 'posts_per_page',
+                    'label' => __('Posts Per Page', 'wp-tiles'),
+                    'default' => self::get_query_option( 'posts_per_page' ),
+                ),
+
+                array(
+                    'type' => 'multiselect',
+                    'name' => 'category',
+                    'label' => __( 'Category', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'category' ),
+                    'items'       => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_categories' ),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'multiselect',
+                    'name' => 'tag',
+                    'label' => __( 'Tags', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'tag' ),
+                    'items'       => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_tags' ),
+                            ),
+                        ),
+                    ),
+                )
+            );
+        }
+
+        public static function query_advanced() {
+            return array(
+
+                array(
+                    'type' => 'select',
+                    'name' => 'taxonomy',
+                    'label' => __( 'Taxonomy', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'taxonomy' ),
+                    'items'       => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_taxonomies' ),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'select',
+                    'name' => 'tax_operator',
+                    'label' => __( 'Taxonomy Operator', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'tax_operator' ),
+                    'items'       => array(
+                        array(
+                            'value' => 'IN',
+                            'label' => 'IN',
+                        ),
+                        array(
+                            'value' => 'NOT IN',
+                            'label' => 'NOT IN',
+                        ),
+                        array(
+                            'value' => 'AND',
+                            'label' => 'AND',
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'textbox',
+                    'name' => 'tax_term',
+                    'default'     => self::get_query_option( 'tax_term' ),
+                    'label' => __('Taxonomy Term', 'wp-tiles'),
+                ),
+
+                array(
+                    'type' => 'select',
+                    'name' => 'author',
+                    'default'     => self::get_query_option( 'author' ),
+                    'label' => __( 'Author', 'wp-tiles' ),
+                    'items' => array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => 'vp_get_users',
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'textbox',
+                    'name' => 'meta_key',
+                    'default'     => self::get_query_option( 'meta_key' ),
+                    'label' => __('Meta Key', 'wp-tiles'),
+                ),
+
+                array(
+                    'type' => 'textbox',
+                    'name' => 'offset',
+                    'default'     => self::get_query_option( 'offset' ),
+                    'label' => __('Offset', 'wp-tiles'),
+                    'validation' => 'numeric'
+                ),
+
+                array(
+                    'type'        => 'select',
+                    'name'        => 'post_parent',
+                    'default'     => self::get_query_option( 'post_parent' ),
+                    'label'       => __( 'Post Parent', 'wp-tiles' ),
+                    'description' => __( 'Only show children of selected post', 'wp-tiles' ),
+                    'items'       => array(
+                            array(
+                                'label' => '[Use Current Post]',
+                                'value' => 'current'
+                            ),
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
+                            ),
+                        ),
+                    ),
+                ),
+
+                array(
+                    'type' => 'select',
+                    'name' => 'post_status',
+                    'default'     => self::get_query_option( 'post_status' ),
+                    'label' => __( 'Post Status', 'wp-tiles' ),
+                    'items'       => array(
+                        array(
+                            'value' => 'publish',
+                            'label' => 'Publish',
+                        ),
+                        array(
+                            'value' => 'pending',
+                            'label' => 'Pending',
+                        ),
+                        array(
+                            'value' => 'draft',
+                            'label' => 'Draft',
+                        ),
+                        array(
+                            'value' => 'auto-draft',
+                            'label' => 'Auto-draft',
+                        ),
+                        array(
+                            'value' => 'future',
+                            'label' => 'Future',
+                        ),
+                        array(
+                            'value' => 'private',
+                            'label' => 'Private',
+                        ),
+                        array(
+                            'value' => 'inherit',
+                            'label' => 'Inherit',
+                        ),
+                        array(
+                            'value' => 'trash',
+                            'label' => 'Trash',
+                        ),
+                        array(
+                            'value' => 'any',
+                            'label' => 'Any',
+                        )
+                    ),
+                ),
+
+                array(
+                    'type' => 'toggle',
+                    'name' => 'ignore_sticky_posts',
+                    'default'     => self::get_query_option( 'ignore_sticky_posts' ),
+                    'label' => __('Ignore Sticky Posts', 'wp-tiles'),
+                ),
+
+                array(
+                    'type' => 'toggle',
+                    'name' => 'exclude_current_post',
+                    'default'     => self::get_query_option( 'exclude_current_post' ),
+                    'label' => __('Exclude Current Post from Tiles?', 'wp-tiles')
+                ),
+                array(
+                    'type' => 'select',
+                    'name' => 'related_in_taxonomy',
+                    'default' => self::get_query_option( 'related_in_taxonomy' ),
+                    'label' => __("Only display posts with the same terms in this taxonomy", 'wp-tiles'),
+                    'items' =>  array(
+                        'data' => array(
+                            array(
+                                'source' => 'function',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_taxonomies' ),
+                            ),
+                        ),
+                    )
+                )
+            );
+        }
 
     public static function images() {
         return array(
