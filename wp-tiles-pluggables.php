@@ -10,7 +10,10 @@ if ( !function_exists( 'the_wp_tiles' ) ) :
     /**
      * Show the WP Tiles. Use as template tag.
      *
+     * Returns false if no posts were found.
+     *
      * @param string|array $atts
+     * @return bool
      * @since 0.3.3
      */
     function the_wp_tiles( $query = array(), $opts = array() ) {
@@ -22,7 +25,7 @@ if ( !function_exists( 'the_wp_tiles' ) ) :
             $query = WPTiles\Helper::parse_query( $query );
         }
 
-        wp_tiles()->display_tiles( $query, $opts );
+        return wp_tiles()->display_tiles( $query, $opts );
     }
 
 endif;
