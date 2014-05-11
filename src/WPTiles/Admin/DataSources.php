@@ -91,4 +91,24 @@ class DataSources
 
         return $result;
     }
+
+    public static function get_categories() {
+        $wp_cat = get_categories( array( 'hide_empty' => 0 ) );
+
+        $result = array();
+        foreach ( $wp_cat as $cat ) {
+            $result[] = array( 'value' => $cat->name, 'label' => $cat->name );
+        }
+        return $result;
+    }
+
+    public static function get_tags() {
+        $tags = get_tags( array( 'hide_empty' => 0 ) );
+
+        $result = array();
+        foreach ( $tags as $tag ) {
+            $result[] = array( 'value' => $tag->name, 'label' => $tag->name );
+        }
+        return $result;
+    }
 }
