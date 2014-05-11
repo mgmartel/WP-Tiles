@@ -3,8 +3,8 @@ Contributors: Mike_Cowobo
 Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
 Author URI: http://trenvopress.com/
 Tags: tiles, shortcode
-Requires at least: 3.4.2
-Tested up to: 3.5.2
+Requires at least: 3.8
+Tested up to: 3.9
 Stable tag: 0.5.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -12,6 +12,8 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts and pages.
 
 == Description ==
+
+**WP Tiles 1.0-beta1 is now available! Read the [announcement](http://wordpress.org/support/topic/10-beta-testers-needed-for-wp-tiles-10-beta?replies=1) to test the completely rebuilt version!**
 
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
