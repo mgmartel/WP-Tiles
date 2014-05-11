@@ -44,7 +44,7 @@ class Options
         'animate_resize'   => false,
         'animate_template' => true,
 
-        'image_size'       => 'medium',
+        'image_size'       => 'large',
         'image_source'     => 'all',
 
         'byline_effect' => 'none',
