@@ -195,7 +195,7 @@ class WPTiles extends Abstracts\WPSingleton
          * Make sure carousel module isn't loaded in vain
          */
         if ( 'carousel' == $opts['link']
-            && ( !doing_filter( 'post_gallery' ) ||  !class_exists( 'No_Jetpack_Carousel' ) && !class_exists( 'Jetpack_Carousel' ) ) ) {
+            && ( !class_exists( 'No_Jetpack_Carousel' ) && !class_exists( 'Jetpack_Carousel' ) ) ) {
             $opts['link'] = 'thickbox';
         }
 
@@ -711,6 +711,9 @@ class WPTiles extends Abstracts\WPSingleton
          * @sice 0.5.2
          */
         private function _find_the_image( $post, $size ) {
+            if ( isset( $post->image_url ) && $post->image_url )
+                return $post->image_url;
+
             $image_source = $this->options->get_option( 'image_source' );
 
             if ( 'attachment' === get_post_type( $post->ID ) ) {
