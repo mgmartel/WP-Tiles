@@ -609,6 +609,17 @@ class WPTiles extends Abstracts\WPSingleton
         }
 
         wp_register_style( 'wp-tiles', $stylesheet, false, WP_TILES_VERSION );
+
+        /**
+         * Always enqueue stylesheet or defer loading until an instance of
+         * WP Tiles has been detected
+         *
+         * @since 1.0
+         * @param bool Always enqueue
+         */
+        if ( !is_admin() && apply_filters( 'wp_tiles_always_enqueue_stylesheet', true ) ) {
+            $this->enqueue_styles();
+        }
     }
 
     public function enqueue_scripts() {
