@@ -90,11 +90,13 @@ class Shortcode
 
         // Maybe convert full grid strings into grids so they are not interpreted as names
         $is_grid_string = function( $string ) {
-            return is_string( $string ) && ( strpos( $string, '|' ) !== 0 || strpos( $string, "\n" ) !== 0 );
+            return is_string( $string ) && ( strpos( $string, '|' ) !== false || strpos( $string, "\n" ) !== false );
         };
 
         if ( $atts['small_screen_grid'] && $is_grid_string( $atts['small_screen_grid'] ) ) {
-            $atts['small_screen_grid'] = wp_tiles()->format_grid( $atts['small_screen_grid'] );
+            $atts['small_screen_grid'] = array(
+                'Custom' => wp_tiles()->format_grid( $atts['small_screen_grid'] )
+            );
         }
 
         $grid_names = self::_get_options_array( $atts['grids'] );
@@ -102,7 +104,7 @@ class Shortcode
         $options = array(
             'grids' => $grid_names, // Will be converted into grid templates in get_tiles
 
-            'small_screen_grid' => '',
+            'small_screen_grid' => $atts['small_screen_grid'],
             'breakpoint' => (int) $atts['breakpoint'],
 
             'colors' => self::_get_colors( $atts['colors'] ),
