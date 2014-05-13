@@ -55,7 +55,7 @@ class Gallery extends Abstracts\WPSingleton
 
                 <label class="setting">
                     <span><?php _e( 'Grid', 'wp-tiles' ); ?></span>
-                    <select name="wp-tiles-grids" data-setting="grid">
+                    <select name="wp-tiles-grids" data-setting="grids">
                         <?php foreach ( array_keys( $grids ) as $grid ) : ?>
                             <option value="<?php echo esc_attr( $grid ); ?>" <?php selected( $grid, $default ); ?>>
                                 <?php echo esc_html( $grid ); ?>

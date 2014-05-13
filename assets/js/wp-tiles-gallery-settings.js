@@ -34,11 +34,11 @@
 
             // Save the setting
             media.gallery.defaults['tiles']      = false;
-            media.gallery.defaults['grid']       = false;
+            media.gallery.defaults['grids']       = false;
             media.gallery.defaults['image_size'] = false;
 
             this.update.apply( this, ['tiles'] );
-            this.update.apply( this, ['grid'] );
+            this.update.apply( this, ['grids'] );
             this.update.apply( this, ['image_size'] );
             return this;
         }
