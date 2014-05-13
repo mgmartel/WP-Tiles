@@ -20,6 +20,7 @@
     .wp-tiles-byline-slide-down & {
         .wp-tiles-byline {
             top: 0;
+            bottom: initial;
             @include transform(translateY(-100%));
         }
         &:hover .wp-tiles-byline{
