@@ -18,7 +18,7 @@ class Controls
 
         $default_grid = !empty( $grid ) ? reset( $grid )->post_title : '{{last}}';
 
-        return array(
+        $controls = array(
             array(
                 'type'        => 'select',
                 'name'        => 'grid',
@@ -34,6 +34,22 @@ class Controls
                     ),
                 ),
             )
+        );
+
+        if ( current_theme_supports( 'wp-tiles-full-width' ) ) {
+            $controls[] = self::full_width();
+        }
+
+        return $controls;
+    }
+
+    public static function full_width() {
+        return array(
+            'type'        => 'toggle',
+            'name'        => 'full_width',
+            'label'       => __( 'Full Width Tiles', 'wp-tiles' ),
+            'description' => __( 'Let Tiles break out of container', 'wp-tiles' ),
+            'default'     => false
         );
     }
 
@@ -75,6 +91,7 @@ class Controls
                     ),
                 ),
             );
+
         } else {
             $controls[] = array(
                 'type' => 'notebox',
@@ -196,6 +213,12 @@ class Controls
             'default' => wp_tiles()->options->get_defaults( 'grid_selector_color' ),
             'format' => 'hex',
         );
+
+        if ( Admin::is_shortcode() ) {
+            if ( current_theme_supports( 'wp-tiles-full-width' ) ) {
+                $controls[] = self::full_width();
+            }
+        }
 
         return $controls;
     }
