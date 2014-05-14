@@ -19,14 +19,15 @@ class WP_Tiles_Settings_Config
             "nav_title"     => "WP Tiles",
 
             // Page blabla
-            "title"         => "WP Tiles",
+            "title"         => "WP Tiles 0.6.0",
             "intro_text"    => sprintf ( __( "Use this page to set the default settings used with the %s shortcode.\n"
+                                . "%s"
                                 . "<h3>Usage</h3>\n"
                                 . "<p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1\$s</p>\n"
                                 . "<p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>\n"
                                 . "<h3>Advanced</h3>\n"
                                 . "<p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'css', 'inc' or 'inc/css' to your theme.</p><hr>", 'wp-tiles' ),
-                                "<code>[wp-tiles]</code>"
+                                "<code>[wp-tiles]</code>", wptiles_upgrade_notice()
                             ),
 
             // The actual options
