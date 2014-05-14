@@ -57,7 +57,7 @@ class WPTiles extends Abstracts\WPSingleton
         $this->ajax       = Ajax::get_instance();
         $this->gallery    = Gallery::get_instance();
 
-        Admin\Admin::setup(); // Everything in this class is static
+        add_action( 'after_setup_theme', array( 'WPTiles\Admin\Admin', 'setup' ), 20 );
 
         $this->add_action( 'init', 'register_post_type' );
         $this->add_action( 'init', 'register_scripts' );
