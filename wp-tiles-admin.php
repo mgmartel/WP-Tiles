@@ -19,7 +19,7 @@ class WP_Tiles_Settings_Config
             "nav_title"     => "WP Tiles",
 
             // Page blabla
-            "title"         => "WP Tiles 0.6.0",
+            "title"         => "WP Tiles " . WPTILES_VERSION,
             "intro_text"    => sprintf ( __( "Use this page to set the default settings used with the %s shortcode.\n"
                                 . "%s"
                                 . "<h3>Usage</h3>\n"
