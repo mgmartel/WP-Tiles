@@ -106,7 +106,8 @@ HTML;
  *
  * @since 0.6
  */
-add_action( 'in_plugin_update_message-wp-tiles/wp-tiles.php', function( $args ) {
+$plugin = plugin_basename( __FILE__ );
+add_action( "in_plugin_update_message-$plugin", function( $args ) {
     $transient_name = 'wp-tiles_upgrade_notice_' . $args['Version'];
 
     if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
