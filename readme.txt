@@ -1,11 +1,11 @@
 === WP Tiles ===
 Contributors: Mike_Cowobo
-Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
-Author URI: http://trenvopress.com/
+Plugin URI: http://wp-tiles.com/
+Author URI: http://trenvo.com/
 Tags: tiles, shortcode
-Requires at least: 3.8
-Tested up to: 3.9
-Stable tag: 0.5.9
+Requires at least: 3.4.2
+Tested up to: 3.9.1
+Stable tag: 0.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,7 +13,7 @@ WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts
 
 == Description ==
 
-**WP Tiles 1.0-beta1 is now available! Read the [announcement](http://wordpress.org/support/topic/10-beta-testers-needed-for-wp-tiles-10-beta?replies=1) to test the completely rebuilt version!**
+**WP Tiles 1.0 BETA is now available! Read the [announcement](http://wp-tiles.com/blog/announcing-wp-tiles-1-0/) to test the completely updated version!**
 
 With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
 
@@ -218,6 +218,10 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 
 == Changelog ==
 
+= 0.6 =
+
+* Last update before release of WP Tiles 1.0. This update contains information and notices about the forthcoming update.
+
 = 0.5.9 =
 
 * Added wp-tiles-byline filter
@@ -360,18 +364,22 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 
 == Upgrade Notice ==
 
+= 0.6 =
+
+WP Tiles will update to version 1.0 **soon**. Please read the [announcement](http://wp-tiles.com/blog/announcing-wp-tiles-1-0/) and be aware that the update after this one will not be 100% compatible.
+
 = 0.5 =
 
-* You can now customize the padding between cells.
+You can now customize the padding between cells.
 
 = 0.4.2 =
 
-* The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
+The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
 
 = 0.4 =
 
-* WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
+WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
 
 = 0.3 =
 
-* In this version you can set at which point you want to switch to the small screen template, or disable this altogether.
+In this version you can set at which point you want to switch to the small screen template, or disable this altogether.
