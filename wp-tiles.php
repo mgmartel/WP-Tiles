@@ -1,11 +1,11 @@
 <?php
 /*
   Plugin Name: WP Tiles
-  Plugin URI: http://trenvopress.com/
+  Plugin URI: http://wp-tiles.com/
   Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-  Version: 0.5.9
+  Version: 0.6
   Author: Mike Martel
-  Author URI: http://trenvopress.com
+  Author URI: http://trenvo.com
  */
 
 // Exit if accessed directly
@@ -17,7 +17,7 @@ if ( !defined( 'ABSPATH' ) )
  *
  * @since 0.1
  */
-define( 'WPTILES_VERSION', '0.5.9' );
+define( 'WPTILES_VERSION', '0.6' );
 
 /**
  * PATHs and URLs
@@ -48,6 +48,9 @@ function wptiles_load_pluggables() {
 // PREPRARE FOR WP TILES 1.0
 //
 
+/**
+ * @since 0.6
+ */
 function wptiles_upgrade_notice() {
 
     $url = esc_attr( get_bloginfo( 'url' ) );
@@ -55,14 +58,15 @@ function wptiles_upgrade_notice() {
 
     return <<<HTML
     <div id="message" class="updated">
-        <h3>Announcing WP Tiles 1.0</h3>
-<p>We have <strong>completely reworked</strong> WP Tiles using the feedback we have received since the first version.<br />
-    This will be the <strong>last</strong> version of WP Tiles before major version update.</p>
+        <h3>WP Tiles 1.0 is coming!</h3>
 
-<p><strong><a href='#' target='_blank'>Find more information and the public beta here &rarr;</a></strong></p>
+        <p>We have <strong>completely reworked</strong> WP Tiles using the feedback we have received since the first version.<br />
+        You are now using the <strong>last</strong> version of WP Tiles before the major version update.</p>
 
-<p><strong>Staying up to date</strong><br />
-To stay up to date with the development of WP Tiles, please sign up to our newsletter here:</p>
+        <p><strong><a href='http://wp-tiles.com/blog/announcing-wp-tiles-1-0/' target='_blank'>Find more information and try out WP Tiles 1.0 Beta &rarr;</a></strong></p>
+
+        <p><strong>Staying up to date</strong><br />
+        To stay up to date with the development of WP Tiles, please sign up to our newsletter below:</p>
 
         <!-- Begin MailChimp Signup Form -->
         <div id="mc_embed_signup">
@@ -86,9 +90,9 @@ To stay up to date with the development of WP Tiles, please sign up to our newsl
 
         <ul class='subsubsub'>
             <li><strong>Also see:</strong> </li>
-            <li><a href='#' target='_blank'>wp-tiles.com</a> | </li>
-            <li><a href='#' target='_blank'>WP Tiles on WordPress.org</a> | </li>
-            <li><a href='#' target='_blank'>Download WP Tiles 1.0-Beta</a></li>
+            <li><a href='http://wp-tiles.com/' target='_blank'>wp-tiles.com</a> | </li>
+            <li><a href='http://wordpress.org/support/plugin/wp-tiles' target='_blank'>Plugin support on WordPress.org</a> | </li>
+            <li><a href='http://wp-tiles.com/blog/announcing-wp-tiles-1-0/' target='_blank'>Download WP Tiles 1.0-Beta</a></li>
         </ul>
 
         <div class='clear'></div>
@@ -99,6 +103,8 @@ HTML;
 
 /**
  * Display upgrade notice in plugin list. Adapted from WooCommerce
+ *
+ * @since 0.6
  */
 add_action( 'in_plugin_update_message-wp-tiles/wp-tiles.php', function( $args ) {
     $transient_name = 'wp-tiles_upgrade_notice_' . $args['Version'];
