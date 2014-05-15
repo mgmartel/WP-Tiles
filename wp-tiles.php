@@ -44,6 +44,10 @@ function wptiles_load_pluggables() {
     require_once( WPTILES_DIR . '/wp-tiles-pluggables.php' );
 }
 
+//
+// PREPRARE FOR WP TILES 1.0
+//
+
 function wptiles_upgrade_notice() {
 
     $url = esc_attr( get_bloginfo( 'url' ) );
@@ -92,3 +96,74 @@ To stay up to date with the development of WP Tiles, please sign up to our newsl
    </div>
 HTML;
 }
+
+/**
+ * Display upgrade notice in plugin list. Adapted from WooCommerce
+ */
+add_action( 'in_plugin_update_message-wp-tiles/wp-tiles.php', function( $args ) {
+    $transient_name = 'wp-tiles_upgrade_notice_' . $args['Version'];
+
+    if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
+
+        $response = wp_remote_get( 'https://plugins.svn.wordpress.org/wp-tiles/trunk/readme.txt' );
+
+        if ( ! is_wp_error( $response ) && ! empty( $response['body'] ) ) {
+
+            // Output Upgrade Notice
+            $matches        = null;
+            $regexp         = '~==\s*Upgrade Notice\s*==\s*=\s*(.*)\s*=(.*)(=\s*' . preg_quote( WPTILES_VERSION ) . '\s*=|$)~Uis';
+            $upgrade_notice = '';
+            $version_matches = null;
+
+            if ( preg_match( $regexp, $response['body'], $matches ) ) {
+                $version        = trim( $matches[1] );
+                $notices        = (array) preg_split('~[\r\n]+~', trim( $matches[2] ) );
+
+                if ( version_compare( WPTILES_VERSION, $version, '<' ) ) {
+
+                    $upgrade_notice .= '<div class="wp-tiles_plugin_upgrade_notice">';
+
+                    foreach ( $notices as $index => $line ) {
+                        if ( preg_match( '~=\s*([0-9.]+)\s*=~Uis', $line, $version_matches ) )
+                            break;
+
+                        $upgrade_notice .= wp_kses_post( preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line ) ) . '<br />';
+                    }
+
+                    $upgrade_notice .= '</div> ';
+                }
+            }
+
+            set_transient( $transient_name, $upgrade_notice, DAY_IN_SECONDS );
+        }
+    }
+
+    echo wp_kses_post( $upgrade_notice );
+    ?>
+    <style>
+    .wp-tiles_plugin_upgrade_notice {
+        font-weight: normal;
+        color: #fff;
+        background: #d54d21;
+        padding: 1em;
+        margin: 9px 0;
+    }
+
+    .wp-tiles_plugin_upgrade_notice a {
+        color: #fff;
+        text-decoration: underline;
+    }
+
+    .wp-tiles_plugin_upgrade_notice:before {
+        content: "\f348";
+        display: inline-block;
+        font: 400 18px/1 dashicons;
+        speak: none;
+        margin: 0 8px 0 -2px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        vertical-align: top;
+    }
+    </style>
+    <?php
+} );
