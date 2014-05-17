@@ -12,12 +12,14 @@
 if ( !defined( 'ABSPATH' ) )
     exit;
 
-if(version_compare(PHP_VERSION, '5.3', '<')) {
-    function wp_tiles_php53_dashboard_notice() {
-        echo __('<div class="error"><p>WP Tiles is <strong>not</strong> active. This version of the plugin requires PHP v5.3+.</p></div>', 'wp-tiles');
-    }
-    add_action( 'all_admin_notices', 'wp_tiles_php53_dashboard_notice' );
+if ( version_compare( phpversion(), '5.3', '<' ) ) {
 
+    function wp_tiles_php53_dashboard_notice() {
+        echo __( '<div class="error"><p>WP Tiles is <strong>not</strong> active. This version of the plugin requires PHP v5.3+.</p></div>', 'wp-tiles' );
+    }
+
+    add_action( 'all_admin_notices', 'wp_tiles_php53_dashboard_notice' );
+    
 } else {
 
     /**
