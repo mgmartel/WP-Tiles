@@ -107,7 +107,9 @@ HTML;
  * @since 0.6
  */
 $plugin = plugin_basename( __FILE__ );
-add_action( "in_plugin_update_message-$plugin", function( $args ) {
+add_action( "in_plugin_update_message-$plugin", "wp_tiles_plugin_update_message" );
+
+function wp_tiles_plugin_update_message( $args ) {
     $transient_name = 'wp-tiles_upgrade_notice_' . $args['Version'];
 
     if ( false === ( $upgrade_notice = get_transient( $transient_name ) ) ) {
@@ -135,6 +137,10 @@ add_action( "in_plugin_update_message-$plugin", function( $args ) {
                             break;
 
                         $upgrade_notice .= wp_kses_post( preg_replace( '~\[([^\]]*)\]\(([^\)]*)\)~', '<a href="${2}">${1}</a>', $line ) ) . '<br />';
+                    }
+
+                    if ( version_compare( 1.0, $version, '>=' ) && version_compare(phpversion(), '5.3', '<') ) {
+                        $upgrade_notice .= "<strong>Important!</strong> It seems that you are using PHP 5.2. WP Tiles 1.0+ will no longer be compatible with versions of PHP lower than 5.3.";
                     }
 
                     $upgrade_notice .= '</div> ';
@@ -173,4 +179,4 @@ add_action( "in_plugin_update_message-$plugin", function( $args ) {
     }
     </style>
     <?php
-} );
+}
