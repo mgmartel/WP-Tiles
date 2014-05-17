@@ -43,7 +43,12 @@
       },
 
       draw = function(callback){
-        var g = $("#grid_template").val(),
+        var $g = $("#grid_template");
+
+        if ( !$g.get(0) )
+          return;
+
+        var g = $g.val(),
             f = g.replace(/\r/g, "").split("\n"),
             template = Tiles.Template.fromJSON(f);
 
