@@ -98,7 +98,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 	function _setup()
 	{
 		$this->in_template = TRUE;
-		
+
 		// also make current post data available
 		global $post;
 
@@ -123,7 +123,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 			$this->_enview($fields);
 			echo '</div>';
 		}
-	 
+
 		// create a nonce for verification
 		echo '<input type="hidden" name="'. $this->id .'_nonce" value="' . wp_create_nonce($this->id) . '" />';
 
@@ -323,7 +323,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 								$field['is_hidden'] = true;
 								if($field['is_hidden'])
 									$field['container_extra_classes'][] = 'vp-hide';
-									
+
 								$field['container_extra_classes'][] = 'vp-dep-inactive';
 							}
 						}
@@ -591,31 +591,31 @@ class VP_Metabox extends WPAlchemy_MetaBox
 		return $html;
 	}
 
-	function _save($post_id) 
+	function _save($post_id)
 	{
 		// skip saving if dev mode is on
 		if($this->is_dev_mode)
 			return;
 
 		$real_post_id = isset($_POST['post_ID']) ? $_POST['post_ID'] : NULL ;
-		
+
 		// check autosave
 		if (defined('DOING_AUTOSAVE') AND DOING_AUTOSAVE AND !$this->autosave) return $post_id;
-	 
+
 		// make sure data came from our meta box, verify nonce
 		$nonce = isset($_POST[$this->id.'_nonce']) ? $_POST[$this->id.'_nonce'] : NULL ;
 		if (!wp_verify_nonce($nonce, $this->id)) return $post_id;
-	 
+
 		// check user permissions
-		if ($_POST['post_type'] == 'page') 
+		if ($_POST['post_type'] == 'page')
 		{
 			if (!current_user_can('edit_page', $post_id)) return $post_id;
 		}
-		else 
+		else
 		{
 			if (!current_user_can('edit_post', $post_id)) return $post_id;
 		}
-	 
+
 		// authentication passed, save data
 		$new_data = isset( $_POST[$this->id] ) ? $_POST[$this->id] : NULL ;
 
@@ -653,7 +653,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 				foreach ($new_data as $k => $v)
 				{
 					$field = $this->prefix . $k;
-					
+
 					array_push($new_fields,$field);
 
 					$new_value = $new_data[$k];
@@ -736,7 +736,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 					}
 				}
 			}
-			if (!count($arr)) 
+			if (!count($arr))
 			{
 				$arr = array();
 			}
@@ -748,7 +748,7 @@ class VP_Metabox extends WPAlchemy_MetaBox
 
 				foreach ($keys as $key)
 				{
-					if (!is_numeric($key)) 
+					if (!is_numeric($key))
 					{
 						$is_numeric = FALSE;
 						break;
