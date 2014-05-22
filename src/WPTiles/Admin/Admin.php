@@ -122,8 +122,9 @@ class Admin
     private static function setup_options() {
         self::$context = self::CONTEXT_OPTIONS;
 
-        add_action( 'admin_enqueue_scripts', function( $hook_suffix ){
-            if ( $hook_suffix === 'toplevel_page_' . self::PAGE_SLUG ) {
+        $slug = self::PAGE_SLUG;
+        add_action( 'admin_enqueue_scripts', function( $hook_suffix ) use ( $slug ) {
+            if ( $hook_suffix === 'toplevel_page_' . $slug ) {
                 wp_enqueue_style( 'wp-tiles' );
             }
         });
