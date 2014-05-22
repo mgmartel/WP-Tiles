@@ -5,7 +5,7 @@ Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
 Tested up to: 3.9.1
-Stable tag: 0.6
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -218,6 +218,10 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 
 == Changelog ==
 
+= 0.6.1 =
+
+* Last version that is compatible with PHP5.2.X. Added compatibility message for when the 1.0 update happens.
+
 = 0.6 =
 
 * Last update before release of WP Tiles 1.0. This update contains information and notices about the forthcoming update.
@@ -363,6 +367,8 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 * First upload.
 
 == Upgrade Notice ==
+
+= 0.6.1 =
 
 = 0.6 =
 
