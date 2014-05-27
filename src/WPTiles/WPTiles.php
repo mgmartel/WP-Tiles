@@ -158,9 +158,10 @@ class WPTiles extends Abstracts\WPSingleton
         //
         // GET POSTS
         //
+        if ( !$posts ) $posts = array();
 
         // Is $posts a query?
-        if ( is_array( $posts ) && count( array_filter( array_keys( $posts ), 'is_string') ) ) {
+        if ( is_array( $posts ) && ( empty( $posts ) || count( array_filter( array_keys( $posts ), 'is_string') ) ) ) {
 
             if ( isset( $posts['posts_per_page'] ) && 'auto' === $posts['posts_per_page'] ) {
                 $posts_in_grid = $this->get_posts_in_grid( reset( $opts['grids'] ) );
