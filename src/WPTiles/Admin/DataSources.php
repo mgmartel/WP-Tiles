@@ -82,9 +82,11 @@ class DataSources
             }
         }
 
-        foreach( $_wp_additional_image_sizes as $size => $atts ) {
-            $name = ucwords( str_replace( array( '-', '_' ), " ", $size ) );
-            $result[] = array( 'value' => $size, 'label' => "$name ({$atts['width']}x{$atts['height']})" );
+        if ( $_wp_additional_image_sizes ) {
+            foreach( $_wp_additional_image_sizes as $size => $atts ) {
+                $name = ucwords( str_replace( array( '-', '_' ), " ", $size ) );
+                $result[] = array( 'value' => $size, 'label' => "$name ({$atts['width']}x{$atts['height']})" );
+            }
         }
 
         $result[] = array( 'value' => 'full', 'label' => __( 'Orgininal Size (Full)', 'wp-tiles' ) );
