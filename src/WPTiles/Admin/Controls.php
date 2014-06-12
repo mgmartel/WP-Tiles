@@ -21,7 +21,7 @@ class Controls
         $controls = array(
             array(
                 'type'        => 'select',
-                'name'        => 'grid',
+                'name'        => 'grids',
                 'label'       => __( 'Grid', 'wp-tiles' ),
                 'description' => __( 'Select which Grid to use', 'wp-tiles' ),
                 'default'     => $default_grid,
