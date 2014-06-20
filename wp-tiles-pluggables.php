@@ -180,7 +180,7 @@ if ( ! function_exists( 'wp_tiles_prev_next_nav' ) ) :
         ?>
 
         <nav class="navigation wp-tiles-pagination wp-tiles-pagination-prev-next" role="navigation">
-            <h1 class="screen-reader-text"><?php _e( 'Post navigation', 'twentyfourteen' ); ?></h1>
+            <h1 class="screen-reader-text"><?php _e( 'Post navigation', 'wp-tiles' ); ?></h1>
             <div class="pagination loop-pagination">
                 <?php if ( $previous ) : ?><a href='<?php echo previous_posts(false); ?><?php if ( $anchor ) echo '#' . $anchor; ?>' class='prev prev-next'><?php _e( '&larr; Previous', 'wp-tiles' ) ?></a><?php endif; ?>
 
