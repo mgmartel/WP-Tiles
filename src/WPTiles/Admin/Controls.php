@@ -128,8 +128,8 @@ class Controls
             $controls[] = array(
                 'type'        => 'toggle',
                 'name'        => 'small_screen_enabled',
-                'label'       => __( 'Different template on small screens?', 'wp-tiles' ),
-                'description' => __( "Yay or nay? What's it going to be?", 'wp-tiles' ),
+                'label'       => __( 'Different grid on small screens?', 'wp-tiles' ),
+                'description' => __( "Use this option to use an alternative grid when the container size gets smaller than a specified value.", 'wp-tiles' ),
                 'default'     => '1',
             );
 
