@@ -133,7 +133,7 @@ class Legacy
 
                 if ( isset( $templates['small_screen_template'] ) && !empty( $templates['small_screen_template'] ) ) {
                     $small_id = wp_insert_post( array(
-                        'post_type' => WPTiles\WPTiles::GRID_POST_TYPE,
+                        'post_type' => WPTiles::GRID_POST_TYPE,
                         'post_status' => 'publish',
                         'post_tite' => 'Small Screen Grid',
                         'post_content' => wp_kses_post( $templates['small_screen_template'] )
