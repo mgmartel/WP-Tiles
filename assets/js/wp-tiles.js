@@ -100,7 +100,13 @@
           },
 
           style_tiles = function() {
-            var $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
+            var set_bylines_color = function( $bylines, color ) {
+                  $bylines.css('color', color);                 // Sets color attribute on parent element
+                  $bylines.find(':header').css('color', color); // Because headers sometime have explicit CSS colors, do the H tags explicitly
+                },
+
+                $image_bylines = $('.wp-tiles-tile-with-image .wp-tiles-byline', $el);
+
             if ( $image_bylines.get(0) ) {
 
               // Set color and opacity
@@ -112,7 +118,7 @@
               $image_bylines.css(opts.byline_height_auto ? 'max-height' : 'height',opts.byline_height + '%');
 
               if ( opts.image_text_color ) {
-                $image_bylines.css('color',opts.image_text_color);
+                set_bylines_color($image_bylines, opts.image_text_color);
               }
             }
 
@@ -120,7 +126,7 @@
 
               var $text_only_bylines = $('.wp-tiles-tile-text-only .wp-tiles-byline', $el);
               if ($text_only_bylines.get(0)) {
-                $text_only_bylines.css('color', opts.text_color);
+                set_bylines_color($text_only_bylines, opts.text_color);
               }
 
             }
