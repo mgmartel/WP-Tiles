@@ -359,12 +359,12 @@ class WPTiles extends Abstracts\WPSingleton
 
             $img = false;
             if ( !$opts['text_only'] && $img = $this->get_first_image( $post, $opts['image_size'] ) ) {
-                $tile_class = 'wp-tiles-tile-with-image';
+                $wrapper_class = 'wp-tiles-tile-with-image';
             } elseif ( $opts['images_only'] ) {
                 continue; // If text_only *and* image_only are enabled, the user should expect 0 tiles..
 
             } else {
-                $tile_class = 'wp-tiles-tile-text-only';
+                $wrapper_class = 'wp-tiles-tile-text-only';
             }
 
             if ( $opts['byline_template_textonly'] && ($opts['text_only'] || !$img ) ) {
@@ -377,13 +377,20 @@ class WPTiles extends Abstracts\WPSingleton
                 $byline = false;
             }
 
+            // Tile Classes
             $tile_classes = array( 'wp-tiles-tile' );
+
+            $categories = get_the_category( $post->ID );
+            foreach( $categories as $category ) {
+                $tile_classes[] = $category->slug;
+            }
 
             if ( 'carousel' == $opts['link'] )
                 $tile_classes[] = 'gallery-item';
 
-            $tile_classes = apply_filters( 'wp_tiles_tile_classes', $tile_classes );
+            $tile_classes = array_unique( apply_filters( 'wp_tiles_tile_classes', $tile_classes ) );
 
+            // Link attributes
             $link_attributes = array();
 
             if ( $opts['link_new_window'] )
@@ -412,7 +419,7 @@ class WPTiles extends Abstracts\WPSingleton
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo esc_attr( strip_tags( $byline ) ) ?>"<?php echo Gallery::get_carousel_image_attr( $post ) ?>>
                 <?php endif; ?>
 
-                        <article class='<?php echo $tile_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/CreativeWork">
+                        <article class='<?php echo $wrapper_class ?> wp-tiles-tile-wrapper' itemscope itemtype="http://schema.org/CreativeWork">
                         <?php if ( $img ) : ?>
 
                             <div class='wp-tiles-tile-bg'>
