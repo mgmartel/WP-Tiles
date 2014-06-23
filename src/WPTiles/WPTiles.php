@@ -407,7 +407,7 @@ class WPTiles extends Abstracts\WPSingleton
                 <div class='<?php echo implode( ' ', $tile_classes ) ?>' id='tile-<?php echo $post->ID ?>'>
                 <?php if ( 'post' == $opts['link'] ) : ?>
 
-                    <a href="<?php echo get_permalink( $post->ID ) ?>" title="<?php echo esc_attr( apply_filters( 'the_title', $post->post_title, $post->ID ) ) ?>"<?php echo $link_attributes_string ?>>
+                    <a href="<?php echo $this->_get_permalink( $post->ID ) ?>" title="<?php echo esc_attr( apply_filters( 'the_title', $post->post_title, $post->ID ) ) ?>"<?php echo $link_attributes_string ?>>
                 <?php elseif ( 'file' == $opts['link'] ) : ?>
 
                     <a href="<?php echo $this->get_first_image( $post, 'full' ) ?>" title="<?php echo esc_attr( apply_filters( 'the_title', $post->post_title, $post->ID ) ) ?>"<?php echo $link_attributes_string ?>>
@@ -460,6 +460,11 @@ class WPTiles extends Abstracts\WPSingleton
             <?php
         endforeach;
     }
+
+        protected function _get_permalink( $post_id ) {
+            $link = apply_filters( 'wp_tiles_permalink', false, $post_id );
+            return ( $link ) ? esc_url( $link ) : get_permalink( $post_id );
+        }
 
     protected function render_byline( $template, $post ) {
         // Only use below filter to change the byline on a per-post level
