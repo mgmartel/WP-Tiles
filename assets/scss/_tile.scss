@@ -28,7 +28,7 @@
         }
     }
 
-    a {
+    body & a { // Added body to make sure this rule is important enough for most themes
         text-decoration: none;
     }
 }
