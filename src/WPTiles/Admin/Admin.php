@@ -125,7 +125,7 @@ class Admin
         $slug = self::PAGE_SLUG;
         add_action( 'admin_enqueue_scripts', function( $hook_suffix ) use ( $slug ) {
             if ( $hook_suffix === 'toplevel_page_' . $slug ) {
-                wp_enqueue_style( 'wp-tiles' );
+                wp_tiles()->enqueue_styles();
             }
         });
 
