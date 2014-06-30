@@ -388,7 +388,7 @@ class WPTiles extends Abstracts\WPSingleton
             if ( 'carousel' == $opts['link'] )
                 $tile_classes[] = 'gallery-item';
 
-            $tile_classes = array_unique( apply_filters( 'wp_tiles_tile_classes', $tile_classes ) );
+            $tile_classes = array_unique( apply_filters( 'wp_tiles_tile_classes', $tile_classes, $post ) );
 
             // Link attributes
             $link_attributes = array();
@@ -642,6 +642,7 @@ class WPTiles extends Abstracts\WPSingleton
 
     public function enqueue_styles() {
         wp_enqueue_style( 'wp-tiles' );
+        do_action( 'wp_tiles_enqueue_styles' );
     }
 
     private function get_the_date( $post, $d = '' ) {
