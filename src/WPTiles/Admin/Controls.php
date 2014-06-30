@@ -1030,6 +1030,10 @@ class Controls
                         'label' => __( 'Desaturate', 'wp-tiles' ),
                         'value' => 'desaturate'
                     ),
+                    array(
+                        'label' => __( 'Color Overlay', 'wp-tiles' ),
+                        'value' => 'color-overlay'
+                    ),
                 ) )
             ),
             array(

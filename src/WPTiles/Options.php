@@ -169,7 +169,7 @@ class Options
     }
 
     public function get_allowed_image_effects() {
-        return apply_filters( 'wp_tiles_allowed_image_effects', array( 'scale-up', 'scale-down', 'saturate', 'desaturate' ) );
+        return apply_filters( 'wp_tiles_allowed_image_effects', array( 'scale-up', 'scale-down', 'saturate', 'desaturate', 'color-overlay' ) );
     }
 
     //

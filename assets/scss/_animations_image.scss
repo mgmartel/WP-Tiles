@@ -60,3 +60,9 @@
         @extend %desaturate;
     }
 }
+
+.wp-tiles-image-color-overlay {
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        opacity: 0.3;
+    }
+}
