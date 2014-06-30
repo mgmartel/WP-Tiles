@@ -165,11 +165,11 @@ class Options
     }
 
     public function get_allowed_byline_effects() {
-        return array( 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'fade-in' );
+        return apply_filters( 'wp_tiles_allowed_byline_effects', array( 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'fade-in' ) );
     }
 
     public function get_allowed_image_effects() {
-        return array( 'scale-up', 'scale-down', 'saturate', 'desaturate' );
+        return apply_filters( 'wp_tiles_allowed_image_effects', array( 'scale-up', 'scale-down', 'saturate', 'desaturate' ) );
     }
 
     //

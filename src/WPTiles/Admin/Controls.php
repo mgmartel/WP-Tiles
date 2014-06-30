@@ -959,7 +959,7 @@ class Controls
                 'label' => __( 'Byline Effect', 'wp-tiles' ),
                 'description' => __( 'Select the effect you want to use for the byline to appear when you hover over the tile.', 'wp-tiles' ),
                 'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
-                'items' => array(
+                'items' => apply_filters( 'wp_tiles_byline_effect_items', array(
                     array(
                         'label' => __( 'None', 'wp-tiles' ),
                         'value' => 'none'
@@ -984,7 +984,7 @@ class Controls
                         'label' => __( 'Fade In', 'wp-tiles' ),
                         'value' => 'fade-in'
                     )
-                )
+                ) )
             ),
             array(
                 'type' => 'radiobutton',
@@ -1008,8 +1008,8 @@ class Controls
                 'name' => 'image_effect',
                 'label' => __( 'Image Effect', 'wp-tiles' ),
                 'description' => __( 'Select the effect you want to use for the image when you hover over the tile.', 'wp-tiles' ),
-                'default' => wp_tiles()->options->get_defaults( 'byline_effect' ),
-                'items' => array(
+                'default' => wp_tiles()->options->get_defaults( 'image_effect' ),
+                'items' => apply_filters( 'wp_tiles_image_effect_items', array(
                     array(
                         'label' => __( 'None', 'wp-tiles' ),
                         'value' => 'none'
@@ -1030,7 +1030,7 @@ class Controls
                         'label' => __( 'Desaturate', 'wp-tiles' ),
                         'value' => 'desaturate'
                     ),
-                )
+                ) )
             ),
             array(
                 'type' => 'color',
