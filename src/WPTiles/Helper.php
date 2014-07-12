@@ -22,6 +22,8 @@ class Helper
             $rgba = self::rgb_to_rgba( $color, $alpha, $css );
         elseif( strpos( $color, '#' ) === 0 )
             $rgba = self::hex_to_rgba( $color, $alpha, $css );
+        else
+            $rgba = 'rgba(0,0,0,0)';
 
         return $rgba;
     }
