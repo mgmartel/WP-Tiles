@@ -29,6 +29,9 @@ class Gallery extends Abstracts\WPSingleton
 
     public function enqueue_media_script() {
 
+        if ( !is_admin() || !function_exists( 'get_current_screen' ) )
+            return;
+
         if ( ! isset( get_current_screen()->id ) || get_current_screen()->base != 'post' )
             return;
 
@@ -37,6 +40,9 @@ class Gallery extends Abstracts\WPSingleton
     }
 
     public function print_media_templates() {
+
+        if ( !is_admin() || !function_exists( 'get_current_screen' ) )
+            return;
 
         if ( ! isset( get_current_screen()->id ) || get_current_screen()->base != 'post' )
             return;
