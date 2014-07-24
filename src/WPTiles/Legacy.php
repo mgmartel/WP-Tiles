@@ -151,7 +151,7 @@ class Legacy
         return $options;
     }
 
-    public static function convert_option() {
+    public static function convert_options() {
         $legacy = get_option( 'wp-tiles-options' );
         $options = wp_parse_args( self::convert_option_array( $legacy, true ), get_option( 'wp_tiles' ) );
 
