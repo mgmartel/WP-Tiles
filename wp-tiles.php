@@ -19,7 +19,7 @@ if ( version_compare( phpversion(), '5.3', '<' ) ) {
     }
 
     add_action( 'all_admin_notices', 'wp_tiles_php53_dashboard_notice' );
-    
+
 } else {
 
     /**
@@ -51,10 +51,22 @@ if ( version_compare( phpversion(), '5.3', '<' ) ) {
 
     require WP_TILES_DIR . 'vendor/autoload.php';
 
-    register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
+    /**
+     * Activation and backward compat
+     */
 
+    // Legacy support means loading an obsolete option every request.
     if ( get_option( 'wp-tiles-options' ) ) {
-        WPTiles\Legacy::convert_option();
+        add_action( 'init', array( 'WPTiles\Legacy', 'convert_options' ) );
+
+    } else {
+
+        if ( get_transient( 'wp_tiles_first_run' ) ) {
+            add_action( 'init', array( 'WPTiles\WPTiles', 'on_first_run' ) );
+        }
+
+        register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
+
     }
 
     /**
