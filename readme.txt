@@ -1,5 +1,6 @@
 === WP Tiles ===
 Contributors: Mike_Cowobo
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U32MTZ9VGHLKS
 Plugin URI: http://wp-tiles.com/
 Author URI: http://trenvo.com/
 Tags: tiles, shortcode
