@@ -483,6 +483,10 @@ class WPTiles extends Abstracts\WPSingleton
             $tags['%featured_image%'] = get_the_post_thumbnail( $post->ID );
         }
 
+        if ( strpos( $template, '%featured_image_src%' ) !== false ) {
+            $tags['%featured_image_src%'] = $this->get_first_image( $post, 'full' );
+        }
+
         if ( strpos( $template, '%author%' ) !== false ) {
             $authordata = get_userdata( $post->post_author );
             $tags['%author%'] = apply_filters('the_author', is_object($authordata) ? $authordata->display_name : null);
