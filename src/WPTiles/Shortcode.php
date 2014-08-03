@@ -180,6 +180,7 @@ class Shortcode
             'author'               => '',
             'category'             => '',
             'id'                   => false,
+            'exclude'              => false,
             'ignore_sticky_posts'  => false,
             'meta_key'             => '',
             'offset'               => 0,
@@ -202,7 +203,8 @@ class Shortcode
 
         $author = sanitize_text_field( $atts['author'] );
         $category = sanitize_text_field( $atts['category'] );
-        $id = $atts['id']; // Sanitized later as an array of integers
+        $id      = $atts['id']; // Sanitized later as an array of integers
+        $exclude = $atts['exclude']; // Sanitized later as an array of integers
         $ignore_sticky_posts = (bool) $atts['ignore_sticky_posts'];
         $meta_key = sanitize_text_field( $atts['meta_key'] );
         $offset = intval( $atts['offset'] );
@@ -257,7 +259,13 @@ class Shortcode
             if ( !isset( $original_atts['orderby'] ) || !$original_atts['orderby'] ) {
                 $args['orderby'] = 'post__in';
             }
+
+        // Only process exclude if there is no include
+        } elseif ( $exclude ) {
+            $args['post__not_in'] = array_map( 'intval', explode( ',', $id ) );
+
         }
+
 
         // Post Author
         if( !empty( $author ) )
