@@ -248,9 +248,15 @@ class Shortcode
 
         // If Post IDs
         if( $id ) {
-            $posts_in = array_map( 'intval', explode( ',', $id ) );
+            $post_in = array_map( 'intval', explode( ',', $id ) );
 
-            $args['post__in'] = $posts_in;
+            // Exclude wins from include
+            if ( $exclude ) {
+                $post_not_in = array_map( 'intval', explode( ',', $exclude ) );
+                $post_in = array_diff( $post_in, $post_not_in );
+            }
+
+            $args['post__in'] = $post_in;
 
             if ( !isset( $original_atts['post_type'] ) || !$original_atts['post_type'] ) {
                 $args['post_type'] = 'any';
@@ -262,7 +268,7 @@ class Shortcode
 
         // Only process exclude if there is no include
         } elseif ( $exclude ) {
-            $args['post__not_in'] = array_map( 'intval', explode( ',', $id ) );
+            $args['post__not_in'] = array_map( 'intval', explode( ',', $exclude ) );
 
         }
 
