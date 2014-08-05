@@ -460,18 +460,10 @@ class Controls
     public static function gallery_select_post() {
         return array_merge( self::gallery_grid(), array(
             array(
-                'type'        => 'select',
+                'type'        => 'textbox',
                 'name'        => 'id',
-                'label'       => __( 'Select Post', 'wp-tiles' ),
-                //'default'     => null,
-                'items'       => array(
-                    'data' => array(
-                        array(
-                            'source' => 'function',
-                            'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
-                        ),
-                    ),
-                ),
+                'label'       => __( 'Enter Post ID', 'wp-tiles' ),
+                'validation'  => 'numeric',
             )
         ) );
     }
@@ -514,19 +506,10 @@ class Controls
         public static function query_manual() {
             return array(
                 array(
-                    'type'        => 'sorter',
+                    'type'        => 'textbox',
                     'name'        => 'id',
-                    'label'       => __( 'Select Posts', 'wp-tiles' ),
-                    'description' => __( 'Select posts manually', 'wp-tiles' ),
-                    'default'     => self::get_query_option( 'id' ),
-                    'items'       => array(
-                        'data' => array(
-                            array(
-                                'source' => 'function',
-                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
-                            ),
-                        ),
-                    ),
+                    'label'       => __( 'Enter Post IDs, separated by commas', 'wp-tiles' ),
+                    'default'     => self::get_query_option( 'id' )
                 )
             );
         }
@@ -750,23 +733,11 @@ class Controls
                 ),
 
                 array(
-                    'type'        => 'select',
+                    'type'        => 'textbox',
                     'name'        => 'post_parent',
                     'default'     => self::get_query_option( 'post_parent' ),
-                    'label'       => __( 'Post Parent', 'wp-tiles' ),
-                    'description' => __( 'Only show children of selected post', 'wp-tiles' ),
-                    'items'       => array(
-                            array(
-                                'label' => '[Use Current Post]',
-                                'value' => 'current'
-                            ),
-                        'data' => array(
-                            array(
-                                'source' => 'function',
-                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_posts_any' ),
-                            ),
-                        ),
-                    ),
+                    'label'       => __( 'Post Parent ID (use <code>current</code> for the current post)', 'wp-tiles' ),
+                    'description' => __( 'Only show children of post with ID', 'wp-tiles' ),
                 ),
 
                 array(

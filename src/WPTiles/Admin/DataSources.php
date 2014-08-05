@@ -15,13 +15,15 @@ class DataSources
         ));
 
         $result = array();
-        foreach ($wp_posts as $post)
-        {
+        foreach ($wp_posts as $post) {
             $result[] = array('value' => $post->ID, 'label' => $post->post_title);
         }
         return $result;
     }
 
+    /**
+     * @deprecated If there's too many posts, execution stops here.
+     */
     public static function get_posts_any() {
         $wp_posts = get_posts(array(
             'posts_per_page' => -1,
