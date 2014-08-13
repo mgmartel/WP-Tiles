@@ -356,7 +356,11 @@ class Shortcode
             // Only exclude if post IDs are not explicitly given
             // (post__not_in and post__in at the same time is not supported by WP_Query)
             if ( $atts['exclude_current_post'] && !$id ) {
-                $args['post__not_in'] = array( get_the_ID() );
+                
+                if ( !isset( $args['post__not_in'] ) || !is_array( $args['post__not_in'] ) )
+                    $args['post__not_in'] = array();
+
+                $args['post__not_in'][] = get_the_ID();
             }
 
             if ( !empty( $atts['related_in_taxonomy'] ) ) {
