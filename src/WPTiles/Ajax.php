@@ -86,14 +86,16 @@ class Ajax extends Abstracts\WPSingleton
     }
 
         private function get_query_hash( $query ) {
-            array_walk( $query, function( &$var ){
-                if ( 'false' === $var )
-                    $var = false;
-                elseif( 'true' === $var )
-                    $var = true;
-            } );
+            array_walk( $query, array( $this, '_sanitize_var_for_hash' ) );
 
             $q = build_query( wp_parse_args( $query ) );
             return md5( $q );
+        }
+
+        public function _sanitize_var_for_hash( &$var ) {
+            if ( 'false' === $var )
+                $var = false;
+            elseif( 'true' === $var )
+                $var = true;
         }
 }

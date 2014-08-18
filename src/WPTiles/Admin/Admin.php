@@ -122,12 +122,7 @@ class Admin
     private static function setup_options() {
         self::$context = self::CONTEXT_OPTIONS;
 
-        $slug = self::PAGE_SLUG;
-        add_action( 'admin_enqueue_scripts', function( $hook_suffix ) use ( $slug ) {
-            if ( $hook_suffix === 'toplevel_page_' . $slug ) {
-                wp_tiles()->enqueue_styles();
-            }
-        });
+        add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_styles' ));
 
         return new \VP_Option( array(
             'is_dev_mode'           => false,
@@ -152,6 +147,12 @@ class Admin
             'menu_label'            => __( 'WP Tiles', 'wp-tiles' ),
         ) );
     }
+
+        public static function enqueue_admin_styles( $hook_suffix ) {
+            if ( $hook_suffix === 'toplevel_page_' . self::PAGE_SLUG ) {
+                wp_tiles()->enqueue_styles();
+            }
+        }
 
     private static function _get_menus() {
         return array(
