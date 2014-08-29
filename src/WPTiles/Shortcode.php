@@ -89,11 +89,7 @@ class Shortcode
         }
 
         // Maybe convert full grid strings into grids so they are not interpreted as names
-        $is_grid_string = function( $string ) {
-            return is_string( $string ) && ( strpos( $string, '|' ) !== false || strpos( $string, "\n" ) !== false );
-        };
-
-        if ( $atts['small_screen_grid'] && $is_grid_string( $atts['small_screen_grid'] ) ) {
+        if ( $atts['small_screen_grid'] && self::_is_grid_string( $atts['small_screen_grid'] ) ) {
             $atts['small_screen_grid'] = array(
                 'Custom' => wp_tiles()->format_grid( $atts['small_screen_grid'] )
             );
@@ -159,6 +155,10 @@ class Shortcode
         return $options;
 
     }
+
+        private static function _is_grid_string( $string ) {
+            return is_string( $string ) && ( strpos( $string, '|' ) !== false || strpos( $string, "\n" ) !== false );
+        }
 
         private static function _get_colors( $colors ) {
             $colors = self::_get_options_array( $colors );
@@ -356,7 +356,7 @@ class Shortcode
             // Only exclude if post IDs are not explicitly given
             // (post__not_in and post__in at the same time is not supported by WP_Query)
             if ( $atts['exclude_current_post'] && !$id ) {
-                
+
                 if ( !isset( $args['post__not_in'] ) || !is_array( $args['post__not_in'] ) )
                     $args['post__not_in'] = array();
 
