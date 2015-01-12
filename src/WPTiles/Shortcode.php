@@ -189,7 +189,7 @@ class Shortcode
             'post_parent'          => false,
             'post_status'          => 'publish',
             'post_type'            => 'current', // 'post',
-            'posts_per_page'       => 'grid',
+            'posts_per_page'       => 'auto',
             'paged'                => 1,
             'tag'                  => '',
             'tax_operator'         => 'IN',
