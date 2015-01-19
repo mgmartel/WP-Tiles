@@ -1,11 +1,13 @@
 <?php
 /*
   Plugin Name: WP Tiles
-  Plugin URI: http://trenvopress.com/
+  Plugin URI: http://wp-tiles.com/
   Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
   Version: 1.0-beta1
   Author: Mike Martel
-  Author URI: http://trenvopress.com
+  Author URI: http://trenvo.com/
+  Requires at least: 3.6
+  Tested up to: 4.1
  */
 
 // Exit if accessed directly
