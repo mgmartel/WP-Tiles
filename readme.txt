@@ -4,7 +4,7 @@ Plugin URI: http://wp-tiles.com/
 Author URI: http://trenvo.com/
 Tags: tiles, shortcode
 Requires at least: 3.4.2
-Tested up to: 3.9.1
+Tested up to: 4.1
 Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
