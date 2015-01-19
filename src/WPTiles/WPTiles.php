@@ -175,9 +175,9 @@ class WPTiles extends Abstracts\WPSingleton
             $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
         }
 
-        // Is posts a WP_Query? (enables pagination)
+        // Is posts a WP_Query or Network_Query or similar? (enables pagination)
         $wp_query = false;
-        if ( is_a( $posts, 'WP_Query' ) ) {
+        if ( is_object( $posts ) && isset( $posts->posts ) && isset( $posts->max_num_pages ) ) {
             $wp_query = $posts;
             $posts = $wp_query->posts;
         }
