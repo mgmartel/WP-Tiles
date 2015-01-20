@@ -15,11 +15,21 @@ class Admin
 
     public static $context = self::CONTEXT_OPTIONS;
 
-    public static function setup() {
-        \VP_Security::instance()->whitelist_function( 'wp_tiles_preview_tile');
+    /**
+     * @var \VP_Option
+     */
+    public static $options;
 
-        self::setup_options();
-        self::setup_shortcode_generator();
+    /**
+     * @var \VP_ShortcodeGenerator
+     */
+    public static $shortcode_generator;
+
+    public static function setup() {
+        \VP_Security::instance()->whitelist_function( 'wp_tiles_preview_tile' );
+
+        self::$options             = self::setup_options();
+        self::$shortcode_generator = self::setup_shortcode_generator();
         GridTemplates::get_instance();
     }
 
@@ -122,7 +132,7 @@ class Admin
     private static function setup_options() {
         self::$context = self::CONTEXT_OPTIONS;
 
-        add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_styles' ));
+        add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_styles' ) );
 
         return new \VP_Option( array(
             'is_dev_mode'           => false,
@@ -149,7 +159,7 @@ class Admin
     }
 
         public static function enqueue_admin_styles( $hook_suffix ) {
-            if ( $hook_suffix === 'toplevel_page_' . self::PAGE_SLUG ) {
+            if ( $hook_suffix === self::$options->get_hook_suffix() ) {
                 wp_tiles()->enqueue_styles();
             }
         }
