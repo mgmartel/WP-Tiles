@@ -133,6 +133,7 @@ class Admin
         self::$context = self::CONTEXT_OPTIONS;
 
         add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_admin_styles' ) );
+        add_action( 'admin_menu', array( __CLASS__, 'add_admin_actions' ) );
 
         return new \VP_Option( array(
             'is_dev_mode'           => false,
@@ -156,7 +157,24 @@ class Admin
             'page_title'            => __( 'WP Tiles', 'wp-tiles' ),
             'menu_label'            => __( 'WP Tiles', 'wp-tiles' ),
         ) );
+
     }
+
+        public static function add_admin_actions() {
+
+            $hookname = \get_plugin_page_hookname( self::$options->get_page_slug(), '' );
+            \add_action( $hookname, array( __CLASS__, 'do_before_render_admin_page' ), 9 );
+            \add_action( $hookname, array( __CLASS__, 'do_after_render_admin_page' ), 11 );
+
+        }
+
+        public static function do_before_render_admin_page() {
+            do_action( 'wp_tiles_before_admin_page' );
+        }
+
+        public static function do_after_render_admin_page() {
+            do_action( 'wp_tiles_after_admin_page' );
+        }
 
         public static function enqueue_admin_styles( $hook_suffix ) {
             if ( $hook_suffix === self::$options->get_hook_suffix() ) {
