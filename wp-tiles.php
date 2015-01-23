@@ -26,4 +26,14 @@ if ( version_compare( phpversion(), '5.3', '<' ) ) {
 
     require plugin_dir_path( __FILE__ ) . 'wp-tiles-loader.php';
 
+    // Add settings link
+    $plugin = plugin_basename( __FILE__ );
+
+    add_filter( "plugin_action_links_$plugin", 'wp_tiles_plugin_action_links' );
+    function wp_tiles_plugin_action_links( $links ) {
+        $links[] = '<a href="admin.php?page=wp-tiles">' . __( 'Settings', 'wp-tiles' ) . '</a>';
+        return $links;
+    }
+
+
 }
