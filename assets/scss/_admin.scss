@@ -52,3 +52,38 @@
         overflow: hidden;
     }
 }
+
+/**************************************
+    Stuffbox
+ **************************************/
+
+.wrap {
+    position: relative;
+}
+
+.wp-tiles-stuffbox {
+    display: none;
+}
+
+#vp-wrap .wp-tiles-stuffbox {
+    display: block;
+
+    margin: 0 0 0 912px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+
+    max-width: 902px;
+
+    @media screen and ( max-width: 1390px ) {
+        position: static;
+        margin: 0;
+    }
+}
+
+.wp-tiles-stuffbox h3 {
+
+    padding: 8px 12px;
+    margin: 0px;
+    line-height: 1.4;
+}
