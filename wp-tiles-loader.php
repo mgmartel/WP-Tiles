@@ -37,18 +37,14 @@ require WP_TILES_DIR . 'vendor/autoload.php';
  * Activation and backward compat
  */
 
-// Legacy support means loading an obsolete option every request.
-if ( get_option( 'wp-tiles-options' ) ) {
-    add_action( 'init', array( 'WPTiles\Legacy', 'convert_options' ) );
+if ( get_option( 'wp-tiles-options' ) !== 'legacy' ) {
+    add_action( 'init', array( 'WPTiles\Legacy', 'convert_options' ), 1 );
+}
 
-} else {
+register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
 
-    if ( get_transient( 'wp_tiles_first_run' ) ) {
-        add_action( 'init', array( 'WPTiles\WPTiles', 'on_first_run' ) );
-    }
-
-    register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
-
+if ( get_transient( 'wp_tiles_first_run' ) ) {
+    add_action( 'init', array( 'WPTiles\WPTiles', 'on_first_run' ) );
 }
 
 /**

@@ -156,7 +156,10 @@ class Legacy
         $options = wp_parse_args( self::convert_option_array( $legacy, true ), get_option( 'wp_tiles' ) );
 
         update_option( 'wp_tiles', $options );
+
+        // Just to make sure we are getting autoloaded, we'll delete and re-add the option
         delete_option( 'wp-tiles-options' );
+        add_option( 'wp-tiles-options', 'legacy', '', 'yes' );
     }
 
 
