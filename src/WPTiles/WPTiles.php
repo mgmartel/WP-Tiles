@@ -634,7 +634,7 @@ class WPTiles extends Abstracts\WPSingleton
          * @since 1.0
          * @param bool Always enqueue
          */
-        if ( !is_admin() && apply_filters( 'wp_tiles_always_enqueue_stylesheet', true ) ) {
+        if ( !is_admin() && apply_filters( 'wp_tiles_always_enqueue_stylesheet', false ) ) {
             $this->enqueue_styles();
         }
     }
