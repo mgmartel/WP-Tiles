@@ -30,7 +30,15 @@ class Admin
 
         self::$options             = self::setup_options();
         self::$shortcode_generator = self::setup_shortcode_generator();
+
         GridTemplates::get_instance();
+
+        add_action( 'wp_tiles_after_admin_page', array( __CLASS__, 'render_about_box' ) );
+    }
+
+    public static function render_about_box() {
+        include WP_TILES_DIR . 'assets/views/about.php';
+        echo '<script>jQuery(function($){ $("#about-wp-tiles").insertAfter("#vp-copyright"); });</script>';
     }
 
     public static function is_shortcode() {
