@@ -153,13 +153,18 @@ class Legacy
 
     public static function convert_options() {
         $legacy = get_option( 'wp-tiles-options' );
-        $options = wp_parse_args( self::convert_option_array( $legacy, true ), get_option( 'wp_tiles' ) );
 
-        update_option( 'wp_tiles', $options );
+        if ( $legacy ) {
+            $options = wp_parse_args( self::convert_option_array( $legacy, true ), get_option( 'wp_tiles' ) );
+            update_option( 'wp_tiles', $options );
+        }
 
         // Just to make sure we are getting autoloaded, we'll delete and re-add the option
         delete_option( 'wp-tiles-options' );
         add_option( 'wp-tiles-options', 'legacy', '', 'yes' );
+
+        // And also make sure our default grids are installed
+        Admin\GridTemplates::install_default_templates();
     }
 
 

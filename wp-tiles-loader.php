@@ -34,17 +34,11 @@ if ( !defined( 'VP_VERSION' ) )
 require WP_TILES_DIR . 'vendor/autoload.php';
 
 /**
- * Activation and backward compat
+ * Backward compat
  */
 
 if ( get_option( 'wp-tiles-options' ) !== 'legacy' ) {
     add_action( 'init', array( 'WPTiles\Legacy', 'convert_options' ), 1 );
-}
-
-register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
-
-if ( get_transient( 'wp_tiles_first_run' ) ) {
-    add_action( 'init', array( 'WPTiles\WPTiles', 'on_first_run' ) );
 }
 
 /**

@@ -963,11 +963,8 @@ class WPTiles extends Abstracts\WPSingleton
     }
 
     public static function on_plugin_activation() {
-        set_transient( 'wp_tiles_first_run', true );
+        wp_tiles()->register_post_type();
+        Admin\GridTemplates::install_default_templates();
     }
 
-    public static function on_first_run() {
-        Admin\GridTemplates::install_default_templates();
-        delete_transient( 'wp_tiles_first_run' );
-    }
 }
