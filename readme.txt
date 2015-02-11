@@ -112,12 +112,12 @@ To show WP Tiles in your templates, there are template tags available. See the d
 
 == Screenshots ==
 
-1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
-1. WP Tiles in action ([trenvo.com](http://trenvo.com))
-1. Example of tile templates (posts and photos courtesy of [Motomonkey Adventures](http://motomonkeyadventures.com)
-1. Example of tile templates
-1. Example of tile templates (featured)
-1. Example of tile templates (plain)
+1. WP Tiles showing posts with a hover effect ([Designer Homepage example](http://wp-tiles.com/example-pages/designer-homepage/))
+1. WP Tiles displaying similar posts ([Architectural Blog example](http://wp-tiles.com/example-pages/architectural-blog/))
+1. WP Tiles gallery ([Travel Blog example](http://wp-tiles.com/travel-blog/))
+1. Grid editor in the backend
+1. Tile designer
+1. Shortcode editor
 
 == Changelog ==
 
