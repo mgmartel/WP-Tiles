@@ -1,0 +1,53 @@
+/* ==========================================================================
+   Pagination
+   ========================================================================== */
+
+/**************************************
+    Ajax Load More
+ **************************************/
+
+.wp-tiles-pagination-ajax {
+    line-height: 24px;
+    text-align: center;
+
+    &.loading {
+        background: image-url('loading.gif') no-repeat 50%;
+        text-indent: -9999px;
+    }
+}
+
+/**************************************
+    Paging Navigation & Prev/Next
+    (based on TwentyFourteen)
+ **************************************/
+
+.wp-tiles-pagination-paging, .wp-tiles-pagination-prev-next  {
+
+    .loop-pagination {
+        margin-top: -5px;
+        text-align: center;
+    }
+
+    .page-numbers, .prev-next {
+        border-top: 5px solid transparent;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 900;
+        margin-right: 1px;
+        padding: 7px 16px;
+        text-transform: uppercase;
+    }
+
+    a {
+        color: #2b2b2b;
+    }
+
+    .page-numbers.current {
+        border-top: 5px solid #24890d;
+    }
+
+    a:hover {
+        border-top: 5px solid #41a62a;
+        color: #2b2b2b;
+    }
+}

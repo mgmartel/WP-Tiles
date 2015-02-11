@@ -1,0 +1,51 @@
+/* ==========================================================================
+   BASE: Tile with BG image
+   ========================================================================== */
+.wp-tiles-tile-bg {
+    .wp-tiles-loaded & {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-size: cover;
+        background-position: 50% 50%;
+    }
+}
+
+.wp-tiles-tile-with-image {
+
+    .wp-tiles-byline {
+        color: #eee;
+
+        .wp-tiles-loaded & {
+            position: absolute;
+            left: 0;
+            right: 0;
+        }
+
+        .wp-tiles-byline-align-top & {
+            top: 0;
+        }
+        .wp-tiles-byline-align-bottom & {
+            bottom: 0;
+        }
+
+        background: rgba(0, 0, 0, 0.8);
+        max-height: 100%;
+    }
+
+    .wp-tiles-byline-title {
+        margin: 0;
+
+        overflow: hidden;
+        padding: 5px;
+        padding-top: 2px;
+    }
+
+    .wp-tiles-byline-content {
+        padding: 5px;
+        font-size: 0.9em;
+        font-weight: normal;
+
+        overflow: hidden;
+
+    }
+}

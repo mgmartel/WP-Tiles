@@ -1,11 +1,12 @@
 Currently, all future features have no target version attached to them. Whoever wants to can add them or if there are enough requests, some features will get priority:
 * Filter by Post Category (on the front end)
-* Custom predefined styles and animations
-* Better admin screens
-* Shortcode builder
-* Loading indicator when tiles are loading
-* Custom content on the tiles
-* Hide current post in tiles using shortcode
-
-* Better filters on byline
-* Better support for custom post type taxonomies
+* Option to automatically add IE compat header
+* Multiple breakpoints
+* Infinite Scroll option?
+* Sliders on tiles
+* Multisite support (with Post Indexer)
+* Named queries (filters to the query in the shortcode)
+* Allow other lightboxes than thickbox and jetpack
+* Change font size
+* Disable automatic elipsis
+* Scrolling animations

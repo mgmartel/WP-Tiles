@@ -1,0 +1,27 @@
+/* ==========================================================================
+   BASE: Text Only
+   ========================================================================== */
+
+.wp-tiles-tile-text-only {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    //padding: 5px;
+
+    .wp-tiles-byline {
+        color: #303030;
+    }
+    .wp-tiles-byline-title {
+        margin: 0;
+        font-size: 1.5em;
+        line-height: 1.15em;
+        padding-top: 15px;
+    }
+
+    .wp-tiles-byline-content {
+        font-style: normal;
+        font-size: 1em;
+        font-weight: normal;
+    }
+}

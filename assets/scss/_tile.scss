@@ -1,0 +1,43 @@
+/**************************************
+    Tile Base Styles
+ **************************************/
+
+// Make tiles inline-block if the JS doesn't kick in
+.wp-tiles-tile, .wp-tiles-tile-wrapper {
+    display: inline-block;
+    .wp-tiles-loaded & {
+        display: block;
+    }
+}
+
+.wp-tiles-tile {
+    width: 33%;
+    background-color: #EEE;
+    padding: 0;
+    overflow: hidden;
+
+    .wp-tiles-loaded & {
+        position: absolute;
+    }
+
+    // Legacy styles
+    .wp-tiles-legacy & {
+        @include box-shadow ( 6px 6px 10px );
+        &:hover {
+            outline: 1px solid #ccc;
+        }
+    }
+
+    body & a { // Added body to make sure this rule is important enough for most themes
+        text-decoration: none;
+    }
+}
+
+.wp-tiles-byline {
+    max-height: 100%;
+    width: 100%;
+}
+
+.wp-tiles-byline-wrapper {
+    padding: 5px;
+}

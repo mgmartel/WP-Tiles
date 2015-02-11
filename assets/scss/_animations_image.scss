@@ -1,0 +1,68 @@
+/**************************************
+    IMAGE ANIMATIONS
+ **************************************/
+.wp-tiles-image-animated {
+    .wp-tiles-tile-bg {
+        @extend %animated;
+    }
+}
+
+%scale-up {
+    @include transform(scale(1.2));
+}
+.wp-tiles-image-scale-up {
+    .wp-tiles-tile-bg {
+
+    }
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        @extend %scale-up;
+    }
+}
+.wp-tiles-image-scale-down {
+    .wp-tiles-tile-bg {
+        @extend %scale-up;
+    }
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        @include transform(scale(1));
+    }
+}
+
+%saturate {
+    filter: none;
+    -webkit-filter: grayscale(0%);
+}
+%desaturate {
+    /* Firefox 10+ */
+    filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='saturate' values='0.5'/></filter></svg>#grayscale");
+    /* IE6-9 */
+    filter: gray alpha(opacity=50);
+    /* Chrome 19+ & Safari 6+ */
+    -webkit-filter: grayscale(50%);
+    /* Fix for transition flickering */
+    -webkit-backface-visibility: hidden;
+}
+
+.wp-tiles-image-saturate {
+    .wp-tiles-tile-bg {
+        @extend %desaturate;
+    }
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        @extend %saturate;
+    }
+}
+
+.wp-tiles-image-desaturate {
+    .wp-tiles-tile-bg {
+        @extend %saturate;
+
+    }
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        @extend %desaturate;
+    }
+}
+
+.wp-tiles-image-color-overlay {
+    .wp-tiles-tile:hover .wp-tiles-tile-bg {
+        opacity: 0.3;
+    }
+}

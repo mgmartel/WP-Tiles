@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Admin
+   ========================================================================== */
+
+/**************************************
+    Grid Editor
+ **************************************/
+.grid-template-editor {
+    width: 100%;
+    height: 100px;
+
+    max-width: 100%;
+    font-family: monospace;
+    letter-spacing: 0.5em;
+}
+
+.wp-tiles-tile-letter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    margin: auto;
+    height: 1em;
+    width: 1em;
+
+    font-size: 2em;
+}
+
+/**************************************
+    Tile designer
+ **************************************/
+.wp-tiles-container.wp-tiles-tile-demo {
+    height: 276px;
+    width:  276px;
+    margin: 0 auto;
+
+    .wp-tiles-tile {
+        background-color: rgb(51, 204, 204);
+        width: 266px;
+        height: 266px;
+        display: block;
+    }
+
+    .wp-tiles-tile-bg {
+        background-image: image-url('tile-demo-1.jpg');
+    }
+
+    .wp-tiles-byline {
+        background-color: rgba(51, 204, 204, 0.5);
+        overflow: hidden;
+    }
+}
+
+/**************************************
+    Stuffbox
+ **************************************/
+
+.wrap {
+    position: relative;
+}
+
+.wp-tiles-stuffbox {
+    display: none;
+}
+
+#vp-wrap .wp-tiles-stuffbox {
+    display: block;
+
+    margin: 0 0 0 912px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+
+    max-width: 902px;
+
+    @media screen and ( max-width: 1390px ) {
+        position: static;
+        margin: 0;
+    }
+}
+
+.wp-tiles-stuffbox h3 {
+
+    padding: 8px 12px;
+    margin: 0px;
+    line-height: 1.4;
+}
