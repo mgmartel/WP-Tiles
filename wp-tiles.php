@@ -1,45 +1,42 @@
 <?php
 /*
   Plugin Name: WP Tiles
-  Plugin URI: http://trenvopress.com/
+  Plugin URI: http://wp-tiles.com/
   Description: Add fully customizable dynamic tiles to your WordPress posts and pages.
-  Version: 0.5.9
+  Version: 1.0-beta1
   Author: Mike Martel
-  Author URI: http://trenvopress.com
+  Author URI: http://trenvo.com/
+  Requires at least: 3.6
+  Tested up to: 4.1
  */
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) )
     exit;
 
-/**
- * Version number
- *
- * @since 0.1
- */
-define( 'WPTILES_VERSION', '0.5.9' );
+if ( version_compare( phpversion(), '5.3', '<' ) ) {
 
-/**
- * PATHs and URLs
- *
- * @since 0.1
- */
-define( 'WPTILES_DIR', plugin_dir_path( __FILE__ ) );
-define( 'WPTILES_URL', plugin_dir_url( __FILE__ ) );
-define( 'WPTILES_TEMPLATES_DIR', WPTILES_DIR . 'templates/' );
-define( 'WPTILES_TEMPLATES_URL', WPTILES_URL . 'templates/' );
-define( 'WPTILES_INC_URL', WPTILES_URL . '_inc/' );
+    function wp_tiles_php53_dashboard_notice() {
+        echo __( '<div class="error"><p>WP Tiles is <strong>not</strong> active. This version of the plugin requires PHP v5.3+.</p></div>', 'wp-tiles' );
+    }
 
-/**
- * Requires and includes
- *
- * @since 0.1
- */
-require_once ( WPTILES_DIR . '/wp-tiles.class.php' );
-if ( is_admin() )
-    require_once ( WPTILES_DIR . '/wp-tiles-admin.php' );
+    add_action( 'all_admin_notices', 'wp_tiles_php53_dashboard_notice' );
 
-add_action( 'plugins_loaded', 'wptiles_load_pluggables' );
-function wptiles_load_pluggables() {
-    require_once( WPTILES_DIR . '/wp-tiles-pluggables.php' );
+} else {
+
+    require plugin_dir_path( __FILE__ ) . 'wp-tiles-loader.php';
+
+    $plugin_file = plugin_basename( __FILE__ );
+
+    // Activation
+    register_activation_hook( __FILE__, array( 'WPTiles\WPTiles', 'on_plugin_activation' ) );
+
+    // Add settings link
+    add_filter( "plugin_action_links_$plugin_file", 'wp_tiles_plugin_action_links' );
+    function wp_tiles_plugin_action_links( $links ) {
+        $links[] = '<a href="admin.php?page=wp-tiles">' . __( 'Settings', 'wp-tiles' ) . '</a>';
+        return $links;
+    }
+
+
 }

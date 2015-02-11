@@ -1,220 +1,148 @@
 === WP Tiles ===
 Contributors: Mike_Cowobo
-Plugin URI: http://wordpress.org/extend/plugins/wp-tiles/
-Author URI: http://trenvopress.com/
-Tags: tiles, shortcode
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U32MTZ9VGHLKS
+Plugin URI: http://wp-tiles.com/
+Author URI: https://trenvo.com/
+Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
 Requires at least: 3.4.2
-Tested up to: 3.5.2
-Stable tag: 0.5.9
+Tested up to: 4.1
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-WP Tiles shortcode adds fully customizable dynamic tiles to your WordPress posts and pages.
+Add beautiful, fully customizable post tiles or tiled galleries anywhere on your WordPress site easily with WP Tiles.
 
 == Description ==
 
-With WP Tiles you can add tiles to your WP install by simply putting `[wp-tiles]` in your posts and pages, using [Tiles.js](https://github.com/thinkpixellab/tilesjs), as seen on [Pulse.me](http://pulse.me).
+WP Tiles is a WordPress plugin that allows anyone to create beautiful tiled layouts for their website.
 
-See the plugin in action on the frontpage of [CreatedByDanielle.com](http://createdbydanielle.com).
+With WP Tiles you can:
 
-*If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).*
+* Display your latest blog posts in a fully customizable and responsive grid layout
+* Show a tiled archive of any post type, category or other taxonomy
+* Create beautiful tiled image galleries using the WP Media Uploader
 
-= Usage =
+> To experience for yourself how easy it is to create grids with WP Tiles, checkout the [grid designer](http://wp-tiles.com/#grid-editor) on our website.
 
-WP Tiles are automatically generated based on your 20 last posts, but can be modified to show whichever query you want it to, by adjusting the defaults in the options section, or passing arguments to the shortcode.
+= Usages =
 
-The options section of the plugin details how to use the shortcode.
+* Displaying Posts *
+The simplest way of using WP Tiles is by placing the `[wp-tiles]` shortcode somewhere on any of your pages or posts. Just add [wp-tiles] to your post to view the default tiles. However, WP Tiles is extremely flexible, allowing you to specify what content you want to display on your tiles, whether to display background images or skip posts that have no featured image, and much much more.
 
-= Images =
+* Create a tiled gallery *
+You can use WP Tiles to replace your default WordPress `[gallery]` shortcode. Simply create a gallery and select the grid you want to use, and you are good to go. Images can link to the attachment page, the image file, or be opened using a Thickbox, or with JetPack's Carousel (or the [Gallery Carousel without JetPack](http://wordpress.org/plugins/carousel-without-jetpack/) plugin!).
 
-Posts are automatically shown with either their featured image, the first attached image, or the first image found in the post itself. Posts that don't have an image automatically get a background color, randomly chosen from a selection of colors set in the options panel of WP Tiles.
+= Other Features =
 
-= Templates =
+*Pagination using the shortcode*
+The shortcode can be **automatically paginated**. The plugin includes AJAX pagination (without page reload), previous/next page navigation and page number navigation.
 
-WP Tiles comes with a couple default tile-templates. You can modify these in the options section.
+*SEO Friendly*
+The Tiles require JavaScript to be rendered, but they are readable by bots that don't use JavaScript, and even include basic Schema.org microtags and are generated using clean HTML5. This means that you can safely use WP Tiles as a primary element on your page without worrying about SEO.
+
+*Grid Builder and Tile Designer*
+The admin interface comes with a live editor for grid templates, so you can immediately see what grid templates look like. Tiles and bylines also come with a collection of hover effects and a list of adjustable properties that you can edit and preview immediately in the Tile Designer.
+
+*Completely custom bylines*
+The bylines are now generated using a custom template, the mark up and content of which you can control entirely. You could even start showing complete posts on tiles if you want to!
+
+For complete documentation, check out the website at [wp-tiles.com](http://wp-tiles.com/).
+
+> If you want to help develop this plugin, visit the [GitHub repo](https://github.com/mgmartel/WP-Tiles).
 
 == Installation ==
 
-Install the plugin the usual way and activate it.
+Install the plugin the usual way, and activate it.
 
-Under "Settings"->"WP Tiles" you can update your settings.
+You will now have a menu item for WP Tiles where you can edit your Grid templates and the plugin default options. In your post and page editor, you can generate the WP Tiles shortcode by clicking the button the toolbar.
+
+For complete documentation, check out the website at [wp-tiles.com](http://wp-tiles.com/).
 
 == Frequently Asked Questions ==
 
-= How can I style the tiles? =
+= I get a notice saying that I need to upgrade my PHP version, what does that mean? =
 
-You can style WP Tiles by adding a file called 'wp-tiles.css' in your (child) themes 'inc', 'css' or 'inc/css' folder. It will automatically be loaded.
+Check out [this post](http://wp-tiles.com/docs/upgrading-from-php-5-2-to-php-5-3/) on our website.
 
-= Can I use WP Tiles as the menu for my website? =
+= My images are blurry / pixelated / low quaility! What's up? =
 
-You certainly can! For example, you filter the Tiles data to add certain pages on fixed places. For an example on how to code this, see [this gist](https://gist.github.com/4454318).
+WP Tiles by default uses the `large` image size provided by WordPress. This is the same size as you would get when you insert an image into a page and select 'Large' for its size. However, users (that's you!) can change this size in their admin panel (in Settings -> Media). If the `large` size is smaller than the largest tile, the images will be stretched (proportionally).
 
-= Can I change the size of the image used for the tiles? =
+There are 3 ways out:
 
-Yes, use the wp-tiles-image-size filter to return the desired image size. For example:
+1. Change your Large image size to be bigger (in Settings -> Media)
+2. Select a different size for WP Tiles to use in the admin panel (WP Tiles -> Image Settings)
+3. Override the image size in the shortcode: `[wp-tiles image_size='full']`
 
-`add_filter('wp-tiles-image-size', 'change_tile_image_size');
-function change_tile_image_size( $image_size ) {
-    return 'large';
-}`
+= WP Tiles is loading slow! What can I do? =
 
-= Can I show tiles in my templates, for example on in the category archives? =
+See the previous question! WP Tiles uses the `large` image size in WordPress by default. If that size is gigantic, or if you have set WP Tiles to use an even larger size (like `full`), then WP Tiles will load heavy images. Adjusting the image size down should make your website load faster again.
 
-To show WP Tiles in your templates, three template tags are available:
+= WP Tiles is not selecting the image I want from posts! Hm? =
 
-`the_wp_tiles( $atts )`
-This works the same as the shortcode. Pass the same arguments to the function as you would to the shortcode as an array. (The settings page shows you hints on how to do this)
+By default, WP Tiles will try its hardest to select an image from your posts, in this order:
+1. Featured Image
+2. First attached image
+3. First image in post itself
 
-`the_category_wp_tiles( $atts )`
-Works the same as the_wp_tiles(), but shows posts from the current categories (for use on single posts and category pages).
+If you want to limit this, there are 3 options, either in the admin panel (WP Tiles -> Image Settings), or in the shortcode (`[wp-tiles image_source=...]`):
 
-`the_loop_wp_tiles()`
-Can be used instead of the loop. Shows all posts that would be shown when normally using the loop.
+Attached Only `attached_only` - Don't look inside post content for image
+Featured Image Only `featured_only` - Only use Featured Image
+Only show image for Media Posts `attachment_only` - Don't show image, unless the post itself is a media post
 
-N.B.: you can't pass any post_query attributes to `the_loop_wp_tiles()`. Set up the number of posts in your WP settings ( WP-admin -> Settings -> Reading -> "Blog pages show at most" ).
+= Can I change what is shown on the tiles? =
 
-With `the_loop_wp_tiles()`, pagination works the same as it would in your other theme files. For help see [Pagination in the WordPress Codex](https://codex.wordpress.org/Pagination). (Tip: use your current category.php and just replace `while ( have_posts() ) : the_post(); [...] endwhile;` by `the_loop_wp_tiles()`)
+Yes! The content of the tiles is determined by the 'byline template'. As with everything in WP Tiles, you can either set the template in the options panel, or put it in the shortcode directly. In the shortcode use the `byline_template` attribute for the byline on *image tiles*. Use `byline_template_textonly` for bylines on *text-only tiles*.
 
-Example basic template:
+In the template, wherever you put the following tags, they will be replaced by content from the post:
 
-`<?php get_header(); ?>
+* `%title%, %content%, %date%, %excerpt%, %link%, %author%, %featured_image%` - All taken from the post
+* `%categories%` - Comma separated list of categories
+* `%category_links%` - Like above, but with links
+* `%tags, %tag_links%` - Same as categories
+* `%meta:META_KEY%` - Replace META_KEY by the meta key you want to display
+* `%tax:TAXONOMY%, %tax_links:TAXONOMY%`
 
-	<section id="primary" class="site-content">
-		<div id="content" role="main">
+Also see [this](http://wp-tiles.com/docs/byline-templates/) page in our documentation.
 
-            <?php if ( function_exists ( 'the_loop_wp_tiles' ) ) the_loop_wp_tiles(); ?>
+= Can I add WP Tiles to my theme or plugin? Or can I show tiles in my templates, for example on in the category archives? =
 
-		</div><!-- #content -->
-	</section><!-- #primary -->
-
-<?php get_sidebar(); ?>
-<?php get_footer(); ?>`
-
-Example category.php for Twenty Twelve:
-`<?php
-/**
- * The template for displaying Category pages.
- *
- * Used to display archive-type pages for posts in a category.
- *
- * Learn more: http://codex.wordpress.org/Template_Hierarchy
- *
- * @package WordPress
- * @subpackage Twenty_Twelve
- * @since Twenty Twelve 1.0
- */
-
-get_header(); ?>
-
-	<section id="primary" class="site-content">
-		<div id="content" role="main">
-
-		<?php if ( have_posts() ) : ?>
-			<header class="archive-header">
-				<h1 class="archive-title"><?php printf( __( 'Category Archives: %s', 'twentytwelve' ), '<span>' . single_cat_title( '', false ) . '</span>' ); ?></h1>
-
-			<?php if ( category_description() ) : // Show an optional category description ?>
-				<div class="archive-meta"><?php echo category_description(); ?></div>
-			<?php endif; ?>
-			</header><!-- .archive-header -->
-
-			<?php
-            if ( function_exists ( 'the_loop_wp_tiles' ) ) :
-                the_loop_wp_tiles();
-            else :
-                while ( have_posts() ) : the_post();
-
-                    /* Include the post format-specific template for the content. If you want to
-                     * this in a child theme then include a file called called content-___.php
-                     * (where ___ is the post format) and that will be used instead.
-                     */
-                    get_template_part( 'content', get_post_format() );
-
-                endwhile;
-            endif;
-
-			twentytwelve_content_nav( 'nav-below' );
-			?>
-
-		<?php else : ?>
-			<?php get_template_part( 'content', 'none' ); ?>
-		<?php endif; ?>
-
-		</div><!-- #content -->
-	</section><!-- #primary -->
-
-<?php get_sidebar(); ?>
-<?php get_footer(); ?>`
-
-= How can I change what image is used for the tiles? =
-
-There's a filter for that! Changing how the first image is loaded works like this:
-
-`add_filter( 'pre_wp_tiles_image', 'my_tiles_first_image_function', 10, 2 );
-function my_tiles_first_image_function( $src, $post ) {
-    // Your own code that handles which image is returned
-    return $src;
-}`
-
-For example, to enforce that only the featured image is loaded (and never an image from inside a post):
-
-`add_filter( 'pre_wp_tiles_image', 'my_tiles_first_image_function', 10, 2 );
-function my_tiles_first_image_function( $src, $post ) {
-    $tile_image_size = apply_filters( 'wp-tiles-image-size', 'post-thumbnail', $post );
-
-    $images = get_children( array(
-        'post_parent'    => $post->ID,
-        'numberposts'    => 1,
-        'post_mime_type' =>'image'
-    ) );
-
-    if( !empty( $images ) ) {
-        $images = current( $images );
-        $src = wp_get_attachment_image_src( $images->ID, $size = $tile_image_size );
-        return $src[0];
-    }
-
-    return '';
-}`
-
-= How can I use custom taxonomy queries in the shortcode? =
-
-Custom tax queries are supported in the shortcode (but they aren't pretty) using curly braces to create arrays. Use it like this:
-
-`
-[wp-tiles posts_query="tax_query{0}{taxonomy}=my_custom_tax&tax_query{0}{field}=slug&tax_query{0}{terms}=taxonomy-cat-1"]
-`
-
-= The plugin does not work in Internet Explorer, help! =
-
-The plugin should work in IE, but if it does not, try adding the following to your theme's header:
-
-`<meta http-equiv="x-ua-compatible" content="IE=edge">`
-
-This will force IE to display the site as valid as possible and similiar to the competitors like Firefox and Chrome.
-
-(thanks to [48fps](http://wordpress.org/support/profile/48fps) for this tip!)
-
-= Can I show images attached to the current post using WP Tiles? =
-
-Yes! Since version 0.5.6 this is possible by using the appropriate query, which will look like this:
-
-`[wp-tiles posts_query='post_parent={POST_ID}&post_type=attachment&posts_per_page=-1&post_mime_type=image']`
-
-= How can I style my tiles per category? =
-
-WP Tiles automatically adds the class slug to your tiles, so you can add your own CSS rules for each category independently.
+To show WP Tiles in your templates, there are template tags available. See the documentation on the website [here](http://wp-tiles.com/docs/template-tags).
 
 == Screenshots ==
 
-1. WP Tiles in action ([Created by Danielle.com](http://createdbydanielle.com))
-1. WP Tiles in action ([trenvo.com](http://trenvo.com))
-1. Example of tile templates (posts and photos courtesy of [Motomonkey Adventures](http://motomonkeyadventures.com)
-1. Example of tile templates
-1. Example of tile templates (featured)
-1. Example of tile templates (plain)
+1. WP Tiles showing posts with a hover effect ([Designer Homepage example](http://wp-tiles.com/example-pages/designer-homepage/))
+1. WP Tiles displaying similar posts ([Architectural Blog example](http://wp-tiles.com/example-pages/architectural-blog/))
+1. WP Tiles gallery ([Travel Blog example](http://wp-tiles.com/travel-blog/))
+1. Grid editor in the backend
+1. Tile designer
+1. Shortcode editor
 
 == Changelog ==
+
+= 1.0 =
+
+* Complete overhaul of the plugin :) New features include:
+* Grid Builder and Tile Designer
+* (AJAX) Pagination using the shortcode
+* Tiled Galleries
+* New shortcode syntax and button in editor
+* Made the output SEO Friendly
+* Completely custom bylines
+* Modern Styles
+* Grids repeat infinitely (no fallback to 1×1 template)
+* Tile animation (on load, window resize or template selection) is now optional
+* Automatic elipsis for multi-line content
+* Hides current post when used inside the loop (can be disabled)
+
+= 0.6.1 =
+
+* Last version that is compatible with PHP5.2.X. Added compatibility message for when the 1.0 update happens.
+
+= 0.6 =
+
+* Last update before release of WP Tiles 1.0. This update contains information and notices about the forthcoming update.
 
 = 0.5.9 =
 
@@ -358,18 +286,28 @@ WP Tiles automatically adds the class slug to your tiles, so you can add your ow
 
 == Upgrade Notice ==
 
+= 1.0 =
+
+WP Tiles 1.0 is a complete overhaul of the plugin. One thing that has greatly improved is the shortcode syntax. We have done our best to make sure that shortcodes created for the old version still work, but we can't guarantee that they will look the same as before the update. Please read the [upgrade guide](https://trenvo.com/blog/2014/05/upgrading-to-wp-tiles-1-0/) and make sure that all your pages with WP Tiles on them are still working after the update.
+
+= 0.6.1 =
+
+= 0.6 =
+
+WP Tiles will update to version 1.0 **soon**. Please read the [announcement](http://wp-tiles.com/blog/announcing-wp-tiles-1-0/) and be aware that the update after this one will not be 100% compatible.
+
 = 0.5 =
 
-* You can now customize the padding between cells.
+You can now customize the padding between cells.
 
 = 0.4.2 =
 
-* The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
+The previous update changed the behaviour of the_wp_tiles() in plugins. This is restored. If you changed your template files to suit yesterday's 0.4 or 0.4.1, you can simple change the_wp_tiles() to the_loop_wp_tiles() or the_category_wp_tiles(). See the readme for more info on the new template tags.
 
 = 0.4 =
 
-* WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
+WP Tiles can now be used as a replacement for your category pages with pagination! See the readme on how to do this.
 
 = 0.3 =
 
-* In this version you can set at which point you want to switch to the small screen template, or disable this altogether.
+In this version you can set at which point you want to switch to the small screen template, or disable this altogether.

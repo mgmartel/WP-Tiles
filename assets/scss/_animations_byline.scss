@@ -1,0 +1,56 @@
+/**************************************
+    BYLINE ANIMATIONS
+ **************************************/
+.wp-tiles-byline-animated {
+    .wp-tiles-byline {
+        @extend %animated;
+    }
+}
+
+.wp-tiles-tile-with-image {
+    .wp-tiles-byline-slide-up & {
+        .wp-tiles-byline {
+            bottom: 0;
+            @include transform(translateY(100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
+    }
+    .wp-tiles-byline-slide-down & {
+        .wp-tiles-byline {
+            top: 0;
+            bottom: initial;
+            @include transform(translateY(-100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
+    }
+
+    .wp-tiles-byline-slide-left & {
+        .wp-tiles-byline {
+            right: -100%;
+            @include transform(translateX(100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
+    }
+    .wp-tiles-byline-slide-right & {
+        .wp-tiles-byline {
+            @include transform(translateX(-100%));
+        }
+        &:hover .wp-tiles-byline{
+            @extend %no-translate;
+        }
+    }
+    .wp-tiles-byline-fade-in & {
+        .wp-tiles-byline {
+            opacity: 0;
+        }
+        &:hover .wp-tiles-byline{
+            opacity: 1;
+        }
+    }
+}

@@ -1,0 +1,89 @@
+@import "compass";
+
+@mixin user-select($select) {
+    $select: unquote($select);
+    @include experimental(user-select, $select,
+     -moz, -webkit, not -o, not -ms, -khtml, official
+    );
+}
+
+/* Assistive text */
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute;
+}
+
+.screen-reader-text:focus {
+	background-color: #f1f1f1;
+	border-radius: 3px;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+	clip: auto;
+	color: #21759b;
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	height: auto;
+	line-height: normal;
+	padding: 15px 23px 14px;
+	position: absolute;
+	left: 5px;
+	top: 5px;
+	text-decoration: none;
+	text-transform: none;
+	width: auto;
+	z-index: 100000; /* Above WP toolbar */
+}
+
+/**************************************
+    Admin
+ **************************************/
+@import 'admin';
+
+/**************************************
+    Frontend
+ **************************************/
+@import 'template_selector';
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
+.wp-tiles-container {
+	width: auto;
+	height: auto;
+	background: none;
+	overflow: visible;
+}
+
+.wp-tiles-grid {
+    width: 100%;
+    position: relative;
+    @include user-select ( none );
+
+    .wp-tiles-full-width & {
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+}
+
+
+@import 'tile';
+@import 'tile_image';
+@import 'tile_text_only';
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+%animated {
+    @include transition(all 300ms ease-out);
+}
+%no-translate {
+    @include transform(translateX(0%));
+    @include transform(translateY(0%));
+}
+
+@import 'animations_byline';
+@import 'animations_image';
+@import 'pagination';
