@@ -9,7 +9,7 @@ if ( !defined ( 'ABSPATH' ) )
  *
  * @since 0.1
  */
-define( 'WP_TILES_VERSION', '1.0-beta1' );
+define( 'WP_TILES_VERSION', '1.0' );
 
 /**
  * PATHs and URLs
@@ -19,8 +19,6 @@ define( 'WP_TILES_VERSION', '1.0-beta1' );
 
 define( 'WP_TILES_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_TILES_URL', plugin_dir_url( __FILE__ ) );
-define( 'WP_TILES_TEMPLATES_DIR', WP_TILES_DIR . 'templates/' );
-define( 'WP_TILES_TEMPLATES_URL', WP_TILES_URL . 'templates/' );
 define( 'WP_TILES_ASSETS_URL', WP_TILES_URL . 'assets/' );
 
 /**
