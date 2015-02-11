@@ -4,3 +4,9 @@ Currently, all future features have no target version attached to them. Whoever 
 * Multiple breakpoints
 * Infinite Scroll option?
 * Sliders on tiles
+* Multisite support (with Post Indexer)
+* Named queries (filters to the query in the shortcode)
+* Allow other lightboxes than thickbox and jetpack
+* Change font size
+* Disable automatic elipsis
+* Scrolling animations
