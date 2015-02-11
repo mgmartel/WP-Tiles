@@ -2,8 +2,8 @@
 Contributors: Mike_Cowobo
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U32MTZ9VGHLKS
 Plugin URI: http://wp-tiles.com/
-Author URI: http://trenvo.com/
-Tags: tiles, shortcode
+Author URI: https://trenvo.com/
+Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
 Requires at least: 3.4.2
 Tested up to: 4.1
 Stable tag: 1.0
@@ -93,9 +93,22 @@ Only show image for Media Posts `attachment_only` - Don't show image, unless the
 
 = Can I change what is shown on the tiles? =
 
-= Can I show tiles in my templates, for example on in the category archives? =
+Yes! The content of the tiles is determined by the 'byline template'. As with everything in WP Tiles, you can either set the template in the options panel, or put it in the shortcode directly. In the shortcode use the `byline_template` attribute for the byline on *image tiles*. Use `byline_template_textonly` for bylines on *text-only tiles*.
 
-To show WP Tiles in your templates, there are template tags available. In the future, we will document these on the website.
+In the template, wherever you put the following tags, they will be replaced by content from the post:
+
+* `%title%, %content%, %date%, %excerpt%, %link%, %author%, %featured_image%` - All taken from the post
+* `%categories%` - Comma separated list of categories
+* `%category_links%` - Like above, but with links
+* `%tags, %tag_links%` - Same as categories
+* `%meta:META_KEY%` - Replace META_KEY by the meta key you want to display
+* `%tax:TAXONOMY%, %tax_links:TAXONOMY%`
+
+Also see [this](http://wp-tiles.com/docs/byline-templates/) page in our documentation.
+
+= Can I add WP Tiles to my theme or plugin? Or can I show tiles in my templates, for example on in the category archives? =
+
+To show WP Tiles in your templates, there are template tags available. See the documentation on the website [here](http://wp-tiles.com/docs/template-tags).
 
 == Screenshots ==
 
