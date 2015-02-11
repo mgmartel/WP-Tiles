@@ -12,7 +12,8 @@ if ( !function_exists( 'the_wp_tiles' ) ) :
      *
      * Returns false if no posts were found.
      *
-     * @param string|array $atts
+     * @param string|array|WP_Query (optional) $query
+     * @param array (optional) $opts
      * @return bool
      * @since 0.3.3
      */
@@ -35,6 +36,8 @@ if ( !function_exists( 'the_category_wp_tiles' ) ) :
     /**
      * Show the WP Tiles for the current category
      *
+     * @param string|array|WP_Query (optional) $query
+     * @param array (optional) $opts
      * @since 0.4.2
      */
     function the_category_wp_tiles( $query = array(), $opts = array() ) {
@@ -69,6 +72,7 @@ if ( !function_exists( 'the_loop_wp_tiles' ) ) :
      *
      * Can be used to replace the loop.
      *
+     * @param array (optional) $opts
      * @since 0.4.2
      */
     function the_loop_wp_tiles( $opts = array() ) {
