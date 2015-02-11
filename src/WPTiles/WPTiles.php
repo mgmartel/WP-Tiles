@@ -777,9 +777,11 @@ class WPTiles extends Abstracts\WPSingleton
                 return '';
 
             if ( !empty( $post->post_content ) ) {
-                $xpath = new \DOMXPath( @\DOMDocument::loadHTML( $post->post_content ) );
-                $src   = $xpath->evaluate( "string(//img/@src)" );
-                return $src;
+                if ( class_exists( 'DOMXPath' ) && class_exists( 'DOMDocument' ) ) {
+                    $xpath = new \DOMXPath( @\DOMDocument::loadHTML( $post->post_content ) );
+                    $src   = $xpath->evaluate( "string(//img/@src)" );
+                    return $src;
+                }
             }
             return '';
         }
