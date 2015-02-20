@@ -337,7 +337,7 @@ class WPTiles extends Abstracts\WPSingleton
         if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
         <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
-            <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
+            <a href="<?php next_posts( $max_page, true ) ?>"><?php echo apply_filters( 'wp_tiles_load_more_text', __( 'Load More', 'wp-tiles' ) ) ?></a>
         </nav>
         <?php elseif ( 'prev_next' === $opts['pagination'] ) : ?>
             <?php wp_tiles_prev_next_nav( $wp_query, $wp_tiles_id ); ?>
