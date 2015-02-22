@@ -50,7 +50,7 @@ class WPTiles extends Abstracts\WPSingleton
     public $gallery;
 
     public function init() {
-        load_plugin_textdomain( 'wp-tiles', false, WP_TILES_DIR . '/languages/' );
+        load_plugin_textdomain( 'wp-tiles', false, basename( WP_TILES_DIR ) . '/languages/' );
 
         $this->post_query = new PostQuery();
         $this->options    = new Options();
