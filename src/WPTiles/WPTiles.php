@@ -169,8 +169,10 @@ class WPTiles extends Abstracts\WPSingleton
             }
 
             // Automatically set paged var if tile pagination is on
-            if ( $opts['pagination'] )
-                $posts['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+            if ( $opts['pagination'] ) {
+                $paged_query_var = is_front_page() ? get_query_var( 'page' ) : get_query_var('paged');
+                $posts['paged'] = $paged_query_var ? $paged_query_var : 1;
+            }
 
             $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
         }

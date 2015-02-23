@@ -105,10 +105,11 @@ if ( ! function_exists( 'wp_tiles_paging_nav' ) ) :
             return;
         }
 
-        $paged        = get_query_var( 'paged' ) ? intval( get_query_var( 'paged' ) ) : 1;
-        $pagenum_link = html_entity_decode( get_pagenum_link() );
-        $query_args   = array();
-        $url_parts    = explode( '?', $pagenum_link );
+        $paged_query_var = is_front_page() ? get_query_var( 'page' ) : get_query_var('paged');
+        $paged           = $paged_query_var ? $paged_query_var : 1;
+        $pagenum_link    = html_entity_decode( get_pagenum_link() );
+        $query_args      = array();
+        $url_parts       = explode( '?', $pagenum_link );
 
         if ( isset( $url_parts[1] ) ) {
             wp_parse_str( $url_parts[1], $query_args );
