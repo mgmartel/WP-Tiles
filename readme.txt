@@ -5,8 +5,8 @@ Plugin URI: http://wp-tiles.com/
 Author URI: https://trenvo.com/
 Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
 Requires at least: 3.4.2
-Tested up to: 4.1
-Stable tag: 1.0
+Tested up to: 4.1.1
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -26,11 +26,11 @@ With WP Tiles you can:
 
 = Usages =
 
-* Displaying Posts *
-The simplest way of using WP Tiles is by placing the `[wp-tiles]` shortcode somewhere on any of your pages or posts. Just add [wp-tiles] to your post to view the default tiles. However, WP Tiles is extremely flexible, allowing you to specify what content you want to display on your tiles, whether to display background images or skip posts that have no featured image, and much much more.
+* **Displaying Posts**: The simplest way of using WP Tiles is by placing the `[wp-tiles]` shortcode somewhere on any of your pages or posts. Just add [wp-tiles] to your post to view the default tiles. However, WP Tiles is extremely flexible, allowing you to specify what content you want to display on your tiles, whether to display background images or skip posts that have no featured image, and much much more.
 
-* Create a tiled gallery *
-You can use WP Tiles to replace your default WordPress `[gallery]` shortcode. Simply create a gallery and select the grid you want to use, and you are good to go. Images can link to the attachment page, the image file, or be opened using a Thickbox, or with JetPack's Carousel (or the [Gallery Carousel without JetPack](http://wordpress.org/plugins/carousel-without-jetpack/) plugin!).
+* **Create a tiled gallery**: You can use WP Tiles to replace your default WordPress `[gallery]` shortcode. Simply create a gallery and select the grid you want to use, and you are good to go. Images can link to the attachment page, the image file, or be opened using a Thickbox, or with JetPack's Carousel (or the [Gallery Carousel without JetPack](http://wordpress.org/plugins/carousel-without-jetpack/) plugin!).
+
+> **Update:** We recently released our *free* Twenty Fourteen child theme for WP Tiles. Check it out [here](http://wp-tiles.com/tiledfourteen/).
 
 = Other Features =
 
@@ -120,6 +120,14 @@ To show WP Tiles in your templates, there are template tags available. See the d
 1. Shortcode editor
 
 == Changelog ==
+
+= 1.0.1 =
+
+* Released [TiledFourteen](http://wp-tiles.com/tiledfourteen/), a free theme for WP Tiles
+* Added: Filter for the 'Load More' text (`wp_tiles_load_more_text`) when using AJAX pagination
+* Fix: WP Tiles was conflicting with Squirrly admin page. Removed fixed position on the the admin page
+* Fix: Path for the textdomain was not relative, causing errors
+* Fix: WordPress uses another paging parameter on the front page (page instead of paged). WP Tiles now detects this
 
 = 1.0 =
 

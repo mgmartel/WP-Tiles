@@ -155,7 +155,6 @@ class Admin
             //'menu_page'             => 'edit.php?post_type=grid_template',
             'menu_page'             => array(
                 'icon_url' => 'dashicons-screenoptions',
-                'position' => 100
             ),
             'priority'              => 9, // Before register_post_type sets the submenu
             'use_auto_group_naming' => true,

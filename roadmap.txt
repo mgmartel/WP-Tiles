@@ -1,4 +1,6 @@
 Currently, all future features have no target version attached to them. Whoever wants to can add them or if there are enough requests, some features will get priority:
+
+* Allow byline effect to be disabled on touch devices
 * Filter by Post Category (on the front end)
 * Option to automatically add IE compat header
 * Multiple breakpoints
@@ -8,5 +10,5 @@ Currently, all future features have no target version attached to them. Whoever 
 * Named queries (filters to the query in the shortcode)
 * Allow other lightboxes than thickbox and jetpack
 * Change font size
-* Disable automatic elipsis
+* Disable automatic ellipsis
 * Scrolling animations

@@ -50,7 +50,7 @@ class WPTiles extends Abstracts\WPSingleton
     public $gallery;
 
     public function init() {
-        load_plugin_textdomain( 'wp-tiles', false, WP_TILES_DIR . '/languages/' );
+        load_plugin_textdomain( 'wp-tiles', false, basename( WP_TILES_DIR ) . '/languages/' );
 
         $this->post_query = new PostQuery();
         $this->options    = new Options();
@@ -169,8 +169,10 @@ class WPTiles extends Abstracts\WPSingleton
             }
 
             // Automatically set paged var if tile pagination is on
-            if ( $opts['pagination'] )
-                $posts['paged'] = ( get_query_var('paged') ) ? get_query_var('paged') : 1;
+            if ( $opts['pagination'] ) {
+                $paged_query_var = is_front_page() ? get_query_var( 'page' ) : get_query_var('paged');
+                $posts['paged'] = $paged_query_var ? $paged_query_var : 1;
+            }
 
             $posts = new \WP_Query( apply_filters( 'wp_tiles_get_posts_query', $posts ) );
         }
@@ -337,7 +339,7 @@ class WPTiles extends Abstracts\WPSingleton
         if ( $next_page && 'ajax' === $opts['pagination'] && $opts['next_query'] ) : ?>
 
         <nav class="wp-tiles-pagination wp-tiles-pagination-ajax" id="<?php echo $wp_tiles_id; ?>-pagination">
-            <a href="<?php next_posts( $max_page, true ) ?>"><?php _e( 'Load More', 'wp-tiles' ) ?></a>
+            <a href="<?php next_posts( $max_page, true ) ?>"><?php echo apply_filters( 'wp_tiles_load_more_text', __( 'Load More', 'wp-tiles' ) ) ?></a>
         </nav>
         <?php elseif ( 'prev_next' === $opts['pagination'] ) : ?>
             <?php wp_tiles_prev_next_nav( $wp_query, $wp_tiles_id ); ?>
