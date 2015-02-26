@@ -184,7 +184,7 @@ class WPTiles extends Abstracts\WPSingleton
             $posts = $wp_query->posts;
         }
 
-        if ( empty( $posts ) )
+        if ( !is_array( $posts ) || empty( $posts ) )
             return false;
 
         //
