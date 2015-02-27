@@ -11,7 +11,7 @@ class Legacy
         $old_keys = array(
             'posts_query',
             'display',
-            'colors',
+            //'colors',
             'template',
             'templates',
             'show_selector'
