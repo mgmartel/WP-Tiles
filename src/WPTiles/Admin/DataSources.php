@@ -101,7 +101,7 @@ class DataSources
 
         $result = array();
         foreach ( $wp_cat as $cat ) {
-            $result[] = array( 'value' => $cat->name, 'label' => $cat->name );
+            $result[] = array( 'value' => $cat->slug, 'label' => $cat->name );
         }
         return $result;
     }
@@ -111,7 +111,7 @@ class DataSources
 
         $result = array();
         foreach ( $tags as $tag ) {
-            $result[] = array( 'value' => $tag->name, 'label' => $tag->name );
+            $result[] = array( 'value' => $tag->slug, 'label' => $tag->name );
         }
         return $result;
     }
