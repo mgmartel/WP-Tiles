@@ -1,37 +1,5 @@
 <div class='wp-tiles-stuffbox stuffbox' id="about-wp-tiles">
 
-    <h3>About WP Tiles</h3>
-
-    <div class='inside'>
-
-        <p>Thank you for using WP Tiles. If you are ever stuck using the plugin you can check out the detailed documentation and example pages on <a href='http://wp-tiles.com/' target='_blank'>wp-tiles.com</a>.
-            If you need support, you can head over to the <a href='https://wordpress.org/support/plugin/wp-tiles' target='_blank'>support forums</a> on WordPress.org.</p>
-
-        <p>-- Mike</p>
-
-        <a href='https://wordpress.org/support/profile/mike_cowobo' target='_blank'>
-            <img alt='Mike' src='http://1.gravatar.com/avatar/b2e3ffa705cde285c2fb9ce596c85126?s=96&d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D96&r=G' class='avatar avatar-96 photo' height='96' width='96' />
-        </a><br />
-
-    </div>
-
-    <hr />
-
-    <h3>Become a Remaintenance Affiliate</h3>
-
-    <div class='inside'>
-
-        <p>Our (awesome) WordPress maintenance service is now offering an affiliate program with <strong>massive pay-outs</strong>.</p>
-
-        <p>For every referral, you get <strong>€150</strong>. And if your referral pays a year in advance, we'll double it for a total of <strong>€300</strong>. Easy money!</p>
-
-        <p>Read how you can become an affiliate on <a href='https://remaintenance.io/affiliate-program/' target='_blank'>our website</a>.</p>
-
-
-    </div>
-
-    <hr />
-
     <h3>TiledFourteen</h3>
     <span class='subtitle'>Our free WP Tiles theme</span>
 
