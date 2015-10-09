@@ -4,9 +4,9 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Plugin URI: http://wp-tiles.com/
 Author URI: https://trenvo.com/
 Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
-Requires at least: 3.4.2
-Tested up to: 4.1.1
-Stable tag: 1.0.1
+Requires at least: 3.6
+Tested up to: 4.3.1
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,12 @@ Also see [this](http://wp-tiles.com/docs/byline-templates/) page in our document
 
 To show WP Tiles in your templates, there are template tags available. See the documentation on the website [here](http://wp-tiles.com/docs/template-tags).
 
+= Can I hide the tooltips that appear when I hover over tiles? =
+
+It's not a default WP Tiles option, but there is a simple plugin that does exactly that:
+
+[No Title Tooltips](https://wordpress.org/plugins/no-title-tooltips/)
+
 == Screenshots ==
 
 1. WP Tiles showing posts with a hover effect ([Designer Homepage example](http://wp-tiles.com/example-pages/designer-homepage/))
@@ -120,6 +126,11 @@ To show WP Tiles in your templates, there are template tags available. See the d
 1. Shortcode editor
 
 == Changelog ==
+
+= 1.1 =
+
+* Only display users that have published posts in the admin interface
+* Better admin performance on large sites (thanks @csdaavid!)
 
 = 1.0.1 =
 

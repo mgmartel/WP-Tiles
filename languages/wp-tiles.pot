@@ -1,148 +1,1066 @@
+# Copyright (C) 2015 WP Tiles
+# This file is distributed under the same license as the WP Tiles package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Tiles\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-14 13:05+0200\n"
-"PO-Revision-Date: 2012-10-14 13:05+0200\n"
-"Last-Translator: Mike <mike@trenvo.nl>\n"
-"Language-Team: \n"
-"Language: \n"
+"Project-Id-Version: WP Tiles 1.0.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/wp-tiles\n"
+"POT-Creation-Date: 2015-03-20 11:02:25+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;__\n"
-"X-Poedit-Basepath: /opt/lampp/htdocs/bp-vanilla/wp-content/plugins/wp-tiles\n"
-"X-Poedit-SearchPath-0: .\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: wp-tiles-admin.php:23
-#, php-format
-msgid ""
-"Use this page to set the default settings used with the %s shortcode.\n"
-"<h3>Usage</h3>\n"
-"<p>To show wp-tiles on any of your pages or in your posts, simply include the shortcode %1$s</p>\n"
-"<p>WP Tiles will automatically show posts based on the preferences you set below. To override the settings on a per-post basis, pass arguments to the shortcode as indicated in each section.</p>\n"
-"<h3>Advanced</h3>\n"
-"<p>You can also style WP Tiles in your (child) theme. Simply add 'wp-tile.css' in a folder called 'css', 'inc' or 'inc/css' to your theme.</p><hr>"
+#: src/WPTiles/Admin/Admin.php:58
+msgid "WP Tiles Shortcodes"
 msgstr ""
 
-#: wp-tiles-admin.php:53
-msgid "Random"
+#. #-#-#-#-#  plugin.pot (WP Tiles 1.0.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: src/WPTiles/Admin/Admin.php:59 src/WPTiles/Admin/Admin.php:151
+#: src/WPTiles/Admin/Admin.php:164 src/WPTiles/Admin/Admin.php:165
+msgid "WP Tiles"
 msgstr ""
 
-#: wp-tiles-admin.php:55
-msgid "Date"
+#: src/WPTiles/Admin/Admin.php:70
+msgid "Tiles"
 msgstr ""
 
-#: wp-tiles-admin.php:58
-msgid "Descending"
+#: src/WPTiles/Admin/Admin.php:73
+msgid "[wp-tiles] WP Tiles Shortcode"
 msgstr ""
 
-#: wp-tiles-admin.php:59
-msgid "Ascending"
+#: src/WPTiles/Admin/Admin.php:78
+msgid "Tiles with custom Grid options"
 msgstr ""
 
-#: wp-tiles-admin.php:74
-#: wp-tiles-admin.php:83
+#: src/WPTiles/Admin/Admin.php:83
+msgid "Select Specific Posts to display"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:90
+msgid "Presets"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:93
+msgid "<em>Preset:</em> Last 20 Blog Posts"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:97
+msgid "<em>Preset:</em> Display posts with same tags as current post"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:101
+msgid "<em>Preset:</em> Display posts with same categories as current post"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:107
+msgid "Galleries"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:110
+msgid "Tiled Gallery - display images attached to current post"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:115
+msgid "Tiled Gallery other post - display images attached to another post"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:122
+msgid "Advanced"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:125
+msgid "Custom Query"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:130
+msgid "Custom Query and Grid Options"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:195
+msgid "Tile Designer"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:202
+msgid "Using the Tile Designer"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:210
+msgid "Tile Preview"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:216
+msgid "Options"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:224 src/WPTiles/Admin/Controls.php:82
+#: src/WPTiles/WPTiles.php:84
+msgid "Grids"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:230
+msgid "Grid Templates"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:232
+msgid "Select your default layout options"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:238
+msgid "Animations and Colors"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:244
 msgid "Colors"
 msgstr ""
 
-#: wp-tiles-admin.php:76
-#, php-format
+#: src/WPTiles/Admin/Admin.php:250
+msgid "Tile Animations"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:258
+msgid "Byline Content"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:264
+msgid "Byline Links and Content"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:266
+msgid "The byline the text block that is displayed on the tile."
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:271
+msgid "Byline Template"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:279
+msgid "Image Settings"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:285
+msgid "Tile Images"
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:287
+msgid "If an image is found, it will be displayed as the tile background."
+msgstr ""
+
+#: src/WPTiles/Admin/Admin.php:394
+msgid "Byline Preview"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:25 src/WPTiles/Gallery.php:63
+msgid "Grid"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:26
+msgid "Select which Grid to use"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:50
+msgid "Full Width Tiles"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:51
+msgid "Let Tiles break out of container"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:65
+msgid "Custom Layout Options"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:66
 msgid ""
-"Posts that have no image randomly get assigned a background color. Here you can define the colorscheme used by WP Tiles.%s\n"
-"Change this in the shortcode like this: %s"
+"Use the options below to change the layout settings of this instance. Once "
+"inserted as a shortcode, you can still edit them manually."
 msgstr ""
 
-#: wp-tiles-admin.php:85
-msgid "Leave the textfield empty to remove a color."
+#: src/WPTiles/Admin/Controls.php:83
+msgid "Select which Grids to use"
 msgstr ""
 
-#: wp-tiles-admin.php:92
-#: wp-tiles-admin.php:102
-msgid "Templates"
+#: src/WPTiles/Admin/Controls.php:99
+msgid "Creating Grids"
 msgstr ""
 
-#: wp-tiles-admin.php:93
-#, php-format
+#: src/WPTiles/Admin/Controls.php:101
 msgid ""
-"You can include multiple templates in WP-Tiles. To hide the template chooser, simply add only a single template.%s\n"
-"Templates are formulated as per tiles.js. Check the %s for a demonstration in making templates.%1$s\n"
-"Change this in the shortcode like this: %s"
+"In this panel you can set the default options for your tile grids. Go to the "
+"<a href=\"%s\">Grids</a> page to create and edit grids."
 msgstr ""
 
-#: wp-tiles-admin.php:109
-msgid "Small screen template"
+#: src/WPTiles/Admin/Controls.php:110
+msgid "Default Grid"
 msgstr ""
 
-#: wp-tiles-admin.php:114
-msgid "Show template selector"
+#: src/WPTiles/Admin/Controls.php:111
+msgid "Select which Grid to use by default"
 msgstr ""
 
-#: wp-tiles-admin.php:118
-#, php-format
-msgid "To show or hide the selector on a per-post basis, add %s to the shortcode."
+#: src/WPTiles/Admin/Controls.php:116
+msgid "All"
 msgstr ""
 
-#: wp-tiles-admin.php:125
-msgid "Posts"
+#: src/WPTiles/Admin/Controls.php:131
+msgid "Different grid on small screens?"
 msgstr ""
 
-#: wp-tiles-admin.php:127
-#, php-format
+#: src/WPTiles/Admin/Controls.php:132
 msgid ""
-"Default arguments to be passed when querying tiles using just %s. These can be modified by passing 'posts_query=' as an argument to the shortcode.%s\n"
-"For example: %s."
+"Use this option to use an alternative grid when the container size gets "
+"smaller than a specified value."
 msgstr ""
 
-#: wp-tiles-admin.php:135
-msgid "Number of posts"
+#: src/WPTiles/Admin/Controls.php:141
+msgid "Small Screen Grid"
 msgstr ""
 
-#: wp-tiles-admin.php:139
-msgid "Offset"
+#: src/WPTiles/Admin/Controls.php:142
+msgid "Select the grid to use on small screens."
 msgstr ""
 
-#: wp-tiles-admin.php:143
-msgid "Category"
+#: src/WPTiles/Admin/Controls.php:161
+msgid "Small Screen Breakpoint"
 msgstr ""
 
-#: wp-tiles-admin.php:147
-msgid "Order by"
+#: src/WPTiles/Admin/Controls.php:162
+msgid ""
+"Select the breakpoint (in px) after which the template should switch to "
+"small screen."
 msgstr ""
 
-#: wp-tiles-admin.php:151
-msgid "Order"
+#: src/WPTiles/Admin/Controls.php:174
+msgid "Tile Padding"
 msgstr ""
 
-#: wp-tiles-admin.php:155
-msgid "Include"
+#: src/WPTiles/Admin/Controls.php:175
+msgid "Padding between the tiles in px"
 msgstr ""
 
-#: wp-tiles-admin.php:159
-msgid "Exclude"
+#: src/WPTiles/Admin/Controls.php:185
+msgid "Pagination"
 msgstr ""
 
-#: wp-tiles-admin.php:163
-msgid "Meta key"
+#: src/WPTiles/Admin/Controls.php:186
+msgid "Should pagination be shown under the tiles?"
 msgstr ""
 
-#: wp-tiles-admin.php:167
-msgid "Meta value"
+#: src/WPTiles/Admin/Controls.php:190
+msgid "No Pagination"
 msgstr ""
 
-#: wp-tiles-admin.php:171
+#: src/WPTiles/Admin/Controls.php:194
+msgid "Load More (without page refresh)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:198
+msgid "Next / Previous (new page)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:202
+msgid "With Page Numbers"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:211
+msgid "Grid Selector Color"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:212
+msgid ""
+"If you choose multiple grids, a selector will appear above your tiles. "
+"Select the color for the grid selector."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:231
+msgid "Enable Animations"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:232
+msgid "Controls animations when tiles are loaded, modified or resized"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:238
+msgid "Animation on load"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:239
+msgid "Show animation when tiles are first loaded"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:249
+msgid "Animation on window resize"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:250
+msgid "Animate the tiles when the window is resized?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:260
+msgid "Animation on grid change"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:261
+msgid "Show animation when grid template changes"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:278
+msgid "Tile background colors"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:291
+msgid "Color %d"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:302
+msgid "Background Opacity (0 to 1)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:320
+msgid "Text-Only Tiles"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:321
+msgid "Don't add the background image to Tiles, even if it is available."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:327
+msgid "Image Tiles Only"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:328
+msgid ""
+"Hide tiles that don't have an image. Please note: setting this option is "
+"incompatible with pagination!"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:334
+msgid "Link To"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:335
+msgid ""
+"By default the whole tile is linked to a post. Change this option to send "
+"your visitors elsewhere when they click on a tile."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:340
+msgid "The Post (default)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:348
+msgid "Image File"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:352
+msgid "Open image in default Thickbox"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:356
+msgid "No Link"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:363
+msgid "Open Links in New Window"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:364
+msgid "Should clicking on a tile open a new window?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:377
+msgid "Byline Template (HTML)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:388
+msgid "Byline Tags"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:404
+msgid "Different template for text-only tiles?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:405
+msgid "Check this toggle to set up a different template for text-only tiles."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:414
+msgid "Text-Only Byline Template"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:426
+msgid "Hide title on byline"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:427
+msgid ""
+"By default, WP Tiles add the title of the post to the byline as a H4 tag. To "
+"add the title in the template above manually, select this option."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:447
+msgid "Gallery Shortcode"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:465
+msgid "Enter Post ID"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:486
+msgid "Select Grid"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:511
+msgid "Enter Post IDs, separated by commas"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:522
 msgid "Post Type"
 msgstr ""
 
-#: wp-tiles-admin.php:296
+#: src/WPTiles/Admin/Controls.php:526 src/WPTiles/Admin/Controls.php:843
+msgid "Any"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:530
+msgid "Same as current post"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:546
+msgid "Order By"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:603
+msgid "Order"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:607
+msgid "Ascending"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:611
+msgid "Descending"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:623
+msgid "Posts Per Page"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:630
+msgid "Category"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:645
+msgid "Tags"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:665
+msgid "Taxonomy"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:680
+msgid "Taxonomy Operator"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:702
+msgid "Taxonomy Term"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:709
+msgid "Author"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:724
+msgid "Meta Key"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:731
+msgid "Offset"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:739
+msgid "Post Parent ID (use <code>current</code> for the current post)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:740
+msgid "Only show children of post with ID"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:747
+msgid "Post Status"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:792
+msgid "Ignore Sticky Posts"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:799
+msgid "Exclude Current Post from Tiles?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:805
+msgid "Only display posts with the same terms in this taxonomy"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:823
+msgid "Use image size"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:824
+msgid ""
+"Define the image size WP Tiles should use for tile background. Set to a "
+"larger size if Tile backgrounds come out too pixelated."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:838
+msgid "Image Selection"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:839
+msgid "Where should WP Tiles look for the images for the background of tiles?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:847
+msgid "Attached Only (don't look in post)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:851
+msgid "Featured Image Only"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:855
+msgid "Only show image for Media Posts"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:863
+msgid "Image Source"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:895
+msgid "Byline Background Color"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:896
+msgid ""
+"To use the same set of colors as the tiles without text, leave this option "
+"empty."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:903
+msgid "Byline Opacity (0 to 1)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:904
+msgid ""
+"Set the opacity for the background of the byline on top of the image. 0 is "
+"completely transparent, 1 fully opaque."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:913
+msgid "Automatic Byline Height?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:914
+msgid "Should the height of the byline be determined by its content?"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:920
+msgid "Byline Height (%)"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:921
+msgid ""
+"Set the height of the byline on image tiles. 100% means fully covered, 0% "
+"means invisible. If byline height is set to auto, this is the maximum height."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:930
+msgid "Byline Effect"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:931
+msgid ""
+"Select the effect you want to use for the byline to appear when you hover "
+"over the tile."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:935 src/WPTiles/Admin/Controls.php:985
+msgid "None"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:939
+msgid "Slide Up"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:943
+msgid "Slide Down"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:947
+msgid "Slide Left"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:951
+msgid "Slide Right"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:955
+msgid "Fade In"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:963
+msgid "Byline Vertical Alignment"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:964
+msgid ""
+"Align the byline to the top or bottom of the tile. Nb. This option has no "
+"effect if slide effect is up or down, or if tile is 100% high."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:968
+msgid "Top"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:972
+msgid "Bottom"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:980
+msgid "Image Effect"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:981
+msgid ""
+"Select the effect you want to use for the image when you hover over the tile."
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:989
+msgid "Scale Up"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:993
+msgid "Scale Down"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:997
+msgid "Saturate"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1001
+msgid "Desaturate"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1005
+msgid "Color Overlay"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1013
+msgid "Text Color Image Tiles"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1014
+msgid "Select the color for text on tiles with background image"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1021
+msgid "Text Color Text-Only Tiles"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1022
+msgid "Select the color for text on tiles without background image"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1029
+msgid "Use Legacy (pre-1.0) Styles"
+msgstr ""
+
+#: src/WPTiles/Admin/Controls.php:1030
+msgid ""
+"Check this box to enable the old CSS styles for WP Tiles. Not recommended, "
+"unless you need to ensure compatibility with your own custom styles from the "
+"pre-1.0 era."
+msgstr ""
+
+#: src/WPTiles/Admin/DataSources.php:94
+msgid "Orgininal Size (Full)"
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:58
+msgid "Preview"
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:59
+#: src/WPTiles/Admin/GridTemplates.php:65
+msgid "Grid Editor"
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:66
+msgid ""
+"Use the grid editor below to create a tiles template. Play around with it, "
+"the example will be automatically updated."
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:67
+msgid ""
+"Here's how it works: A template is an array of strings where each string "
+"represents a row in the grid. We parse that array and form a 'tile' whenever "
+"the we detect repeated characters in adjacent cells."
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:68
+msgid ""
+"So, in the example to the left the A's form a 2x2 tile, the B's for a 1x2 "
+"tile and the C's form a 2x1 tile. You can use just about any character you "
+"want but we tend to use capital letters as a convention. "
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:69
+msgid ""
+"Periods are special. they're reserved to always mean single cells. All white "
+"space is ignored (it turns out that these are a lot easier to read if you "
+"pad the characters a little)."
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:92
+msgid "WP Tiles Grid Editor"
+msgstr ""
+
+#: src/WPTiles/Admin/GridTemplates.php:93
+msgid ""
+"Use this box to edit the grid. The grid preview on the left will "
+"automatically update when you change the template. For more help, click the "
+"\"Need help?\" link in this box."
+msgstr ""
+
+#: src/WPTiles/Gallery.php:56
+msgid "Tiled Gallery"
+msgstr ""
+
+#: src/WPTiles/Gallery.php:74
+msgid "Image Size"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:75
+msgctxt "post type general name"
+msgid "Grids"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:76
+msgctxt "post type singular name"
+msgid "Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:77
+msgctxt "admin menu"
+msgid "WP Tiles Grids"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:78
+msgctxt "add new on admin bar"
+msgid "Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:79 src/WPTiles/WPTiles.php:80
+msgid "Add New Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:81
+msgid "New Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:82
+msgid "Edit Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:83
+msgid "View Grid"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:85
+msgid "Search Grids"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:86
+msgid "Parent Grids:"
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:87
+msgid "No grids found."
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:88
+msgid "No grids found in Trash."
+msgstr ""
+
+#: src/WPTiles/WPTiles.php:342
+msgid "Load More"
+msgstr ""
+
+#: vafpress-framework/bootstrap.php:88
+#: vafpress-framework/classes/option.php:364
+#: vafpress-framework/classes/option.php:389
+msgid "Successful"
+msgstr ""
+
+#: vafpress-framework/bootstrap.php:99
+msgid "Unauthorized function"
+msgstr ""
+
+#: vafpress-framework/classes/metabox/alchemy.php:493
+#: vafpress-framework/classes/metabox.php:564
+msgid "Remove"
+msgstr ""
+
+#: vafpress-framework/classes/metabox/alchemy.php:515
+#: vafpress-framework/classes/metabox.php:586
+msgid "Add More"
+msgstr ""
+
+#: vafpress-framework/classes/metabox.php:35
+msgid "[Development Mode] "
+msgstr ""
+
+#: vafpress-framework/classes/option/control/set.php:359
+msgid "Saving successful"
+msgstr ""
+
+#: vafpress-framework/classes/option/control/set.php:370
+msgid "Saving failed"
+msgstr ""
+
+#: vafpress-framework/classes/option/control/set.php:376
+msgid "No changes made"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:47
+#: vafpress-framework/classes/option.php:48
+msgid "Vafpress Options"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:61
+msgid "Option Key is required"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:63
+msgid "Template Array/File is required"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:65
+msgid "Page Slug is required"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:167
+msgid ""
+"Development Mode is Active, options' values won't be saved into database."
+msgstr ""
+
+#: vafpress-framework/classes/option.php:306
+msgid "Can not be empty"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:331
+msgid "Invalid data"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:394
+msgid "Unverified Access"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:460
+msgid "Invalid template supplied"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:473
+msgid "Utility"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:479
+#: vafpress-framework/views/option/restore.php:13
+msgid "Restore Default"
+msgstr ""
+
+#: vafpress-framework/classes/option.php:488
+msgid "Export/Import"
+msgstr ""
+
+#: vafpress-framework/classes/shortcodegenerator.php:260
+msgid "Insert"
+msgstr ""
+
+#: vafpress-framework/classes/shortcodegenerator.php:261
+msgid "Cancel"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:13
+msgid "Value needs to be Alphabet"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:14
+msgid "Value needs to be Alphanumeric"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:15
+msgid "Value needs to be Numeric"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:16
+msgid "Value needs to be Valid Email"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:17
+msgid "Value needs to be Valid URL"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:18
+msgid "Length needs to be less than {0} characters"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:19
+msgid "Length needs to be more than {0} characters"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:20
+msgid "Select no more than {0} items"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:21
+msgid "Select at least {0} items"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:22
+msgid "This is required"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:29
+msgid "Import succeed, option page will be refreshed.."
+msgstr ""
+
+#: vafpress-framework/config/messages.php:30
+msgid "Import failed"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:31
+msgid "Export succeed, copy the JSON formatted options"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:32
+msgid "Export failed"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:33
+msgid "Restoration succeed, option page will be refreshed.."
+msgstr ""
+
+#: vafpress-framework/config/messages.php:34
+msgid "Options identical to default"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:35
+msgid "Restoration failed"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:43
+msgid "Select option(s)"
+msgstr ""
+
+#: vafpress-framework/config/messages.php:45
+msgid "Select an Icon"
+msgstr ""
+
+#: vafpress-framework/views/control/upload.php:5
+msgid "Choose File"
+msgstr ""
+
+#: vafpress-framework/views/option/impexp.php:4
+#: vafpress-framework/views/option/impexp.php:14
+msgid "Import"
+msgstr ""
+
+#: vafpress-framework/views/option/impexp.php:7
+msgid "Import Options"
+msgstr ""
+
+#: vafpress-framework/views/option/impexp.php:27
+#: vafpress-framework/views/option/impexp.php:37
+msgid "Export"
+msgstr ""
+
+#: vafpress-framework/views/option/impexp.php:30
+msgid "Export Options"
+msgstr ""
+
+#: vafpress-framework/views/option/restore.php:4
+msgid "Restore Default Options"
+msgstr ""
+
+#: vafpress-framework/views/option/restore.php:7
+msgid "Restore options to initial default values."
+msgstr ""
+
+#: vafpress-framework/views/option/restore.php:14
+msgid ""
+"** Please make sure you have already make a backup data of your current "
+"settings. Once you click this button, your current settings will be gone."
+msgstr ""
+
+#: vafpress-framework/views/option/set.php:69
+#: vafpress-framework/views/option/set.php:84
 msgid "Save Changes"
 msgstr ""
 
-#: wp-tiles-admin.php:301
-msgid "Reset"
+#: vafpress-framework/views/option/set.php:70
+#: vafpress-framework/views/option/set.php:85
+msgid "Saving Now"
 msgstr ""
 
-#: wp-tiles-admin.php:446
-msgid "[+] Add"
+#: vafpress-framework/views/option/set.php:93
+msgid ""
+"This option panel is built using <a href=\"http://vafpress.com/vafpress-"
+"framework\">Vafpress Framework %s</a> powered by <a href=\"http://vafpress."
+"com\">Vafpress</a>"
 msgstr ""
 
+#: wp-tiles-pluggables.php:135 wp-tiles-pluggables.php:190
+msgid "&larr; Previous"
+msgstr ""
+
+#: wp-tiles-pluggables.php:136 wp-tiles-pluggables.php:192
+msgid "Next &rarr;"
+msgstr ""
+
+#: wp-tiles-pluggables.php:144
+msgid "Posts navigation"
+msgstr ""
+
+#: wp-tiles-pluggables.php:188
+msgid "Post navigation"
+msgstr ""
+
+#: wp-tiles.php:20
+msgid ""
+"<div class=\"error\"><p>WP Tiles is <strong>not</strong> active. This "
+"version of the plugin requires PHP v5.3+.</p></div>"
+msgstr ""
+
+#: wp-tiles.php:37
+msgid "Settings"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://wp-tiles.com/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Add fully customizable dynamic tiles to your WordPress posts and pages."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Mike Martel"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://trenvo.com/"
+msgstr ""
