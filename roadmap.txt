@@ -12,3 +12,5 @@ Currently, all future features have no target version attached to them. Whoever 
 * Change font size
 * Disable automatic ellipsis
 * Scrolling animations
+
+* Responsive Lightbox integration: https://wordpress.org/support/topic/conflictissue-with-responsive-lightbox?replies=1
