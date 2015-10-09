@@ -686,8 +686,8 @@ class Controls
                         ),
                         array(
                             'value' => 'NOT IN',
-                            'label' => 'NOT IN',
-                        ),
+                            'label' => 'NOT IN'
+                       ),
                         array(
                             'value' => 'AND',
                             'label' => 'AND',
@@ -711,7 +711,7 @@ class Controls
                         'data' => array(
                             array(
                                 'source' => 'function',
-                                'value'  => 'vp_get_users',
+                                'value'  => array( 'WPTiles\Admin\DataSources', 'get_authors' ),
                             ),
                         ),
                     ),

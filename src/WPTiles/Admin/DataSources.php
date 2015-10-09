@@ -21,23 +21,6 @@ class DataSources
         return $result;
     }
 
-    /**
-     * @deprecated If there's too many posts, execution stops here.
-     */
-    public static function get_posts_any() {
-        $wp_posts = get_posts(array(
-            'posts_per_page' => -1,
-            'post_type' => 'any'
-        ));
-
-        $result = array();
-        foreach ($wp_posts as $post)
-        {
-            $result[] = array('value' => $post->ID, 'label' => $post->post_title);
-        }
-        return $result;
-    }
-
     public static function get_grids_names() {
         $wp_posts = get_posts(array(
             'posts_per_page' => -1,
@@ -63,6 +46,7 @@ class DataSources
 
     public static function get_taxonomies() {
         $result = array();
+
         foreach( get_taxonomies( array( 'public' => true ), 'objects' ) as $taxonomy => $tax_object ) {
             $result[] = array( 'value' => $taxonomy, 'label' => $tax_object->labels->name );
         }
@@ -97,7 +81,10 @@ class DataSources
     }
 
     public static function get_categories() {
-        $wp_cat = get_categories( array( 'hide_empty' => 0 ) );
+        $wp_cat = get_categories( array(
+            'hide_empty' => 0,
+            'number' => 100 // Limit the max number of categories for very large sites.
+        ) );
 
         $result = array();
         foreach ( $wp_cat as $cat ) {
@@ -107,12 +94,38 @@ class DataSources
     }
 
     public static function get_tags() {
-        $tags = get_tags( array( 'hide_empty' => 0 ) );
+        $tags = get_tags( array(
+            'hide_empty' => 0,
+            'number' => 100
+        ) );
 
         $result = array();
         foreach ( $tags as $tag ) {
             $result[] = array( 'value' => $tag->slug, 'label' => $tag->name );
         }
+        return $result;
+    }
+
+    /**
+     * Get all the users that have published posts
+     * @return array
+     * @since 1.1
+     */
+    public static function get_authors() {
+        $wp_users = get_users( array(
+            'number' => 100, // Limit the max number of users for large sites
+            'has_published_posts' => true
+        ) );
+
+        $result   = array();
+        foreach ($wp_users as $user)
+        {
+            if( property_exists( $user, 'data' ) ) {
+                $user = $user->data;
+            }
+            $result[] = array('value' => $user->ID, 'label' => $user->display_name);
+        }
+
         return $result;
     }
 }
