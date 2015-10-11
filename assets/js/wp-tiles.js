@@ -218,7 +218,7 @@
 
             // Set the background image
             var $bg_img = $('.wp-tiles-tile-bg .wp-tiles-img',$el),
-                bg_img_src = $bg_img.src;
+                bg_img_src = $bg_img[0].src;
 
             $('.wp-tiles-tile-bg',$el).css({
               'background-image': "url('" + bg_img_src + "')",
@@ -228,7 +228,7 @@
                   'filter': "progid:DXImageTransform.Microsoft.AlphaImageLoader( src='" + bg_img_src + "', sizingMethod='scale')" /* IE6 & IE7 */
             });
 
-            $bg_img.remove();
+            $bg_img.first().remove();
           }
 
           return tile;
