@@ -6,7 +6,7 @@ Author URI: https://trenvo.com/
 Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
 Requires at least: 3.6
 Tested up to: 4.3.1
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,10 @@ It's not a default WP Tiles option, but there is a simple plugin that does exact
 1. Shortcode editor
 
 == Changelog ==
+
+= 1.1.1 =
+
+* Bug: Fix script error that caused background images to disappear from tiles (lots of thanks to Thomas Bouffon!)
 
 = 1.1 =
 
