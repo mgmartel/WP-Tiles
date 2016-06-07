@@ -2,11 +2,11 @@
 Contributors: Mike_Cowobo
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=U32MTZ9VGHLKS
 Plugin URI: http://wp-tiles.com/
-Author URI: https://trenvo.com/
+Author URI: https://keetrax.com/
 Tags: tiles, grid, shortcode, gallery, display, list, page, pages, posts, query
 Requires at least: 3.6
-Tested up to: 4.3.1
-Stable tag: 1.1.1
+Tested up to: 4.5.2
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -126,6 +126,10 @@ It's not a default WP Tiles option, but there is a simple plugin that does exact
 1. Shortcode editor
 
 == Changelog ==
+
+= 1.1.2 =
+
+* Bug: Site administrators could create a stored XSS on the WP Tiles admin pages. Thanks to Th3R3p0 for finding and reporting this vulnerability!
 
 = 1.1.1 =
 
@@ -311,13 +315,13 @@ It's not a default WP Tiles option, but there is a simple plugin that does exact
 
 = 1.0 =
 
-WP Tiles 1.0 is a complete overhaul of the plugin. One thing that has greatly improved is the shortcode syntax. We have done our best to make sure that shortcodes created for the old version still work, but we can't guarantee that they will look the same as before the update. Please read the [upgrade guide](https://trenvo.com/blog/2014/05/upgrading-to-wp-tiles-1-0/) and make sure that all your pages with WP Tiles on them are still working after the update.
+WP Tiles 1.0 is a complete overhaul of the plugin. One thing that has greatly improved is the shortcode syntax. We have done our best to make sure that shortcodes created for the old version still work, but we can't guarantee that they will look the same as before the update. Please read the [upgrade guide](https://keetrax.com/blog/2014/05/upgrading-to-wp-tiles-1-0/) and make sure that all your pages with WP Tiles on them are still working after the update.
 
 = 0.6.1 =
 
 = 0.6 =
 
-WP Tiles will update to version 1.0 **soon**. Please read the [announcement](http://wp-tiles.com/blog/announcing-wp-tiles-1-0/) and be aware that the update after this one will not be 100% compatible.
+WP Tiles will update to version 1.0 **soon**. Please read the [announcement](https://keetrax.com/blog/2014/05/announcing-wp-tiles-1-0/) and be aware that the update after this one will not be 100% compatible.
 
 = 0.5 =
 
