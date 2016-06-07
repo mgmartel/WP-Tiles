@@ -3,7 +3,7 @@
 <?php foreach ($items as $item): ?>
 <label>
 	<?php $checked = ($item->value == $value); ?>
-	<input <?php if($checked) echo 'checked'; ?> class="vp-input<?php if($checked) echo " checked"; ?>" type="radio" name="<?php echo $name; ?>" value="<?php echo $item->value; ?>" />
+	<input <?php if($checked) echo 'checked'; ?> class="vp-input<?php if($checked) echo " checked"; ?>" type="radio" name="<?php echo $name; ?>" value="<?php echo esc_attr( $item->value ); ?>" />
 	<span></span><?php echo $item->label; ?>
 </label>
 <?php endforeach; ?>
