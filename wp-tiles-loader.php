@@ -9,7 +9,7 @@ if ( !defined ( 'ABSPATH' ) )
  *
  * @since 0.1
  */
-define( 'WP_TILES_VERSION', '1.1.1' );
+define( 'WP_TILES_VERSION', '1.1.2' );
 
 /**
  * PATHs and URLs

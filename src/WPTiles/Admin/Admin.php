@@ -377,9 +377,9 @@ class Admin
 
         ob_start();
         ?>
-        <div class="wp-tiles-container wp-tiles-tile-demo wp-tiles-loaded" id="<?php echo $id ?>">
+        <div class="wp-tiles-container wp-tiles-tile-demo wp-tiles-loaded" id="<?php echo esc_attr( $id ) ?>">
 
-            <div id="wp_tiles_1" class="wp-tiles-grid <?php echo implode( ' ', $classes ); ?>">
+            <div id="wp_tiles_1" class="wp-tiles-grid <?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
                 <div class="wp-tiles-tile" id="tile-1">
 
@@ -409,9 +409,9 @@ class Admin
         </div>
         <style>
             #<?php echo $id ?> .wp-tiles-byline {
-                background: <?php echo $byline_color ?>;
-                <?php if ( $byline_height_auto ) : ?>max-<?php endif; ?>height: <?php echo $byline_height; ?>%;
-                <?php if ( $image_text_color ) : ?>color: <?php echo $image_text_color ?>;<?php endif; ?>
+                background: <?php echo esc_html( $byline_color ) ?>;
+                <?php if ( $byline_height_auto ) : ?>max-<?php endif; ?>height: <?php echo (int) $byline_height; ?>%;
+                <?php if ( $image_text_color ) : ?>color: <?php echo esc_html( $image_text_color ) ?>;<?php endif; ?>
             }
         </style>
         <?php
