@@ -17,9 +17,11 @@
     },
 
     resizeParent: function($el, padding) {
-      var tiles = $el.children('.wp-tiles-tile'),
-          tileOffsetTop = parseInt ( $el.offset().top ),
-          max = 0, newHeight;
+      var tiles = $el.children('.wp-tiles-tile');
+      var tileOffsetTop = $el.offset();
+      tileOffsetTop = tileOffsetTop ? parseInt( tileOffsetTop.top ) : 0;
+      var max = 0;
+      var newHeight;
 
       // Iterates over every tile to find the bottom. Is there a faster way?
       tiles.each(function(){
