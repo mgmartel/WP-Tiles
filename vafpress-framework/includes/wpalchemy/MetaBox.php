@@ -450,6 +450,9 @@ class WPAlchemy_MetaBox
 	 */
 	var $_loop_data;
 	
+	function __construct() {
+	}
+	
 	function WPAlchemy_MetaBox($arr)
 	{
 		$this->_loop_data = new stdClass;
